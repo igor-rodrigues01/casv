@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+
+<h1>{% block page_title %}Upload Shape{% endblock page_title %}</h1>
+
+{% block content %}
+    <form enctype="multipart/form-data" action="{% url 'core:upload' %}" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Enviar" />
+    </form>
+{% endblock content %}

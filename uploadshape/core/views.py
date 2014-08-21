@@ -6,9 +6,12 @@ from os import path, mkdir
 from datetime import datetime
 from shutil import rmtree
 
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
+from django.contrib.auth import authenticate, login, logout
+from django.utils.translation import ugettext as _
+
 
 from .forms import UploadFileForm
 from .models import Shape
@@ -48,11 +51,11 @@ def handle_uploaded_file(file, user):
                         imported_polygons += 1
 
                 rmtree(upload_path)
-                msg = 'Imported %s polygons' % imported_polygons
+                msg = _('Imported %s polygons') % imported_polygons
             else:
-                msg = 'We did not find a shape file in the zip file.'
+                msg = _('We did not find a shape file in the zip file.')
     else:
-        msg = 'UploadedFile is not a valid zip file.'
+        msg = _('UploadedFile is not a valid zip file.')
 
 
 def upload_file(request):
@@ -62,8 +65,36 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             handle_uploaded_file(request.FILES['upload_file'], request.user)
-            return HttpResponseRedirect('/upload-success/')
+            return redirect(reverse('core:upload_success'))
     else:
         form = UploadFileForm()
 
     return render(request, 'upload.html', {'form': form})
+
+
+def login_view(request):
+    msg = _('Please log in below...')
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                msg = 'login successful.'
+                #return render(request, 'login.html', {'msg': msg})
+                return redirect(reverse('core:index'))
+            else:
+                msg = _('Your account is not active. \
+                    Please contact the system administrator')
+                return redirect(reverse('core:index'))
+        else:
+            msg = _('Invalid username or password.')
+            return render(request, 'login.html', {'msg': msg})
+
+    return render(request, 'login.html', {'msg': msg})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect(reverse('core:index'))

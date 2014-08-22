@@ -1,12 +1,12 @@
 from django.contrib.gis import admin
 
-from .models import Shape
+from .models import Asv
 
 
-class ShapeAdmin(admin.OSMGeoAdmin):
+class AsvAdmin(admin.OSMGeoAdmin):
 
     list_display = ['id', 'user', 'date']
     search_fields = ['id', 'user']
 
 
-admin.site.register(Shape, ShapeAdmin)
+admin.site.register(Asv, AsvAdmin)

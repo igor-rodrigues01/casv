@@ -14,7 +14,7 @@ from django.utils.translation import ugettext as _
 
 
 from .forms import UploadFileForm
-from .models import Shape
+from .models import Asv
 
 
 def handle_uploaded_file(file, user):
@@ -43,11 +43,16 @@ def handle_uploaded_file(file, user):
                 data = simplejson.loads(data_json)
                 for feature in data['features']:
                     if feature['geometry'].get('type') == 'Polygon':
-                        shape = Shape(
+                        asv = Asv(
                             polygon=Polygon(feature['geometry']['coordinates'][0]),
+                            code=feature['properties']['id'],
+                            area_ha=feature['properties']['area_ha'],
+                            n_proc=feature['properties']['n_proc'],
+                            reservator=feature['properties']['reservator'],
+                            typology=feature['properties']['tipologia'],
                             user=user
                             )
-                        shape.save()
+                        asv.save()
                         imported_polygons += 1
 
                 rmtree(upload_path)
@@ -81,7 +86,7 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                msg = 'login successful.'
+                msg = _('Login successful.')
                 #return render(request, 'login.html', {'msg': msg})
                 return redirect(reverse('core:index'))
             else:

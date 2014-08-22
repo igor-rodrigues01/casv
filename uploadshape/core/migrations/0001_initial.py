@@ -8,19 +8,24 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Shape'
-        db.create_table('core_shape', (
+        # Adding model 'Asv'
+        db.create_table('core_asv', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('polygon', self.gf('django.contrib.gis.db.models.fields.PolygonField')(srid=4674)),
+            ('code', self.gf('django.db.models.fields.IntegerField')(max_length=10)),
+            ('area_ha', self.gf('django.db.models.fields.FloatField')()),
+            ('n_proc', self.gf('django.db.models.fields.CharField')(max_length=19)),
+            ('reservator', self.gf('django.db.models.fields.CharField')(max_length=3)),
+            ('typology', self.gf('django.db.models.fields.CharField')(max_length=30)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+            ('polygon', self.gf('django.contrib.gis.db.models.fields.PolygonField')(srid=4674)),
         ))
-        db.send_create_signal('core', ['Shape'])
+        db.send_create_signal('core', ['Asv'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Shape'
-        db.delete_table('core_shape')
+        # Deleting model 'Asv'
+        db.delete_table('core_asv')
 
 
     models = {
@@ -60,11 +65,16 @@ class Migration(SchemaMigration):
             'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
-        'core.shape': {
-            'Meta': {'object_name': 'Shape'},
+        'core.asv': {
+            'Meta': {'object_name': 'Asv'},
+            'area_ha': ('django.db.models.fields.FloatField', [], {}),
+            'code': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
             'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'n_proc': ('django.db.models.fields.CharField', [], {'max_length': '19'}),
             'polygon': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '4674'}),
+            'reservator': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
+            'typology': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
         }
     }

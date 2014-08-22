@@ -60,9 +60,11 @@
       <h1>{% block page_title %}CASV - Cadastro de Autorização de Supressão de Vegetação{% endblock page_title %}</h1>
 
       {% block content %}
-        <p>Este sistema tem como objetivo receber as ASV emitidas pelos estados
-        para que o Centro de Sensoriamento Remoto do IBAMA possa subtrair das
-        estatísticas de desmatamento as áreas onde o desmate foi autorizado pelos estados.</p>
+        <p>Este sistema tem como objetivo receber o shapefile das áreas que foram
+        autorizadas a supressão da vegetação, mediante documento obrigatório emitidos
+        pelos estados. A partir da compilação destas informações, o Centro de
+        Sensoriamento Remoto do IBAMA (CSR/IBAMA) controla e desconta, das estatísticas
+        de desmatamento, as áreas onde o desmate foi autorizado.</p>
         <p>Entre em contato com o CSR/IBAMA para ter acesso ao sistema e poder enviar
         arquivos de formato shape das áreas de desmate autorizado.</p>
       {% endblock content %}

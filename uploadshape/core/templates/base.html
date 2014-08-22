@@ -40,13 +40,15 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="{% url 'core:index' %}">uploadshape</a>
+          <a class="navbar-brand" href="{% url 'core:index' %}">CASV</a>
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="{% url 'core:index' %}">Home</a></li>
-            <li><a href="{% url 'admin:index' %}">Admin</a></li>
-            <li><a href="{% url 'core:upload' %}">Upload</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+              <li><a href="{% url 'core:upload' %}">Upload</a></li>
+            {% endif %}
           </ul>
           {% include 'login.html' %}
         </div><!--/.nav-collapse -->
@@ -55,10 +57,14 @@
 
     <div class="container">
 
-      <h1>{% block page_title %}Upload Shape File{% endblock page_title %}</h1>
+      <h1>{% block page_title %}CASV - Cadastro de Autorização de Supressão de Vegetação{% endblock page_title %}</h1>
 
       {% block content %}
-        <p>Project that allows to upload shape files and import it to a database.</p>
+        <p>Este sistema tem como objetivo receber as ASV emitidas pelos estados
+        para que o Centro de Sensoriamento Remoto do IBAMA possa subtrair das
+        estatísticas de desmatamento as áreas onde o desmate foi autorizado pelos estados.</p>
+        <p>Entre em contato com o CSR/IBAMA para ter acesso ao sistema e poder enviar
+        arquivos de formato shape das áreas de desmate autorizado.</p>
       {% endblock content %}
 
     </div> <!-- /container -->

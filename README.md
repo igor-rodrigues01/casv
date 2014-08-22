@@ -1,4 +1,5 @@
-uploadshape
+CASV - Cadastro de Autorização de Supressão de Vegetação
 ===========
 
-Django project that allows to upload shape files and import it to a database.
+
+Django project that allows to upload shapefiles and import it to a database.

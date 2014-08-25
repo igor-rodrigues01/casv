@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-08-25 14:44-0300\n"
+"PO-Revision-Date: 2014-08-25 14:45-0300\n"
+"Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: core/views.py:59
+#, python-format
+msgid "Imported %s polygons"
+msgstr "%s polígonos importados"
+
+#: core/views.py:61
+msgid "We did not find a shape file in the zip file."
+msgstr "Não encontramos um arquivo shape no arquivo zip que você enviou."
+
+#: core/views.py:63
+msgid "Uploaded file is not a valid zip file."
+msgstr "O arquivo enviado não é um arquivo zip válido."
+
+#: core/views.py:81
+msgid "Please log in below..."
+msgstr "Por favor, faça o login abaixo..."
+
+#: core/views.py:91
+msgid "Your account is not active. Please contact the system administrator"
+msgstr "Sua conta não está ativa. Por favor, entre em contato com o administrador do sistema."
+
+#: core/views.py:94
+msgid "Invalid username or password."
+msgstr "Nome de usuário ou senha inválido."
+
+#: core/templates/base.html:51
+msgid "Administration"
+msgstr "Administração"
+
+#: core/templates/base.html:54
+msgid "Upload"
+msgstr "Enviar arquivo"
+
+#: core/templates/login_form.html:8
+msgid "Username"
+msgstr "Nome de usuário"
+
+#: core/templates/login_form.html:10
+msgid "Password"
+msgstr "Senha"
+
+#: core/templates/login_form.html:13
+#: core/templates/login_menu.html:31
+#: core/templates/login_page.html:5
+msgid "Login"
+msgstr "Entrar"
+
+#: core/templates/login_menu.html:10
+msgid "Log out"
+msgstr "Sair"
+
+#: core/templates/login_menu.html:29
+msgid "Close"
+msgstr "Fechar"
+
+#: core/templates/success.html:5
+msgid "Upload done successfully!"
+msgstr "Arquivo enviado com sucesso!"
+
+#: core/templates/success.html:8
+msgid "All done!"
+msgstr ""
+
+#: core/templates/upload.html:5
+msgid "Upload a shape file"
+msgstr "Enviar arquivo shape"
+
+#: core/templates/upload.html:7
+msgid "Upload a zip file containing the shp, pbf, shx and prj."
+msgstr "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx and prj."
+

@@ -9,7 +9,7 @@ from .views import upload_file, login_view, logout_view
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
     url(r'^upload/',
-        login_required(upload_file, login_url='/admin/'),
+        login_required(upload_file, login_url='/login/'),
         name='upload'),
     url(r'^upload-success/', TemplateView.as_view(template_name='success.html'),
         name='upload_success'),

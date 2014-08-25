@@ -87,17 +87,16 @@ def login_view(request):
             if user.is_active:
                 login(request, user)
                 msg = _('Login successful.')
-                #return render(request, 'login.html', {'msg': msg})
                 return redirect(reverse('core:index'))
             else:
                 msg = _('Your account is not active. \
                     Please contact the system administrator')
-                return redirect(reverse('core:index'))
+                return redirect(reverse('core:login'))
         else:
             msg = _('Invalid username or password.')
-            return render(request, 'login.html', {'msg': msg})
+            return render(request, 'login_page.html', {'msg': msg})
 
-    return render(request, 'login.html', {'msg': msg})
+    return render(request, 'login_page.html', {'msg': msg})
 
 
 def logout_view(request):

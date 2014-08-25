@@ -31,18 +31,7 @@
           <h4 class="modal-title">{% trans 'Login' %}</h4>
         </div>
         <div class="modal-body">
-          <form action="{% url 'core:login' %}" method="post" role="form">{% csrf_token %}
-            {% if next %}
-              <input type="hidden" name="next" value="{{ next }}" />
-            {% endif %}
-            <div class="form-group">
-              <label for="username">{% trans 'Username' %}:</label>
-              <input type="text" name="username" value="" /><br />
-              <label for="password">{% trans 'Password' %}:</label>
-              <input type="password" name="password" value="" id="password">
-            </div>
-            <button type="submit" class="btn btn-default">{% trans 'Login' %}</button>
-          </form>
+          {% include 'login_form.html' %}
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

@@ -60,7 +60,7 @@ def handle_uploaded_file(file, user):
             else:
                 msg = _('We did not find a shape file in the zip file.')
     else:
-        msg = _('UploadedFile is not a valid zip file.')
+        msg = _('Uploaded file is not a valid zip file.')
 
 
 def upload_file(request):
@@ -86,11 +86,9 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                msg = _('Login successful.')
                 return redirect(reverse('core:index'))
             else:
-                msg = _('Your account is not active. \
-                    Please contact the system administrator')
+                msg = _('Your account is not active. Please contact the system administrator')
                 return redirect(reverse('core:login'))
         else:
             msg = _('Invalid username or password.')

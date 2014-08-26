@@ -2,14 +2,14 @@ from __future__ import absolute_import
 
 from .base import *
 
-########## IN-MEMORY TEST DATABASE
+
 DATABASES = {
     "default": {
         "ENGINE": 'django.contrib.gis.db.backends.postgis',
-        "NAME": "upload-teste",
-        "USER": "postgres",
-        "PASSWORD": "postgres",
-        "HOST": "",
+        "NAME": "test_upload",
+        "USER": "test_upload",
+        "PASSWORD": "test_upload",
+        "HOST": "localhost",
         "PORT": "",
     },
 }
@@ -17,3 +17,5 @@ DATABASES = {
 PASSWORD_HASHERS = (
     'django.contrib.auth.hashers.MD5PasswordHasher',
 )
+
+POSTGIS_VERSION = (2, 1, 3)

@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-#from os.path import abspath
+from os.path import abspath
 
 from django.test import TestCase, Client
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-#from ..views import handle_uploaded_file
-#from ..models import Shape
+from ..models import Asv
+from ..views import handle_uploaded_file
+
 
 client = Client()
 client2 = Client()
@@ -43,17 +44,10 @@ class LoginTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-# Commented because the test is failing, sorry!
+class HandleUploadedFileTest(TestCase):
+    def setUp(self):
+        user = User.objects.create_superuser('user', 'i@test.com', 'mypassword')
+        handle_uploaded_file(abspath('core/fixtures/test-import-shape.zip'), user)
 
-#class HandleUploadedFileTest(TestCase):
-    #def setUp(self):
-        #password = 'mypassword'
-        #user = User.objects.create_superuser('user', 'i@test.com', password)
-        #client2.login(username=user.username, password=password)
-        #client2.post('/upload/', {
-            #'upload_file': abspath('core/fixtures/test-import-shape.zip'),
-            #'user': user
-            #})
-
-    #def test_import_shape(self):
-        #self.assertEqual(Shape.objects.all().count(), 85)
+    def test_import_shape(self):
+        self.assertEqual(Asv.objects.all().count(), 1)

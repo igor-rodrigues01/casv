@@ -38,3 +38,6 @@ tramp
 Thumbs.db
 Desktop.ini
 
+# Coverage
+casv/htmlcov
+casv/.coverage

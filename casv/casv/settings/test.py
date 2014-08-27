@@ -19,3 +19,8 @@ PASSWORD_HASHERS = (
 )
 
 POSTGIS_VERSION = (2, 1, 3)
+
+########## EMAIL CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
+EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
+########## END EMAIL CONFIGURATION

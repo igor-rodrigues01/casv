@@ -16,5 +16,5 @@ class TestAsv(TestCase):
             )
 
     def test_asv_creation(self):
-        self.assertTrue(isinstance(self.asv, Asv))
-        self.assertEqual(self.asv.__str__(), self.asv.code)
+        self.assertIsInstance(self.asv, Asv)
+        self.assertEqual(self.asv.__str__(), "%s" % self.asv.code)

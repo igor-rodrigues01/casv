@@ -16,4 +16,4 @@ class Asv(models.Model):
     objects = models.GeoManager()
 
     def __str__(self):
-        return self.code
+        return '%s' % self.code

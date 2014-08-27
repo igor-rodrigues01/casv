@@ -11,9 +11,10 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
 from django.contrib.auth import authenticate, login, logout
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 
 
-from .forms import UploadFileForm
+from .forms import UploadFileForm, RegisterUserForm
 from .models import Asv
 
 
@@ -57,6 +58,8 @@ def handle_uploaded_file(file, user):
 
                 rmtree(upload_path)
                 msg = _('Imported %s polygons') % imported_polygons
+
+                return redirect(reverse('core:upload_success'))
             else:
                 msg = _('We did not find a shape file in the zip file.')
     else:
@@ -70,7 +73,7 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             handle_uploaded_file(request.FILES['upload_file'], request.user)
-            return redirect(reverse('core:upload_success'))
+
     else:
         form = UploadFileForm()
 
@@ -100,3 +103,18 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('core:index'))
+
+
+def register_user(request):
+    '''View that creates a new User and send a email asking the user to set a
+    new password.'''
+    if request.user.is_superuser:
+        if request.method == 'POST':
+            form = RegisterUserForm(request.POST, request.FILES)
+            if form.is_valid():
+                email = form.cleaned_data.get('email')
+                User.objects.create(username=email, email=email)
+        else:
+            form = RegisterUserForm()
+
+        return render(request, 'register_user.html', {'form': form})

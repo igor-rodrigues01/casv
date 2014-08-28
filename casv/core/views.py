@@ -9,16 +9,18 @@ from shutil import rmtree
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
-from django.contrib.auth import authenticate, login, logout
 from django.utils.translation import ugettext as _
-from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 
-
-from .forms import UploadFileForm, RegisterUserForm
+from .forms import UploadFileForm
 from .models import Asv
 
 
 def handle_uploaded_file(file, user):
+    '''Function to process a uploaded file, test if it is a valid zip file and
+    if it has a .shp file within, convert the shp file to geojson and import it,
+    creating a new Asv file'''
+
     upload_folder = 'media/'
     upload_path = path.join(upload_folder,
         user.username + datetime.now().strftime('%f')
@@ -103,18 +105,3 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('core:index'))
-
-
-def register_user(request):
-    '''View that creates a new User and send a email asking the user to set a
-    new password.'''
-    if request.user.is_superuser:
-        if request.method == 'POST':
-            form = RegisterUserForm(request.POST, request.FILES)
-            if form.is_valid():
-                email = form.cleaned_data.get('email')
-                User.objects.create(username=email, email=email)
-        else:
-            form = RegisterUserForm()
-
-        return render(request, 'register_user.html', {'form': form})

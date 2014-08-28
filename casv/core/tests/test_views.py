@@ -67,26 +67,3 @@ class LoginLogoutTest(TestCase):
 
         self.client.get(reverse('core:logout'))
         self.assertNotIn('_auth_user_id', self.client.session)
-
-
-class RegisterUserTest(TestCase):
-    def setUp(self):
-        self.superuser = User.objects.create_superuser(
-            'user', 'i@t.com', 'password'
-            )
-
-    def test_unlogged_response(self):
-        response = self.client.get(reverse('core:register'))
-        self.assertRedirects(response, '/login/?next=/register-user/')
-
-    def test_logged_response(self):
-        self.client.login(username=self.superuser.username, password='password')
-        response = self.client.get(reverse('core:register'))
-        self.assertEqual(response.status_code, 200)
-
-    def test_register_user(self):
-        self.client.login(username=self.superuser.username, password='password')
-        email = 'a@e.br'
-        self.client.post(reverse('core:register'), {'email': email})
-        self.assertIsInstance(User.objects.get(username=email, email=email), User)
-        self.assertEqual(len(mail.outbox), 1)

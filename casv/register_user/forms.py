@@ -7,7 +7,7 @@ from django.core import validators
 
 
 class RegisterForm(forms.Form):
-    email = forms.EmailField(label=_('Email address'))
+    email = forms.EmailField(label=_('Email'))
     password = forms.CharField(label=_("Password"),
         widget=forms.PasswordInput)
     first_name = forms.CharField(label=_('First name'), max_length=30, required=False)

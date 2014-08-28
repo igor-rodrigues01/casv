@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^', include('core.urls', namespace='core')),
+    url(r'^', include('register_user.urls', namespace='register')),
     url(r'^admin/', include(admin.site.urls)),
 )
 

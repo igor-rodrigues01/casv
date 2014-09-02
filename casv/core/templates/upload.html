@@ -1,12 +1,14 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% load i18n %}
 
 
 <h1>{% block page_title %}{% trans 'Upload a shape file' %}{% endblock page_title %}</h1>
 
-<p>{% trans 'Upload a zip file containing the shp, pbf, shx and prj.' %}</p>
-
 {% block content %}
+    {% static 'modelo-asv.zip' as url %}
+    <p>{% blocktrans %}Upload a zip file containing the shp, pbf, shx and prj.<br> If necessary, <a href="{{ url }}">download a file</a> containing the shapefile model.{% endblocktrans %}</p>
+
     <form enctype="multipart/form-data" action="{% url 'core:upload' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
         <input class="btn btn-primary" type="submit" value="Enviar" />

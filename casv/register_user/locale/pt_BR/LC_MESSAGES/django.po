@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-08-28 17:47-0300\n"
-"PO-Revision-Date: 2014-08-28 17:48-0300\n"
+"POT-Creation-Date: 2014-09-01 16:57-0300\n"
+"PO-Revision-Date: 2014-09-02 11:35-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -25,17 +25,29 @@ msgstr "Email"
 msgid "Password"
 msgstr "Senha"
 
-#: forms.py:13
+#: forms.py:12
 msgid "First name"
 msgstr "Primeiro nome"
 
-#: forms.py:14
+#: forms.py:13
 msgid "Last name"
 msgstr "Sobrenome"
+
+#: views.py:26
+msgid "Your account was created successfully! Please login below."
+msgstr "Sua conta foi criada com sucesso. Por favor, faça o login abaixo."
+
+#: views.py:32
+msgid "The email you submitted is not allowed to register."
+msgstr "O email que você inseriu não está autorizado a realizar o cadastro."
 
 #: templates/register.html:5
 msgid "Register"
 msgstr "Cadastro"
+
+#: templates/register.html:15
+msgid "Submit"
+msgstr "Enviar"
 
 #~ msgid "Email address"
 #~ msgstr "Email"

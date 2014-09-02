@@ -11,6 +11,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
 from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login, logout
+from django.views.generic import DetailView
+from django.contrib.auth.models import User
 
 from .forms import UploadFileForm
 from .models import Asv
@@ -105,3 +107,14 @@ def login_view(request):
 def logout_view(request):
     logout(request)
     return redirect(reverse('core:index'))
+
+
+class UserUploads(DetailView):
+
+    model = User
+    template_name = 'user_uploads.html'
+    context_object_name = 'user'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserUploads, self).get_context_data(**kwargs)
+        return context

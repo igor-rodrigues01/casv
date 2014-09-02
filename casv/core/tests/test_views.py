@@ -67,3 +67,12 @@ class LoginLogoutTest(TestCase):
 
         self.client.get(reverse('core:logout'))
         self.assertNotIn('_auth_user_id', self.client.session)
+
+
+class UserUploadsTest(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+
+    def test_user_uploads_response(self):
+        response = self.client.get('/user/%s/uploads/' % self.user.pk)
+        self.assertEqual(response.status_code, 200)

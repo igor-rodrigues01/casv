@@ -3,3 +3,7 @@
 #barra-brasil .brasil-flag {
   height: 29px !important;
 }
+
+.list-group {
+  max-width: 400px !important;
+}

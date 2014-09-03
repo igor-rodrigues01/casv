@@ -46,12 +46,12 @@
         </div>
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            {% if request.user.is_staff %}
-              <li><a href="{% url 'admin:index' %}">{% trans 'Administration' %}</a></li>
-            {% endif %}
             {% if request.user.is_authenticated %}
               <li><a href="{% url 'core:upload' %}"><span class="glyphicon glyphicon-upload"></span> {% trans 'Upload' %}</a></li>
               <li><a href="{% url 'core:user_uploads' request.user.pk %}"><span class="glyphicon glyphicon-list"></span> {% trans 'My Uploads' %}</a></li>
+            {% endif %}
+            {% if request.user.is_staff %}
+              <li><a href="{% url 'admin:index' %}"><span class="glyphicon glyphicon-cog"></span> {% trans 'Administration' %}</a></li>
             {% endif %}
           </ul>
           {% include 'login_menu.html' %}

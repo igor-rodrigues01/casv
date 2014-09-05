@@ -7,7 +7,7 @@
 {% block content %}
   <ul class="list-group">
     {% for asv in user.asv_set.all %}
-      <li class="list-group-item"><strong>{{ asv }}</strong> - {{ asv.date|date:"d M Y" }}</li>
+      <li class="list-group-item"><strong>{% trans 'Code' %}: {{ asv }}</strong> - {{ asv.date|date:"d M Y" }}</li>
     {% endfor %}
   </ul>
 {% endblock content %}

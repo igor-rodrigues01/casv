@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-05 16:00-0300\n"
-"PO-Revision-Date: 2014-09-05 16:01-0300\n"
+"POT-Creation-Date: 2014-09-05 16:11-0300\n"
+"PO-Revision-Date: 2014-09-05 16:11-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -87,6 +87,10 @@ msgstr "Envie um arquivo zip contendo os arquivos shp, pbf, shx and prj.<br> Cas
 #, python-format
 msgid "Uploads of the user %(user.first_name)s"
 msgstr "Áreas enviadas pelo usuário %(user.first_name)s"
+
+#: templates/user_uploads.html:10
+msgid "Code"
+msgstr "Código"
 
 #~ msgid "Imported %s polygons"
 #~ msgstr "%s polígonos importados"

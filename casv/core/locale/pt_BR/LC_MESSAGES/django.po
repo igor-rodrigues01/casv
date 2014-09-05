@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-02 11:32-0300\n"
-"PO-Revision-Date: 2014-09-02 11:34-0300\n"
+"POT-Creation-Date: 2014-09-05 16:00-0300\n"
+"PO-Revision-Date: 2014-09-05 16:01-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,39 +17,30 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: views.py:62
-#, python-format
-msgid "Imported %s polygons"
-msgstr "%s polígonos importados"
-
-#: views.py:66
-msgid "We did not find a shape file in the zip file."
-msgstr "Não encontramos um arquivo shape no arquivo zip que você enviou."
-
-#: views.py:68
-msgid "Uploaded file is not a valid zip file."
-msgstr "O arquivo enviado não é um arquivo zip válido."
-
-#: views.py:86
+#: views.py:81
 msgid "Please log in below..."
 msgstr "Por favor, faça o login abaixo..."
 
-#: views.py:96
+#: views.py:91
 msgid "Your account is not active. Please contact the system administrator"
 msgstr "Sua conta não está ativa. Por favor, entre em contato com o administrador do sistema."
 
-#: views.py:99
+#: views.py:94
 msgid "Invalid username or password."
 msgstr "Nome de usuário ou senha inválido."
 
 #: templates/base.html:50
-msgid "Administration"
-msgstr "Administração"
-
-#: templates/base.html:53
-#: templates/base.html.py:72
+#: templates/base.html.py:73
 msgid "Upload"
 msgstr "Enviar arquivo"
+
+#: templates/base.html:51
+msgid "My Uploads"
+msgstr "Meus envios"
+
+#: templates/base.html:54
+msgid "Administration"
+msgstr "Administração"
 
 #: templates/login_form.html:8
 msgid "Username"
@@ -78,6 +69,11 @@ msgstr "Fechar"
 msgid "Upload done successfully!"
 msgstr "Arquivo enviado com sucesso!"
 
+#: templates/success.html:9
+#, python-format
+msgid "Check in your <a href=\"%(url)s\">uploads page</a> if the shape you sent was successfully inserted in the database"
+msgstr "Verifique na sua <a href=\"%(url)s\">página de uploads</a> se o shape que você enviou foi inserido corretamente no banco de dados"
+
 #: templates/upload.html:6
 msgid "Upload a shape file"
 msgstr "Enviar arquivo shape"
@@ -86,6 +82,20 @@ msgstr "Enviar arquivo shape"
 #, python-format
 msgid "Upload a zip file containing the shp, pbf, shx and prj.<br> If necessary, <a href=\"%(url)s\">download a file</a> containing the shapefile model."
 msgstr "Envie um arquivo zip contendo os arquivos shp, pbf, shx and prj.<br> Caso necessário, <a href=\"%(url)s\">faça o download de um arquivo</a> com um modelo de arquivo shape."
+
+#: templates/user_uploads.html:5
+#, python-format
+msgid "Uploads of the user %(user.first_name)s"
+msgstr "Áreas enviadas pelo usuário %(user.first_name)s"
+
+#~ msgid "Imported %s polygons"
+#~ msgstr "%s polígonos importados"
+
+#~ msgid "We did not find a shape file in the zip file."
+#~ msgstr "Não encontramos um arquivo shape no arquivo zip que você enviou."
+
+#~ msgid "Uploaded file is not a valid zip file."
+#~ msgstr "O arquivo enviado não é um arquivo zip válido."
 
 #~ msgid "Upload a zip file containing the shp, pbf, shx and prj."
 #~ msgstr ""

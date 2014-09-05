@@ -5,5 +5,6 @@
 <h1>{% block page_title %}{% trans 'Upload done successfully!' %}{% endblock page_title %}</h1>
 
 {% block content %}
-  <p>{% trans 'Check in your uploads page if the shape you sent was successfully inserted in the database' %}</p>
+{% url 'core:user_uploads' request.user.pk  as url %}
+  <p>{% blocktrans %}Check in your <a href="{{ url }}">uploads page</a> if the shape you sent was successfully inserted in the database{% endblocktrans %}.</p>
 {% endblock content %}

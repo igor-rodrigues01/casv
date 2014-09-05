@@ -61,13 +61,6 @@ def handle_uploaded_file(file, user):
                         imported_polygons += 1
 
                 rmtree(upload_path)
-                msg = _('Imported %s polygons') % imported_polygons
-
-                return redirect(reverse('core:upload_success'))
-            else:
-                msg = _('We did not find a shape file in the zip file.')
-    else:
-        msg = _('Uploaded file is not a valid zip file.')
 
 
 def upload_file(request):
@@ -77,7 +70,7 @@ def upload_file(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             handle_uploaded_file(request.FILES['upload_file'], request.user)
-
+            return redirect(reverse('core:upload_success'))
     else:
         form = UploadFileForm()
 

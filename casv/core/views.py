@@ -83,10 +83,10 @@ def handle_uploaded_file(file, user):
                             asv.mourao_m = feature['properties'].get('mourao_m')
                         if feature['properties'].get('municipio') is not None:
                             asv.municipio = feature['properties'].get('municipio')
-                        if feature['properties'].get('data_autex') is str():
-                            asv.data_autex = feature['properties'].get('data_autex').replace('/', '-')
-                        if feature['properties'].get('valido_ate') is str():
-                            asv.valido_ate = feature['properties'].get('valido_ate').replace('/', '-'),
+                        if feature['properties'].get('data_autex') is not None:
+                            asv.data_autex = feature['properties'].get('data_autex').replace('/', '-').replace('-0', '-')
+                        if feature['properties'].get('valido_ate') is not None:
+                            asv.valido_ate = feature['properties'].get('valido_ate').replace('/', '-').replace('-0', '-')
                         asv.save()
 
                 rmtree(upload_path)

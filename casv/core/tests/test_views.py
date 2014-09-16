@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from os.path import abspath
+from datetime import date
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
@@ -43,6 +44,12 @@ class HandleUploadedFileTest(TestCase):
 
     def test_import_shape(self):
         self.assertEqual(Asv.objects.all().count(), 2)
+        self.assertEqual(
+            Asv.objects.get(code=345678).data_autex, date(2014, 8, 5)
+            )
+        self.assertEqual(
+            Asv.objects.get(code=345678).valido_ate, date(2014, 9, 1)
+            )
 
 
 class UploadSuccessTest(TestCase):

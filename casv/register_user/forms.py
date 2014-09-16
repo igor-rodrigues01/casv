@@ -1,9 +1,6 @@
 # -*- coding: utf-8 -*-
-import re
-
 from django import forms
 from django.utils.translation import ugettext, ugettext_lazy as _
-from django.core import validators
 
 
 class RegisterForm(forms.Form):

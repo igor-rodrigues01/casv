@@ -27,7 +27,6 @@ def handle_uploaded_file(file, user):
     upload_path = path.join(upload_folder,
         user.username + datetime.now().strftime('%f')
         )
-    imported_polygons = 0
 
     if zipfile.is_zipfile(file):
         zip = zipfile.ZipFile(file)
@@ -50,15 +49,45 @@ def handle_uploaded_file(file, user):
                     if feature['geometry'].get('type') == 'Polygon':
                         asv = Asv(
                             polygon=Polygon(feature['geometry']['coordinates'][0]),
-                            code=feature['properties']['id'],
-                            area_ha=feature['properties']['area_ha'],
-                            n_proc=feature['properties']['n_proc'],
-                            reservator=feature['properties']['reservator'],
-                            typology=feature['properties']['tipologia'],
                             user=user
                             )
+                        if feature['properties'].get('Id') is not None:
+                            asv.code = feature['properties'].get('Id')
+                        if feature['properties'].get('n_autex') is not None:
+                            asv.n_autex = feature['properties'].get('n_autex')
+                        if feature['properties'].get('uf') is not None:
+                            asv.uf = feature['properties'].get('uf')
+                        if feature['properties'].get('fito') is not None:
+                            asv.fito = feature['properties'].get('fito')
+                        if feature['properties'].get('nom_prop') is not None:
+                            asv.nom_prop = feature['properties'].get('nom_prop')
+                        if feature['properties'].get('cpfj_prop') is not None:
+                            asv.cpfj_prop = feature['properties'].get('cpfj_prop')
+                        if feature['properties'].get('detentor') is not None:
+                            asv.detentor = feature['properties'].get('detentor')
+                        if feature['properties'].get('cpfj_dete') is not None:
+                            asv.cpfj_dete = feature['properties'].get('cpfj_dete')
+                        if feature['properties'].get('rt') is not None:
+                            asv.rt = feature['properties'].get('rt')
+                        if feature['properties'].get('cpfj_rt') is not None:
+                            asv.cpfj_rt = feature['properties'].get('cpfj_rt')
+                        if feature['properties'].get('area_ha') is not None:
+                            asv.area_ha = feature['properties'].get('area_ha')
+                        if feature['properties'].get('lenha_st') is not None:
+                            asv.lenha_st = feature['properties'].get('lenha_st')
+                        if feature['properties'].get('tora_m') is not None:
+                            asv.tora_m = feature['properties'].get('tora_m')
+                        if feature['properties'].get('torete_m') is not None:
+                            asv.torete_m = feature['properties'].get('torete_m')
+                        if feature['properties'].get('mourao_m') is not None:
+                            asv.mourao_m = feature['properties'].get('mourao_m')
+                        if feature['properties'].get('municipio') is not None:
+                            asv.municipio = feature['properties'].get('municipio')
+                        if feature['properties'].get('data_autex') is str():
+                            asv.data_autex = feature['properties'].get('data_autex').replace('/', '-')
+                        if feature['properties'].get('valido_ate') is str():
+                            asv.valido_ate = feature['properties'].get('valido_ate').replace('/', '-'),
                         asv.save()
-                        imported_polygons += 1
 
                 rmtree(upload_path)
 

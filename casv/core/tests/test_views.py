@@ -4,7 +4,6 @@ from os.path import abspath
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.core import mail
 
 from ..models import Asv
 from ..views import handle_uploaded_file
@@ -37,9 +36,13 @@ class HandleUploadedFileTest(TestCase):
             abspath('core/fixtures/test-import-shape.zip'),
             self.user
             )
+        handle_uploaded_file(
+            abspath('core/fixtures/test-import-shape-2.zip'),
+            self.user
+            )
 
     def test_import_shape(self):
-        self.assertEqual(Asv.objects.all().count(), 1)
+        self.assertEqual(Asv.objects.all().count(), 2)
 
 
 class UploadSuccessTest(TestCase):

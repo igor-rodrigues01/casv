@@ -1,10 +1,8 @@
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.shortcuts import render
 from django.core.mail import EmailMultiAlternatives
-from django.conf import settings
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.utils.translation import ugettext, ugettext_lazy as _
 
 
 def send_multipart_email(subject, html_template, from_email, to_email):
@@ -28,3 +26,7 @@ class UserEmail(models.Model):
         subject = 'Cadastre-se no sistema CASV do CSR/IBAMA'
         send_multipart_email(subject, 'register_email.html',
             'nao_responda@ibama.gov.br', self.email)
+
+    class Meta:
+        verbose_name = _('Authorized Email')
+        verbose_name_plural = _('Authorized Emails')

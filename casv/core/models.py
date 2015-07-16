@@ -6,7 +6,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 
 class Asv(models.Model):
 
-    code = models.IntegerField(_('Code'), max_length=6, null=True)
+    codigo = models.IntegerField(null=True)
     n_autex = models.CharField('Número de Autorização de Extração',
         max_length=30, blank=True)
     uf = models.CharField('UF', max_length=2, blank=True)
@@ -30,10 +30,10 @@ class Asv(models.Model):
     municipio = models.CharField('Município', max_length=40, blank=True)
 
     user = models.ForeignKey(User)
-    date = models.DateTimeField('Upload Date', auto_now_add=True)
+    upload_date = models.DateTimeField('Upload Date', auto_now_add=True)
 
-    polygon = models.PolygonField(srid=4674)
+    geom = models.PolygonField(srid=4674)
     objects = models.GeoManager()
 
     def __str__(self):
-        return '%s' % self.code
+        return '%s' % self.codigo

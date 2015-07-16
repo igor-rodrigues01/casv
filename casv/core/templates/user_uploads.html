@@ -2,12 +2,14 @@
 {% load i18n %}
 
 
-<h1>{% block page_title %}{% blocktrans %}Uploads of the user {{ user.first_name }}{% endblocktrans %}{% endblock page_title %}</h1>
+<h1>{% block page_title %}{% blocktrans %}Uploads of the user{% endblocktrans %} {{ user.first_name }}{% endblock page_title %}</h1>
 
 {% block content %}
   <ul class="list-group">
     {% for asv in user.asv_set.all %}
       <li class="list-group-item"><strong>{% trans 'Code' %}: {{ asv }}</strong> - {{ asv.date|date:"d M Y" }}</li>
+    {% empty %}
+      <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files yet.' %}</div>
     {% endfor %}
   </ul>
 {% endblock content %}

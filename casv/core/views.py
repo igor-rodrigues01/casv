@@ -1,5 +1,4 @@
-import simplejson
-
+import json
 import zipfile
 from subprocess import call
 from os import path, mkdir
@@ -43,16 +42,16 @@ def handle_uploaded_file(file, user):
 
                 data_json = open(
                     path.join(upload_path, filename[:-3] + 'geojson'), 'r'
-                    ).read()
-                data = simplejson.loads(data_json)
+                    )
+                data = json.load(data_json)
                 for feature in data['features']:
                     if feature['geometry'].get('type') == 'Polygon':
                         asv = Asv(
-                            polygon=Polygon(feature['geometry']['coordinates'][0]),
+                            geom=Polygon(feature['geometry']['coordinates'][0]),
                             user=user
                             )
                         if feature['properties'].get('Id') is not None:
-                            asv.code = feature['properties'].get('Id')
+                            asv.codigo = feature['properties'].get('Id')
                         if feature['properties'].get('n_autex') is not None:
                             asv.n_autex = feature['properties'].get('n_autex')
                         if feature['properties'].get('uf') is not None:

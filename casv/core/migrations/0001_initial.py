@@ -1,82 +1,43 @@
 # -*- coding: utf-8 -*-
-from south.utils import datetime_utils as datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
+from django.conf import settings
+import django.contrib.gis.db.models.fields
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'Asv'
-        db.create_table('core_asv', (
-            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('code', self.gf('django.db.models.fields.IntegerField')(max_length=10)),
-            ('area_ha', self.gf('django.db.models.fields.FloatField')()),
-            ('n_proc', self.gf('django.db.models.fields.CharField')(max_length=19)),
-            ('reservator', self.gf('django.db.models.fields.CharField')(max_length=3)),
-            ('typology', self.gf('django.db.models.fields.CharField')(max_length=30)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
-            ('date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('polygon', self.gf('django.contrib.gis.db.models.fields.PolygonField')(srid=4674)),
-        ))
-        db.send_create_signal('core', ['Asv'])
+    dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'Asv'
-        db.delete_table('core_asv')
-
-
-    models = {
-        'auth.group': {
-            'Meta': {'object_name': 'Group'},
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '80'}),
-            'permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': "orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'})
-        },
-        'auth.permission': {
-            'Meta': {'ordering': "('content_type__app_label', 'content_type__model', 'codename')", 'unique_together': "(('content_type', 'codename'),)", 'object_name': 'Permission'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['contenttypes.ContentType']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50'})
-        },
-        'auth.user': {
-            'Meta': {'object_name': 'User'},
-            'date_joined': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
-            'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'user_set'", 'blank': 'True', 'to': "orm['auth.Group']"}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'is_active': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'is_staff': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'is_superuser': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'last_login': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
-            'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
-            'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'user_set'", 'blank': 'True', 'to': "orm['auth.Permission']"}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
-        },
-        'contenttypes.contenttype': {
-            'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
-            'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'model': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
-        'core.asv': {
-            'Meta': {'object_name': 'Asv'},
-            'area_ha': ('django.db.models.fields.FloatField', [], {}),
-            'code': ('django.db.models.fields.IntegerField', [], {'max_length': '10'}),
-            'date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'n_proc': ('django.db.models.fields.CharField', [], {'max_length': '19'}),
-            'polygon': ('django.contrib.gis.db.models.fields.PolygonField', [], {'srid': '4674'}),
-            'reservator': ('django.db.models.fields.CharField', [], {'max_length': '3'}),
-            'typology': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
-        }
-    }
-
-    complete_apps = ['core']
+    operations = [
+        migrations.CreateModel(
+            name='Asv',
+            fields=[
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('codigo', models.IntegerField(null=True)),
+                ('n_autex', models.CharField(max_length=30, blank=True, verbose_name='Número de Autorização de Extração')),
+                ('uf', models.CharField(max_length=2, blank=True, verbose_name='UF')),
+                ('fito', models.CharField(max_length=60, blank=True)),
+                ('nom_prop', models.CharField(max_length=60, blank=True, verbose_name='Nome do Proprietário')),
+                ('cpfj_prop', models.CharField(max_length=22, blank=True, verbose_name='CPF ou CNPJ do Proprietário')),
+                ('detentor', models.CharField(max_length=60, blank=True, verbose_name='Nome do Detentor')),
+                ('cpfj_dete', models.CharField(max_length=22, blank=True, verbose_name='CPF ou CNPJ do Detentor')),
+                ('rt', models.CharField(max_length=60, blank=True)),
+                ('cpfj_rt', models.CharField(max_length=22, blank=True)),
+                ('area_ha', models.FloatField(null=True)),
+                ('lenha_st', models.FloatField(null=True)),
+                ('tora_m', models.FloatField(null=True)),
+                ('torete_m', models.FloatField(null=True)),
+                ('mourao_m', models.FloatField(null=True)),
+                ('data_autex', models.DateField(null=True, verbose_name='Data de Autorização de Extração')),
+                ('valido_ate', models.DateField(null=True, verbose_name='Data de Validade da Autorização')),
+                ('municipio', models.CharField(max_length=40, blank=True, verbose_name='Município')),
+                ('upload_date', models.DateTimeField(verbose_name='Upload Date', auto_now_add=True)),
+                ('geom', django.contrib.gis.db.models.fields.PolygonField(srid=4674)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+    ]

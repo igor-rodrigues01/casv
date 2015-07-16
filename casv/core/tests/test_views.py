@@ -45,10 +45,10 @@ class HandleUploadedFileTest(TestCase):
     def test_import_shape(self):
         self.assertEqual(Asv.objects.all().count(), 2)
         self.assertEqual(
-            Asv.objects.get(code=345678).data_autex, date(2014, 8, 5)
+            Asv.objects.get(codigo=345678).data_autex, date(2014, 8, 5)
             )
         self.assertEqual(
-            Asv.objects.get(code=345678).valido_ate, date(2014, 9, 1)
+            Asv.objects.get(codigo=345678).valido_ate, date(2014, 9, 1)
             )
 
 

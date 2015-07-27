@@ -1,9 +1,6 @@
-import json
 import zipfile
-from subprocess import call
-from os import path, mkdir
 from datetime import datetime
-from shutil import rmtree
+import fiona
 
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -22,73 +19,60 @@ def handle_uploaded_file(file, user):
     if it has a .shp file within, convert the shp file to geojson and import it,
     creating a new Asv file'''
 
-    upload_folder = 'media/'
-    upload_path = path.join(upload_folder,
-        user.username + datetime.now().strftime('%f')
-        )
-
     if zipfile.is_zipfile(file):
         zip = zipfile.ZipFile(file)
-        for filename in zip.namelist():
-            if filename[-3:].lower() == 'shp':
-                mkdir(upload_path)
-                zip.extractall(upload_path)
-                call(['ogr2ogr',
-                    '-f', 'GeoJSON',
-                    '-t_srs', 'EPSG:4674',
-                    path.join(upload_path, filename[:-3] + 'geojson'),
-                    path.join(upload_path, filename)
-                    ])
+        shp = [filename for filename in zip.namelist() if filename[-3:].lower() == 'shp']
+        if len(shp) == 1:
+            shp_file = fiona.open(path='/%s' % shp[0], vfs='zip://%s' % file)
 
-                data_json = open(
-                    path.join(upload_path, filename[:-3] + 'geojson'), 'r'
+            for i in range(len(shp_file)):
+                feature = shp_file.next()
+                if feature['geometry'].get('type') == 'Polygon':
+                    asv = Asv(
+                        geom=Polygon(feature['geometry']['coordinates'][0]),
+                        usuario=user,
                     )
-                data = json.load(data_json)
-                for feature in data['features']:
-                    if feature['geometry'].get('type') == 'Polygon':
-                        asv = Asv(
-                            geom=Polygon(feature['geometry']['coordinates'][0]),
-                            user=user
-                            )
-                        if feature['properties'].get('Id') is not None:
-                            asv.codigo = feature['properties'].get('Id')
-                        if feature['properties'].get('n_autex') is not None:
-                            asv.n_autex = feature['properties'].get('n_autex')
-                        if feature['properties'].get('uf') is not None:
-                            asv.uf = feature['properties'].get('uf')
-                        if feature['properties'].get('fito') is not None:
-                            asv.fito = feature['properties'].get('fito')
-                        if feature['properties'].get('nom_prop') is not None:
-                            asv.nom_prop = feature['properties'].get('nom_prop')
-                        if feature['properties'].get('cpfj_prop') is not None:
-                            asv.cpfj_prop = feature['properties'].get('cpfj_prop')
-                        if feature['properties'].get('detentor') is not None:
-                            asv.detentor = feature['properties'].get('detentor')
-                        if feature['properties'].get('cpfj_dete') is not None:
-                            asv.cpfj_dete = feature['properties'].get('cpfj_dete')
-                        if feature['properties'].get('rt') is not None:
-                            asv.rt = feature['properties'].get('rt')
-                        if feature['properties'].get('cpfj_rt') is not None:
-                            asv.cpfj_rt = feature['properties'].get('cpfj_rt')
-                        if feature['properties'].get('area_ha') is not None:
-                            asv.area_ha = feature['properties'].get('area_ha')
-                        if feature['properties'].get('lenha_st') is not None:
-                            asv.lenha_st = feature['properties'].get('lenha_st')
-                        if feature['properties'].get('tora_m') is not None:
-                            asv.tora_m = feature['properties'].get('tora_m')
-                        if feature['properties'].get('torete_m') is not None:
-                            asv.torete_m = feature['properties'].get('torete_m')
-                        if feature['properties'].get('mourao_m') is not None:
-                            asv.mourao_m = feature['properties'].get('mourao_m')
-                        if feature['properties'].get('municipio') is not None:
-                            asv.municipio = feature['properties'].get('municipio')
-                        if feature['properties'].get('data_autex') is not None:
-                            asv.data_autex = feature['properties'].get('data_autex').replace('/', '-').replace('-0', '-')
-                        if feature['properties'].get('valido_ate') is not None:
-                            asv.valido_ate = feature['properties'].get('valido_ate').replace('/', '-').replace('-0', '-')
-                        asv.save()
-
-                rmtree(upload_path)
+                    if feature['properties'].get('Id'):
+                        asv.codigo = feature['properties'].get('Id')
+                    if feature['properties'].get('n_autex'):
+                        asv.n_autex = feature['properties'].get('n_autex')
+                    if feature['properties'].get('uf'):
+                        asv.uf = feature['properties'].get('uf')
+                    if feature['properties'].get('fito'):
+                        asv.fito = feature['properties'].get('fito')
+                    if feature['properties'].get('nom_prop'):
+                        asv.nom_prop = feature['properties'].get('nom_prop')
+                    if feature['properties'].get('cpfj_prop'):
+                        asv.cpfj_prop = feature['properties'].get('cpfj_prop')
+                    if feature['properties'].get('detentor'):
+                        asv.detentor = feature['properties'].get('detentor')
+                    if feature['properties'].get('cpfj_dete'):
+                        asv.cpfj_dete = feature['properties'].get('cpfj_dete')
+                    if feature['properties'].get('rt'):
+                        asv.rt = feature['properties'].get('rt')
+                    if feature['properties'].get('cpfj_rt'):
+                        asv.cpfj_rt = feature['properties'].get('cpfj_rt')
+                    if feature['properties'].get('area_ha'):
+                        asv.area_ha = feature['properties'].get('area_ha')
+                    if feature['properties'].get('lenha_st'):
+                        asv.lenha_st = feature['properties'].get('lenha_st')
+                    if feature['properties'].get('tora_m'):
+                        asv.tora_m = feature['properties'].get('tora_m')
+                    if feature['properties'].get('torete_m'):
+                        asv.torete_m = feature['properties'].get('torete_m')
+                    if feature['properties'].get('mourao_m'):
+                        asv.mourao_m = feature['properties'].get('mourao_m')
+                    if feature['properties'].get('municipio'):
+                        asv.municipio = feature['properties'].get('municipio')
+                    if feature['properties'].get('data_autex'):
+                        asv.data_autex = datetime.strptime(
+                            feature['properties'].get('data_autex'), '%Y-%m-%d'
+                        )
+                    if feature['properties'].get('valido_ate'):
+                        asv.valido_ate = datetime.strptime(
+                            feature['properties'].get('valido_ate'), '%Y-%m-%d'
+                        )
+                    asv.save()
 
 
 def upload_file(request):

@@ -1,6 +1,8 @@
 import zipfile
-from datetime import datetime
 import fiona
+
+from datetime import datetime
+from collections import OrderedDict
 
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -11,7 +13,128 @@ from django.views.generic import DetailView
 from django.contrib.auth.models import User
 
 from .forms import UploadFileForm
-from .models import Asv
+from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
+
+
+class InvalidShapefileError(Exception):
+    pass
+
+
+def get_mapping(schema):
+    asv = {'properties': OrderedDict([('codigo', 'int:10'), ('n_autex', 'str:30'),
+        ('uf', 'str:2'), ('fito', 'str:60'), ('nom_prop', 'str:60'),
+        ('cpfj_prop', 'str:22'), ('detentor', 'str:60'), ('cpfj_dete', 'str:22'),
+        ('rt', 'str:60'), ('cpfj_rt', 'str:22'), ('area_ha', 'float:24.15'),
+        ('lenha_st', 'float:24.15'), ('tora_m', 'float:24.15'),
+        ('torete_m', 'float:24.15'), ('mourao_m', 'float:24.15'),
+        ('data_autex', 'date'), ('valido_ate', 'date'),
+        ('municipio', 'str:40')]), 'geometry': 'Polygon'}
+    mapping_asv = {
+            'codigo': 'codigo',
+            'n_autex': 'n_autex',
+            'uf': 'uf',
+            'fito': 'fito',
+            'nom_prop': 'nom_prop',
+            'cpfj_prop': 'cpfj_prop',
+            'detentor': 'detentor',
+            'cpfj_dete': 'cpfj_dete',
+            'rt': 'rt',
+            'cpfj_rt': 'cpfj_rt',
+            'area_ha': 'area_ha',
+            'lenha_st': 'lenha_st',
+            'tora_m': 'tora_m',
+            'torete_m': 'torete_m',
+            'mourao_m': 'mourao_m',
+            'data_autex': 'data_autex',
+            'valido_ate': 'valido_ate',
+            'municipio': 'municipio',
+    }
+
+    asv_mata_atlantica = {'properties': OrderedDict([('processo', 'int:10'),
+        ('empreended', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
+        ('tipo_empre', 'str:254'), ('cpfj', 'str:22'), ('area_total', 'float:24.15'),
+        ('a_veg_prim', 'float:24.15'), ('a_est_medi', 'float:24.15'),
+        ('a_est_avan', 'float:24.15')]), 'geometry': 'Polygon'}
+    mapping_asv_mata_atlantica = {
+            'processo': 'processo',
+            'uf': 'uf',
+            'municipio': 'municipio',
+            'empreendedor': 'empreended',
+            'tipo_empreendimento': 'tipo_empre',
+            'cpfj': 'cpfj',
+            'area_supressao_total': 'area_total',
+            'area_supressao_veg_primaria': 'a_veg_prim',
+            'area_supressao_estagio_medio': 'a_est_medi',
+            'area_supressao_estagio_avancado': 'a_est_avan',
+    }
+
+    compensacao = {'properties': OrderedDict([('processo', 'int:10'),
+        ('empreended', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
+        ('tipo_empre', 'str:254'), ('cpfj', 'str:22'),
+        ('area_compe', 'float:24.15')]), 'geometry': 'Polygon'}
+    mapping_compensacao = {
+            'processo': 'processo',
+            'uf': 'uf',
+            'municipio': 'municipio',
+            'empreendedor': 'empreended',
+            'tipo_empreendimento': 'tipo_empre',
+            'cpfj': 'cpfj',
+            'area_compensacao': 'area_compe',
+    }
+
+    area_soltura = {'geometry': 'Polygon',
+        'properties': OrderedDict([('processo', 'int:10'), ('nome', 'str:254'),
+        ('endereco', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
+        ('proprietar', 'str:254'), ('cpf', 'str:11'), ('telefone', 'str:15'),
+        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15'),
+        ('bioma', 'str:254'), ('fitofision', 'str:254'), ('conservaca', 'int:1'),
+        ('conectivid', 'int:1'), ('uc', 'int:1'), ('agua', 'int:1'),
+        ('atividade', 'str:254'), ('documento', 'int:1'), ('mapa', 'int:1'),
+        ('carta', 'int:1'), ('reabilitad', 'int:1'), ('viveiros', 'int:5'),
+        ('distancia', 'float:24.15'), ('tempo', 'float:24.15'),
+        ('vistoria', 'date')])
+    }
+    mapping_area_soltura = {
+            'processo': 'processo',
+            'nome': 'nome',
+            'endereco': 'endereco',
+            'uf': 'uf',
+            'municipio': 'municipio',
+            'proprietario': 'proprietar',
+            'cpf': 'cpf',
+            'telefone': 'telefone',
+            'email': 'email',
+            'area': 'area',
+            'arl_app': 'arl_app',
+            'bioma': 'bioma',
+            'fitofisionomia': 'fitofision',
+            'conservacao': 'conservaca',
+            'conectividade': 'conectivid',
+            'uc': 'uc',
+            'agua': 'agua',
+            'atividade': 'atividade',
+            'documento': 'documento',
+            'mapa': 'mapa',
+            'carta': 'carta',
+            'reabilitador': 'reabilitad',
+            'viveiros': 'viveiros',
+            'distancia': 'distancia',
+            'tempo': 'tempo',
+            'vistoria': 'vistoria',
+    }
+
+    if schema == asv:
+        return [Asv, mapping_asv]
+    elif schema == area_soltura:
+        return [AreaSoltura, mapping_area_soltura]
+    elif schema == asv_mata_atlantica:
+        return [AsvMataAtlantica, mapping_asv_mata_atlantica]
+    elif schema == compensacao:
+        return [CompensacaoMataAtlantica, mapping_compensacao]
+    else:
+        raise InvalidShapefileError(
+            _('The shapefile is not in one of the accepted schemas.')
+        )
 
 
 def handle_uploaded_file(file, user):
@@ -20,59 +143,27 @@ def handle_uploaded_file(file, user):
     creating a new Asv file'''
 
     if zipfile.is_zipfile(file):
-        zip = zipfile.ZipFile(file)
-        shp = [filename for filename in zip.namelist() if filename[-3:].lower() == 'shp']
+        shp_zip = zipfile.ZipFile(file)
+        shp = [filename for filename in shp_zip.namelist() if filename[-3:].lower() == 'shp']
         if len(shp) == 1:
             shp_file = fiona.open(path='/%s' % shp[0], vfs='zip://%s' % file)
 
-            for i in range(len(shp_file)):
-                feature = shp_file.next()
-                if feature['geometry'].get('type') == 'Polygon':
-                    asv = Asv(
-                        geom=Polygon(feature['geometry']['coordinates'][0]),
-                        usuario=user,
-                    )
-                    if feature['properties'].get('Id'):
-                        asv.codigo = feature['properties'].get('Id')
-                    if feature['properties'].get('n_autex'):
-                        asv.n_autex = feature['properties'].get('n_autex')
-                    if feature['properties'].get('uf'):
-                        asv.uf = feature['properties'].get('uf')
-                    if feature['properties'].get('fito'):
-                        asv.fito = feature['properties'].get('fito')
-                    if feature['properties'].get('nom_prop'):
-                        asv.nom_prop = feature['properties'].get('nom_prop')
-                    if feature['properties'].get('cpfj_prop'):
-                        asv.cpfj_prop = feature['properties'].get('cpfj_prop')
-                    if feature['properties'].get('detentor'):
-                        asv.detentor = feature['properties'].get('detentor')
-                    if feature['properties'].get('cpfj_dete'):
-                        asv.cpfj_dete = feature['properties'].get('cpfj_dete')
-                    if feature['properties'].get('rt'):
-                        asv.rt = feature['properties'].get('rt')
-                    if feature['properties'].get('cpfj_rt'):
-                        asv.cpfj_rt = feature['properties'].get('cpfj_rt')
-                    if feature['properties'].get('area_ha'):
-                        asv.area_ha = feature['properties'].get('area_ha')
-                    if feature['properties'].get('lenha_st'):
-                        asv.lenha_st = feature['properties'].get('lenha_st')
-                    if feature['properties'].get('tora_m'):
-                        asv.tora_m = feature['properties'].get('tora_m')
-                    if feature['properties'].get('torete_m'):
-                        asv.torete_m = feature['properties'].get('torete_m')
-                    if feature['properties'].get('mourao_m'):
-                        asv.mourao_m = feature['properties'].get('mourao_m')
-                    if feature['properties'].get('municipio'):
-                        asv.municipio = feature['properties'].get('municipio')
-                    if feature['properties'].get('data_autex'):
-                        asv.data_autex = datetime.strptime(
-                            feature['properties'].get('data_autex'), '%Y-%m-%d'
-                        )
-                    if feature['properties'].get('valido_ate'):
-                        asv.valido_ate = datetime.strptime(
-                            feature['properties'].get('valido_ate'), '%Y-%m-%d'
-                        )
-                    asv.save()
+            try:
+                model, mapping = get_mapping(shp_file.schema)
+
+                for i in range(len(shp_file)):
+                    feature = shp_file.next()
+                    dict_data = dict(zip(
+                        mapping.keys(),
+                        [feature['properties'].get(v) for v in mapping.values()]
+                    ))
+
+                    entry = model(**dict_data)
+                    entry.geom = Polygon(feature['geometry']['coordinates'][0])
+                    entry.usuario = user
+                    entry.save()
+            except InvalidShapefileError:
+                pass
 
 
 def upload_file(request):

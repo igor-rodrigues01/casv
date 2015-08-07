@@ -6,7 +6,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
-from ..models import Asv
+from ..models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
 from ..views import handle_uploaded_file
 
 
@@ -34,22 +34,49 @@ class HandleUploadedFileTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
         handle_uploaded_file(
-            abspath('core/fixtures/test-import-shape.zip'),
+            abspath('core/fixtures/Asv.zip'),
             self.user
             )
         handle_uploaded_file(
-            abspath('core/fixtures/test-import-shape-2.zip'),
+            abspath('core/fixtures/AreaSoltura.zip'),
+            self.user
+            )
+        handle_uploaded_file(
+            abspath('core/fixtures/AsvMataAtlantica.zip'),
+            self.user
+            )
+        handle_uploaded_file(
+            abspath('core/fixtures/CompensacaoMataAtlantica.zip'),
             self.user
             )
 
-    def test_import_shape(self):
-        self.assertEqual(Asv.objects.all().count(), 2)
-        self.assertEqual(
-            Asv.objects.get(codigo=345678).data_autex, date(2014, 8, 5)
-            )
-        self.assertEqual(
-            Asv.objects.get(codigo=345678).valido_ate, date(2014, 9, 1)
-            )
+    def test_import_asv(self):
+        self.assertEqual(Asv.objects.all().count(), 1)
+        asv = Asv.objects.get(codigo=1)
+        self.assertEqual(asv.data_autex, date(2014, 9, 1))
+        self.assertEqual(asv.valido_ate, date(2015, 1, 1))
+        self.assertEqual(asv.usuario, self.user)
+
+    def test_import_area_soltura(self):
+        self.assertEqual(AreaSoltura.objects.all().count(), 1)
+        area_soltura = AreaSoltura.objects.all()[0]
+        self.assertEqual(area_soltura.vistoria, date(2015, 1, 1))
+        self.assertTrue(area_soltura.conservacao, True)
+        self.assertEqual(area_soltura.usuario, self.user)
+
+    def test_import_asvma(self):
+        self.assertEqual(AsvMataAtlantica.objects.all().count(), 1)
+        asvma = AsvMataAtlantica.objects.all()[0]
+        self.assertEqual(asvma.municipio, 'Itacaré')
+        self.assertEqual(asvma.area_supressao_total, 15.4)
+        self.assertEqual(asvma.usuario, self.user)
+
+    def test_import_compensacao(self):
+        self.assertEqual(CompensacaoMataAtlantica.objects.all().count(), 1)
+        compensacao = CompensacaoMataAtlantica.objects.all()[0]
+        self.assertEqual(compensacao.municipio, 'Itacaré')
+        self.assertEqual(compensacao.area_compensacao, 15.4)
+        self.assertEqual(compensacao.usuario, self.user)
 
 
 class UploadSuccessTest(TestCase):

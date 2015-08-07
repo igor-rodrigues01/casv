@@ -58,7 +58,7 @@ class TestAreaSoltura(TestCase):
             mapa=True,
             carta=True,
             reabilitador=True,
-            viveiro=99,
+            viveiros=99,
             distancia=87.9,
             tempo=3.5,
             vistoria=date(2015, 1, 1),

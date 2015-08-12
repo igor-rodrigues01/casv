@@ -3,6 +3,8 @@ import fiona
 
 from datetime import datetime
 from collections import OrderedDict
+from os import path, mkdir
+from shutil import rmtree
 
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
@@ -124,13 +126,14 @@ def get_mapping(schema):
     }
 
     if schema == asv:
-        return [Asv, mapping_asv]
+        return [Asv, mapping_asv, 'Asv']
     elif schema == area_soltura:
-        return [AreaSoltura, mapping_area_soltura]
+        return [AreaSoltura, mapping_area_soltura, 'AreaSoltura']
     elif schema == asv_mata_atlantica:
-        return [AsvMataAtlantica, mapping_asv_mata_atlantica]
+        return [AsvMataAtlantica, mapping_asv_mata_atlantica, 'AsvMataAtlantica']
     elif schema == compensacao:
-        return [CompensacaoMataAtlantica, mapping_compensacao]
+        return [CompensacaoMataAtlantica, mapping_compensacao,
+            'CompensacaoMataAtlantica']
     else:
         raise InvalidShapefileError(
             _('The shapefile is not in one of the accepted schemas.')
@@ -142,28 +145,37 @@ def handle_uploaded_file(file, user):
     if it has a .shp file within, convert the shp file to geojson and import it,
     creating a new Asv file'''
 
+    upload_folder = 'media/'
+    upload_path = path.join(upload_folder,
+        user.username + datetime.now().strftime('%f')
+        )
+
     if zipfile.is_zipfile(file):
         shp_zip = zipfile.ZipFile(file)
         shp = [filename for filename in shp_zip.namelist() if filename[-3:].lower() == 'shp']
         if len(shp) == 1:
-            shp_file = fiona.open(path='/%s' % shp[0], vfs='zip://%s' % file)
+            mkdir(upload_path)
+            shp_zip.extractall(upload_path)
+            shp_file = fiona.open(path=path.join(upload_path, shp[0]))
 
-            try:
-                model, mapping = get_mapping(shp_file.schema)
+            model, mapping, type_str = get_mapping(shp_file.schema)
+            number_of_features = len(shp_file)
 
-                for i in range(len(shp_file)):
-                    feature = shp_file.next()
-                    dict_data = dict(zip(
-                        mapping.keys(),
-                        [feature['properties'].get(v) for v in mapping.values()]
-                    ))
+            for i in range(number_of_features):
+                feature = shp_file.next()
+                dict_data = dict(zip(
+                    mapping.keys(),
+                    [feature['properties'].get(v) for v in mapping.values()]
+                ))
 
-                    entry = model(**dict_data)
-                    entry.geom = Polygon(feature['geometry']['coordinates'][0])
-                    entry.usuario = user
-                    entry.save()
-            except InvalidShapefileError:
-                pass
+                entry = model(**dict_data)
+                entry.geom = Polygon(feature['geometry']['coordinates'][0])
+                entry.usuario = user
+                entry.save()
+
+            rmtree(upload_path)
+
+            return {'type': type_str, 'quantity': number_of_features}
 
 
 def upload_file(request):
@@ -172,12 +184,26 @@ def upload_file(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
-            handle_uploaded_file(request.FILES['upload_file'], request.user)
-            return redirect(reverse('core:upload_success'))
-    else:
-        form = UploadFileForm()
+            try:
+                upload_return = handle_uploaded_file(
+                    request.FILES['upload_file'],
+                    request.user
+                )
 
-    return render(request, 'upload.html', {'form': form})
+                context = {
+                    'uploaded': True,
+                    'success': True,
+                    'quantity': upload_return.get('quantity'),
+                    'type': upload_return.get('type'),
+                    'form': form
+                }
+            except InvalidShapefileError:
+                context = {'uploaded': True, 'success': False, 'form': form}
+
+    else:
+        context = {'form': UploadFileForm()}
+
+    return render(request, 'upload.html', context)
 
 
 def login_view(request):

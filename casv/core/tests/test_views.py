@@ -7,7 +7,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from ..models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
-from ..views import handle_uploaded_file
+from ..views import handle_uploaded_file, InvalidShapefileError
 
 
 class IndexTest(TestCase):
@@ -33,19 +33,19 @@ class UploadTest(TestCase):
 class HandleUploadedFileTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
-        handle_uploaded_file(
+        self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
             self.user
             )
-        handle_uploaded_file(
+        self.area_soltura_return = handle_uploaded_file(
             abspath('core/fixtures/AreaSoltura.zip'),
             self.user
             )
-        handle_uploaded_file(
+        self.asvma_return = handle_uploaded_file(
             abspath('core/fixtures/AsvMataAtlantica.zip'),
             self.user
             )
-        handle_uploaded_file(
+        self.compensacao_return = handle_uploaded_file(
             abspath('core/fixtures/CompensacaoMataAtlantica.zip'),
             self.user
             )
@@ -56,6 +56,7 @@ class HandleUploadedFileTest(TestCase):
         self.assertEqual(asv.data_autex, date(2014, 9, 1))
         self.assertEqual(asv.valido_ate, date(2015, 1, 1))
         self.assertEqual(asv.usuario, self.user)
+        self.assertEqual(self.asv_return, {'type': 'Asv', 'quantity': 1})
 
     def test_import_area_soltura(self):
         self.assertEqual(AreaSoltura.objects.all().count(), 1)
@@ -63,6 +64,7 @@ class HandleUploadedFileTest(TestCase):
         self.assertEqual(area_soltura.vistoria, date(2015, 1, 1))
         self.assertTrue(area_soltura.conservacao, True)
         self.assertEqual(area_soltura.usuario, self.user)
+        self.assertEqual(self.area_soltura_return, {'type': 'AreaSoltura', 'quantity': 1})
 
     def test_import_asvma(self):
         self.assertEqual(AsvMataAtlantica.objects.all().count(), 1)
@@ -70,6 +72,8 @@ class HandleUploadedFileTest(TestCase):
         self.assertEqual(asvma.municipio, 'Itacaré')
         self.assertEqual(asvma.area_supressao_total, 15.4)
         self.assertEqual(asvma.usuario, self.user)
+        self.assertEqual(self.asvma_return, {'type': 'AsvMataAtlantica',
+            'quantity': 1})
 
     def test_import_compensacao(self):
         self.assertEqual(CompensacaoMataAtlantica.objects.all().count(), 1)
@@ -77,12 +81,15 @@ class HandleUploadedFileTest(TestCase):
         self.assertEqual(compensacao.municipio, 'Itacaré')
         self.assertEqual(compensacao.area_compensacao, 15.4)
         self.assertEqual(compensacao.usuario, self.user)
+        self.assertEqual(self.compensacao_return,
+            {'type': 'CompensacaoMataAtlantica', 'quantity': 1})
 
-
-class UploadSuccessTest(TestCase):
-    def test_success_response(self):
-        response = self.client.get(reverse('core:upload_success'))
-        self.assertEqual(response.status_code, 200)
+    def test_wrong_shape(self):
+        with self.assertRaises(InvalidShapefileError):
+            handle_uploaded_file(
+                abspath('core/fixtures/wrong-shape.zip'),
+                self.user
+            )
 
 
 class LoginLogoutTest(TestCase):

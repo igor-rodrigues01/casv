@@ -32,7 +32,7 @@ class Asv(models.Model):
     municipio = models.CharField('Município', max_length=40, null=True,
         blank=True)
 
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User, related_name='asv')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
 
     geom = models.PolygonField(srid=4674)
@@ -41,9 +41,9 @@ class Asv(models.Model):
     def __str__(self):
         return '%s' % self.codigo
 
-    #def save(self, *args, **kwargs):
-        #self.full_clean()
-        #super(Asv, self).save(*args, **kwargs)
+    class Meta:
+        verbose_name = 'Autorização de Supressão de Vegetação'
+        verbose_name_plural = 'Autorizações de Supressão de Vegetação'
 
 
 class AreaSoltura(models.Model):
@@ -85,7 +85,7 @@ class AreaSoltura(models.Model):
         null=True, blank=True)
     vistoria = models.DateField(null=True, blank=True)
 
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User, related_name='area_soltura')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
 
     geom = models.PolygonField(srid=4674)
@@ -116,7 +116,7 @@ class AsvMataAtlantica(models.Model):
     area_supressao_estagio_avancado = models.FloatField("""Área de Supressão em
         Estágio Avançado (ha)""", null=True, blank=True)
 
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User, related_name='asvma')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
 
     geom = models.PolygonField(srid=4674)
@@ -141,7 +141,7 @@ class CompensacaoMataAtlantica(models.Model):
     area_compensacao = models.FloatField('Área de Compensação (ha)', null=True,
         blank=True)
 
-    usuario = models.ForeignKey(User)
+    usuario = models.ForeignKey(User, related_name='compensacao')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
 
     geom = models.PolygonField(srid=4674)

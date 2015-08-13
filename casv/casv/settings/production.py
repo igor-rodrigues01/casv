@@ -54,14 +54,39 @@ SERVER_EMAIL = EMAIL_HOST_USER
 DATABASES = {}
 ########## END DATABASE CONFIGURATION
 
+### PRODUCTION APPS
+INSTALLED_APPS += (
+    'django_python3_ldap',
+)
+### END PRODUCTION APPS
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {}
 ########## END CACHE CONFIGURATION
 
-
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 SECRET_KEY = get_env_setting('SECRET_KEY')
 ########## END SECRET CONFIGURATION
+
+# LDAP CONFIG
+LDAP_AUTH_URL = 'ldap://10.1.25.17:389'
+LDAP_AUTH_USE_TLS = False
+LDAP_AUTH_SEARCH_BASE = 'ou=Users,ou=ibama,o=redegoverno,c=br'
+LDAP_AUTH_USER_FIELDS = {
+    "username": "uid",
+    #"first_name": "name",
+    #"last_name": "sn",
+    #"email": "email",
+}
+LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
+#LDAP_AUTH_CLEAN_USER_DATA = clean_user_data
+# END LDAP CONFIG
+
+# AUTH BACKEND CONFIG
+AUTHENTICATION_BACKENDS = (
+    'django_python3_ldap.auth.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+# END AUTH BACKEND CONFIG

@@ -5,92 +5,134 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-05 16:11-0300\n"
-"PO-Revision-Date: 2014-09-05 16:11-0300\n"
+"POT-Creation-Date: 2015-08-13 11:19-0300\n"
+"PO-Revision-Date: 2015-08-13 15:58-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.2\n"
 
-#: views.py:81
-msgid "Please log in below..."
-msgstr "Por favor, faça o login abaixo..."
-
-#: views.py:91
-msgid "Your account is not active. Please contact the system administrator"
-msgstr "Sua conta não está ativa. Por favor, entre em contato com o administrador do sistema."
-
-#: views.py:94
-msgid "Invalid username or password."
-msgstr "Nome de usuário ou senha inválido."
-
-#: templates/base.html:50
-#: templates/base.html.py:73
+#: core/templates/base.html:50 core/templates/base.html.py:71
 msgid "Upload"
 msgstr "Enviar arquivo"
 
-#: templates/base.html:51
+#: core/templates/base.html:51
 msgid "My Uploads"
 msgstr "Meus envios"
 
-#: templates/base.html:54
+#: core/templates/base.html:52 core/templates/file-models.html:5
+msgid "File models"
+msgstr "Modelos de arquivo"
+
+#: core/templates/base.html:55
 msgid "Administration"
 msgstr "Administração"
 
-#: templates/login_form.html:8
+#: core/templates/login_form.html:8
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: templates/login_form.html:10
+#: core/templates/login_form.html:10
 msgid "Password"
 msgstr "Senha"
 
-#: templates/login_form.html:13
-#: templates/login_menu.html:18
-#: templates/login_menu.html.py:31
-#: templates/login_page.html:5
+#: core/templates/login_form.html:13 core/templates/login_menu.html:18
+#: core/templates/login_menu.html.py:28 core/templates/login_page.html:5
 msgid "Login"
 msgstr "Entrar"
 
-#: templates/login_menu.html:10
+#: core/templates/login_menu.html:10
 msgid "Log out"
 msgstr "Sair"
 
-#: templates/login_menu.html:29
+#: core/templates/login_menu.html:26
 msgid "Close"
 msgstr "Fechar"
 
-#: templates/success.html:5
-msgid "Upload done successfully!"
-msgstr "Arquivo enviado com sucesso!"
-
-#: templates/success.html:9
-#, python-format
-msgid "Check in your <a href=\"%(url)s\">uploads page</a> if the shape you sent was successfully inserted in the database"
-msgstr "Verifique na sua <a href=\"%(url)s\">página de uploads</a> se o shape que você enviou foi inserido corretamente no banco de dados"
-
-#: templates/upload.html:6
+#: core/templates/upload.html:5
 msgid "Upload a shape file"
 msgstr "Enviar arquivo shape"
 
-#: templates/upload.html:10
+#: core/templates/upload.html:11
 #, python-format
-msgid "Upload a zip file containing the shp, pbf, shx and prj.<br> If necessary, <a href=\"%(url)s\">download a file</a> containing the shapefile model."
-msgstr "Envie um arquivo zip contendo os arquivos shp, pbf, shx and prj.<br> Caso necessário, <a href=\"%(url)s\">faça o download de um arquivo</a> com um modelo de arquivo shape."
+msgid ""
+"\n"
+"            You uploaded %(quantity)s item of %(type)s.\n"
+"          "
+msgid_plural ""
+"\n"
+"            You uploaded %(quantity)s items of %(type)s.\n"
+"          "
+msgstr[0] ""
+msgstr[1] ""
+"\n"
+"            Você enviou %(quantity)s itens do tipo %(type)s.\n"
+"          "
 
-#: templates/user_uploads.html:5
-#, python-format
-msgid "Uploads of the user %(user.first_name)s"
-msgstr "Áreas enviadas pelo usuário %(user.first_name)s"
+#: core/templates/upload.html:19
+msgid "The shapefile you sent is not in one of the defined formats."
+msgstr "O arquivo shape que você enviou não está em um dos formatos definidos."
 
-#: templates/user_uploads.html:10
+#: core/templates/upload.html:24
+msgid "Upload a zip file containing the shp, pbf, shx and prj."
+msgstr ""
+"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx and prj."
+
+#: core/templates/user_uploads.html:5
+msgid "Uploads of the user"
+msgstr "Áreas enviadas pelo usuário"
+
+#: core/templates/user_uploads.html:15 core/templates/user_uploads.html:30
+#: core/templates/user_uploads.html:45 core/templates/user_uploads.html:60
 msgid "Code"
 msgstr "Código"
+
+#: core/templates/user_uploads.html:17 core/templates/user_uploads.html:32
+#: core/templates/user_uploads.html:47 core/templates/user_uploads.html:62
+msgid "You did not upload any files of this type yet."
+msgstr "Você não enviou nenhum arquivo deste tipo ainda."
+
+#: core/views.py:139
+msgid "The shapefile is not in one of the accepted schemas."
+msgstr "O arquivo shape não está em um dos schemas aceitos."
+
+#: core/views.py:210
+msgid "Please log in below..."
+msgstr "Por favor, faça o login abaixo..."
+
+#: core/views.py:220
+msgid "Your account is not active. Please contact the system administrator"
+msgstr ""
+"Sua conta não está ativa. Por favor, entre em contato com o administrador do "
+"sistema."
+
+#: core/views.py:223
+msgid "Invalid username or password."
+msgstr "Nome de usuário ou senha inválidos."
+
+#~ msgid "Upload done successfully!"
+#~ msgstr "Arquivo enviado com sucesso!"
+
+#~ msgid ""
+#~ "Check in your <a href=\"%(url)s\">uploads page</a> if the shape you sent "
+#~ "was successfully inserted in the database"
+#~ msgstr ""
+#~ "Verifique na sua <a href=\"%(url)s\">página de uploads</a> se o shape que "
+#~ "você enviou foi inserido corretamente no banco de dados"
+
+#~ msgid ""
+#~ "Upload a zip file containing the shp, pbf, shx and prj.<br> If necessary, "
+#~ "<a href=\"%(url)s\">download a file</a> containing the shapefile model."
+#~ msgstr ""
+#~ "Envie um arquivo zip contendo os arquivos shp, pbf, shx and prj.<br> Caso "
+#~ "necessário, <a href=\"%(url)s\">faça o download de um arquivo</a> com um "
+#~ "modelo de arquivo shape."
 
 #~ msgid "Imported %s polygons"
 #~ msgstr "%s polígonos importados"
@@ -100,7 +142,3 @@ msgstr "Código"
 
 #~ msgid "Uploaded file is not a valid zip file."
 #~ msgstr "O arquivo enviado não é um arquivo zip válido."
-
-#~ msgid "Upload a zip file containing the shp, pbf, shx and prj."
-#~ msgstr ""
-#~ "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx and prj."

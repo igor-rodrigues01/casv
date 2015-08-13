@@ -5,11 +5,63 @@
 <h1>{% block page_title %}{% blocktrans %}Uploads of the user{% endblocktrans %} {{ user.first_name }}{% endblock page_title %}</h1>
 
 {% block content %}
-  <ul class="list-group">
-    {% for asv in user.asv_set.all %}
-      <li class="list-group-item"><strong>{% trans 'Code' %}: {{ asv }}</strong> - {{ asv.date|date:"d M Y" }}</li>
-    {% empty %}
-      <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files yet.' %}</div>
-    {% endfor %}
-  </ul>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Autorização de Supressão de Vegetação</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.asv.all %}
+          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Autorização de Supressão de Vegetação - Mata Atlântica</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.asvma.all %}
+          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Área de Compensação - Mata Atlântica</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.compensacao.all %}
+          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Área de Soltura de Animais Silvestres</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.area_soltura.all %}
+          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
 {% endblock content %}

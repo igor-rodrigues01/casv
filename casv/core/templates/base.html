@@ -5,7 +5,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>{% block title %}CASV - Cadastro de Autorização de Supressão de Vegetação{% endblock title %}</title>
+    <title>{% block title %}CASV - Cadastro de Simles Vetores{% endblock title %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -48,7 +48,8 @@
           <ul class="nav navbar-nav">
             {% if request.user.is_authenticated %}
               <li><a href="{% url 'core:upload' %}"><span class="glyphicon glyphicon-upload"></span> {% trans 'Upload' %}</a></li>
-              <li><a href="{% url 'core:user_uploads' request.user.pk %}"><span class="glyphicon glyphicon-list"></span> {% trans 'My Uploads' %}</a></li>
+              <li><a href="{% url 'core:user-uploads' request.user.pk %}"><span class="glyphicon glyphicon-list"></span> {% trans 'My Uploads' %}</a></li>
+              <li><a href="{% url 'core:file-models' %}"><span class="glyphicon glyphicon-file"></span> {% trans 'File models' %}</a></li>
             {% endif %}
             {% if request.user.is_staff %}
               <li><a href="{% url 'admin:index' %}"><span class="glyphicon glyphicon-cog"></span> {% trans 'Administration' %}</a></li>
@@ -61,19 +62,15 @@
 
     <div class="container">
 
-      <h1>{% block page_title %}CASV - Cadastro de Autorização de Supressão de Vegetação{% endblock page_title %}</h1>
+      <h1>{% block page_title %}CASV - Cadastro de Simples Vetores{% endblock page_title %}</h1>
 
       {% block content %}
-        <p>Este sistema tem como objetivo receber o shapefile das áreas que foram
-        autorizadas a supressão da vegetação, mediante documento obrigatório emitidos
-        pelos estados. A partir da compilação destas informações, o Centro de
-        Sensoriamento Remoto do IBAMA (CSR/IBAMA) controla e desconta, das estatísticas
-        de desmatamento, as áreas onde o desmate foi autorizado.</p>
+        <p>Este sistema tem como objetivo receber arquivos shapefile e realizar
+        a inserção dos dados em banco.</p>
         {% if request.user.is_authenticated %}
           <p><a class="btn btn-primary" href="{% url 'core:upload' %}">{% trans 'Upload' %}</a></p>
         {% else %}
-          <p>Entre em contato com o CSR/IBAMA para ter acesso ao sistema e poder enviar
-            arquivos de formato shape das áreas de desmate autorizado.</p>
+          <p>Realize o login com seu usuário do IBAMANET.</p>
         {% endif %}
       {% endblock content %}
 

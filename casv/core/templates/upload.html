@@ -8,7 +8,11 @@
     {% if uploaded %}
       {% if success %}
         <div class="alert alert-success" role="alert">
-          {% blocktrans %}You uploaded {{ quantity }} item{{ quantity|pluralize }} of {{ type }}{% endblocktrans %}
+          {% blocktrans count quantity=quantity %}
+            You uploaded {{ quantity }} item of {{ type }}.
+          {% plural %}
+            You uploaded {{ quantity }} items of {{ type }}.
+          {% endblocktrans %}
         </div>
       {% else %}
         <div class="alert alert-danger" role="alert">

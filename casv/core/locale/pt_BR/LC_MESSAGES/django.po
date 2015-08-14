@@ -7,16 +7,20 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-13 11:19-0300\n"
-"PO-Revision-Date: 2015-08-13 15:58-0300\n"
+"POT-Creation-Date: 2015-08-14 15:54-0300\n"
+"PO-Revision-Date: 2015-08-14 15:55-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
+"Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"Language-Team: \n"
-"X-Generator: Poedit 1.8.2\n"
+"X-Generator: Poedit 1.8.4\n"
+
+#: core/forms.py:7
+msgid "Upload file"
+msgstr "Enviar arquivo shape"
 
 #: core/templates/base.html:50 core/templates/base.html.py:71
 msgid "Upload"
@@ -34,15 +38,15 @@ msgstr "Modelos de arquivo"
 msgid "Administration"
 msgstr "Administração"
 
-#: core/templates/login_form.html:8
+#: core/templates/login_form.html:9
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: core/templates/login_form.html:10
+#: core/templates/login_form.html:11
 msgid "Password"
 msgstr "Senha"
 
-#: core/templates/login_form.html:13 core/templates/login_menu.html:18
+#: core/templates/login_form.html:14 core/templates/login_menu.html:18
 #: core/templates/login_menu.html.py:28 core/templates/login_page.html:5
 msgid "Login"
 msgstr "Entrar"
@@ -70,6 +74,9 @@ msgid_plural ""
 "            You uploaded %(quantity)s items of %(type)s.\n"
 "          "
 msgstr[0] ""
+"\n"
+"            Você enviou %(quantity)s item do tipo %(type)s.\n"
+"          "
 msgstr[1] ""
 "\n"
 "            Você enviou %(quantity)s itens do tipo %(type)s.\n"
@@ -79,10 +86,15 @@ msgstr[1] ""
 msgid "The shapefile you sent is not in one of the defined formats."
 msgstr "O arquivo shape que você enviou não está em um dos formatos definidos."
 
-#: core/templates/upload.html:24
-msgid "Upload a zip file containing the shp, pbf, shx and prj."
+#: core/templates/upload.html:25
+msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
 msgstr ""
-"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx and prj."
+"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx and prj. "
+"Veja os"
+
+#: core/templates/upload.html:26
+msgid "file models."
+msgstr "modelos de arquivo."
 
 #: core/templates/user_uploads.html:5
 msgid "Uploads of the user"

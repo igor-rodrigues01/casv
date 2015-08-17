@@ -94,6 +94,10 @@ class AreaSoltura(models.Model):
     def __str__(self):
         return '%s' % self.processo
 
+    class Meta:
+        verbose_name = 'Área de Soltura de Animais Silvestres'
+        verbose_name_plural = 'Áreas de Soltura de Animais Silvestres'
+
 
 class AsvMataAtlantica(models.Model):
 
@@ -125,6 +129,11 @@ class AsvMataAtlantica(models.Model):
     def __str__(self):
         return '%s' % self.processo
 
+    class Meta:
+        verbose_name = 'Autorização de Supressão de Vegetação - Mata Atlântica'
+        verbose_name_plural = """Autorizações de Supressão de Vegetação -
+            Mata Atlântica"""
+
 
 class CompensacaoMataAtlantica(models.Model):
 
@@ -149,3 +158,7 @@ class CompensacaoMataAtlantica(models.Model):
 
     def __str__(self):
         return '%s' % self.processo
+
+    class Meta:
+        verbose_name = 'Área de Compensação - Mata Atlântica'
+        verbose_name_plural = 'Áreas de Compensação - Mata Atlântica'

@@ -203,7 +203,7 @@ def upload_file(request):
     else:
         context = {'form': UploadFileForm()}
 
-    return render(request, 'upload.html', context)
+    return render(request, 'core/upload.html', context)
 
 
 def login_view(request):
@@ -223,7 +223,7 @@ def login_view(request):
             msg = _('Invalid username or password.')
             return render(request, 'login_page.html', {'msg': msg})
 
-    return render(request, 'login_page.html', {'msg': msg})
+    return render(request, 'core/login_page.html', {'msg': msg})
 
 
 def logout_view(request):
@@ -234,9 +234,31 @@ def logout_view(request):
 class UserUploads(DetailView):
 
     model = User
-    template_name = 'user_uploads.html'
+    template_name = 'core/user_uploads.html'
     context_object_name = 'user'
 
     def get_context_data(self, **kwargs):
         context = super(UserUploads, self).get_context_data(**kwargs)
         return context
+
+
+class AsvDetailView(DetailView):
+    model = Asv
+    context_object_name = 'asv'
+
+
+class AreaSolturaDetailView(DetailView):
+    model = AreaSoltura
+    context_object_name = 'areasoltura'
+
+
+class AsvMaDetailView(DetailView):
+    model = AsvMataAtlantica
+    context_object_name = 'asvma'
+
+
+class CompensacaoDetailView(DetailView):
+    model = CompensacaoMataAtlantica
+    context_object_name = 'compensacao'
+
+

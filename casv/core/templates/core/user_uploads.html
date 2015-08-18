@@ -12,7 +12,7 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.asv.all %}
-          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+          <li class="list-group-item"><strong><a href="{% url 'core:asv' item.pk %}" >{% trans 'Code' %}: {{ item }} </a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -27,7 +27,7 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.asvma.all %}
-          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+          <li class="list-group-item"><strong><a href="{% url 'core:asvma' item.pk %}" >{% trans 'Code' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -42,7 +42,7 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.compensacao.all %}
-          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+          <li class="list-group-item"><strong><a href="{% url 'core:compensacao' item.pk %}" >{% trans 'Code' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -57,7 +57,7 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.area_soltura.all %}
-          <li class="list-group-item"><strong>{% trans 'Code' %}: {{ item }}</strong> - {{ item.data_criacao|date:"d M Y" }}</li>
+          <li class="list-group-item"><strong><a href="{% url 'core:areasoltura' item.pk %}" >{% trans 'Code' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}

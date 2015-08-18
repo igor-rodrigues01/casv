@@ -22,7 +22,7 @@ class UploadTest(TestCase):
 
     def test_unlogged_response(self):
         response = self.client.get(reverse('core:upload'))
-        self.assertRedirects(response, '/login/?next=/upload/')
+        self.assertRedirects(response, reverse('core:login') + '?next=/upload/')
 
     def test_logged_response(self):
         self.client.login(username=self.user.username, password='password')
@@ -118,5 +118,52 @@ class UserUploadsTest(TestCase):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
 
     def test_user_uploads_response(self):
-        response = self.client.get('/user/%s/uploads/' % self.user.pk)
+        url = reverse('core:user-uploads', args=[self.user.pk])
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+
+class UserUploadedFile(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.asv_return = handle_uploaded_file(
+            abspath('core/fixtures/Asv.zip'),
+            self.user
+            )
+        self.area_soltura_return = handle_uploaded_file(
+            abspath('core/fixtures/AreaSoltura.zip'),
+            self.user
+            )
+        self.asvma_return = handle_uploaded_file(
+            abspath('core/fixtures/AsvMataAtlantica.zip'),
+            self.user
+            )
+        self.compensacao_return = handle_uploaded_file(
+            abspath('core/fixtures/CompensacaoMataAtlantica.zip'),
+            self.user
+            )
+
+    def test_user_uploaded_asv_response(self):
+        pk = Asv.objects.all()[0].pk
+        url = reverse('core:asv', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_uploaded_asvma_response(self):
+        pk = AsvMataAtlantica.objects.all()[0].pk
+        url = reverse('core:asvma', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_uploaded_compensacao_response(self):
+        pk = CompensacaoMataAtlantica.objects.all()[0].pk
+        url = reverse('core:compensacao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_user_uploaded_areasoltura_response(self):
+        pk = AreaSoltura.objects.all()[0].pk
+        url = reverse('core:areasoltura', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+

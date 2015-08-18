@@ -6,6 +6,7 @@ from collections import OrderedDict
 from os import path, mkdir
 from shutil import rmtree
 
+from rest_framework.generics import RetrieveAPIView
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.gis.geos import Polygon
@@ -16,6 +17,10 @@ from django.contrib.auth.models import User
 
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
+
+from .serializers import CompensacaoSerializer, AsvMaSerializer
+from .serializers import AsvSerializer, SolturaSerializer
+
 
 
 class InvalidShapefileError(Exception):
@@ -262,3 +267,21 @@ class CompensacaoDetailView(DetailView):
     context_object_name = 'compensacao'
 
 
+class AsvGeoView(RetrieveAPIView):
+    queryset = Asv.objects.all()
+    serializer_class = AsvSerializer
+
+
+class SolturaGeoView(RetrieveAPIView):
+    queryset = AreaSoltura.objects.all()
+    serializer_class = SolturaSerializer
+
+
+class AsvMaGeoView(RetrieveAPIView):
+    queryset = AsvMataAtlantica.objects.all()
+    serializer_class = AsvMaSerializer
+
+
+class CompensacaoGeoView(RetrieveAPIView):
+    queryset = CompensacaoMataAtlantica.objects.all()
+    serializer_class = CompensacaoSerializer

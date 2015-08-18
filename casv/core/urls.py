@@ -7,6 +7,8 @@ from .views import upload_file, login_view, logout_view, UserUploads
 from .views import AsvDetailView, AsvMaDetailView
 from .views import CompensacaoDetailView, AreaSolturaDetailView
 
+from .views import CompensacaoGeoView, AsvMaGeoView, AsvGeoView, SolturaGeoView
+
 
 urlpatterns = patterns('',
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
@@ -33,4 +35,17 @@ urlpatterns = patterns('',
     url(r'^compensacao/(?P<pk>\d+)/$',
         CompensacaoDetailView.as_view(),
         name='compensacao'),
+
+    url(r'^compensacao/geo/(?P<pk>\w+)/$',
+        CompensacaoGeoView.as_view(),
+        name='geo-compensacao'),
+    url(r'^asvma/geo/(?P<pk>\w+)/$',
+        AsvMaGeoView.as_view(),
+        name='geo-asvma'),
+    url(r'^asv/geo/(?P<pk>\w+)/$',
+        AsvGeoView.as_view(),
+        name='geo-asv'),
+    url(r'^areasoltura/geo/(?P<pk>\w+)/$',
+        SolturaGeoView.as_view(),
+        name='geo-areasoltura'),
 )

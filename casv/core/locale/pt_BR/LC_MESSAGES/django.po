@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-14 15:54-0300\n"
-"PO-Revision-Date: 2015-08-14 17:02-0300\n"
+"POT-Creation-Date: 2015-08-19 09:57-0300\n"
+"PO-Revision-Date: 2015-08-19 09:57-0300\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -22,48 +22,37 @@ msgstr ""
 msgid "Upload file"
 msgstr "Enviar arquivo shape"
 
-#: core/templates/base.html:50 core/templates/base.html.py:71
-msgid "Upload"
-msgstr "Enviar arquivo"
-
-#: core/templates/base.html:51
-msgid "My Uploads"
-msgstr "Meus envios"
-
-#: core/templates/base.html:52 core/templates/file-models.html:5
+#: core/templates/core/file-models.html:5
 msgid "File models"
 msgstr "Modelos de arquivo"
 
-#: core/templates/base.html:55
-msgid "Administration"
-msgstr "Administração"
-
-#: core/templates/login_form.html:9
+#: core/templates/core/login_form.html:9
 msgid "Username"
 msgstr "Nome de usuário"
 
-#: core/templates/login_form.html:11
+#: core/templates/core/login_form.html:11
 msgid "Password"
 msgstr "Senha"
 
-#: core/templates/login_form.html:14 core/templates/login_menu.html:18
-#: core/templates/login_menu.html.py:28 core/templates/login_page.html:5
+#: core/templates/core/login_form.html:14
+#: core/templates/core/login_menu.html:18
+#: core/templates/core/login_menu.html:28 core/templates/core/login_page.html:5
 msgid "Login"
 msgstr "Entrar"
 
-#: core/templates/login_menu.html:10
-msgid "Log out"
+#: core/templates/core/login_menu.html:10
+msgid "Logout"
 msgstr "Sair"
 
-#: core/templates/login_menu.html:26
+#: core/templates/core/login_menu.html:26
 msgid "Close"
 msgstr "Fechar"
 
-#: core/templates/upload.html:5
+#: core/templates/core/upload.html:5
 msgid "Upload a shape file"
 msgstr "Enviar arquivo shape"
 
-#: core/templates/upload.html:11
+#: core/templates/core/upload.html:11
 #, python-format
 msgid ""
 "\n"
@@ -82,51 +71,67 @@ msgstr[1] ""
 "            Você enviou %(quantity)s itens do tipo %(type)s.\n"
 "          "
 
-#: core/templates/upload.html:19
+#: core/templates/core/upload.html:19
 msgid "The shapefile you sent is not in one of the defined formats."
 msgstr "O arquivo shape que você enviou não está em um dos formatos definidos."
 
-#: core/templates/upload.html:25
+#: core/templates/core/upload.html:25
 msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
 msgstr ""
 "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
 "os "
 
-#: core/templates/upload.html:26
+#: core/templates/core/upload.html:26
 msgid "file models."
 msgstr "modelos de arquivo."
 
-#: core/templates/user_uploads.html:5
+#: core/templates/core/user_uploads.html:5
 msgid "Uploads of the user"
 msgstr "Áreas enviadas pelo usuário"
 
-#: core/templates/user_uploads.html:15 core/templates/user_uploads.html:30
-#: core/templates/user_uploads.html:45 core/templates/user_uploads.html:60
+#: core/templates/core/user_uploads.html:15
+#: core/templates/core/user_uploads.html:30
+#: core/templates/core/user_uploads.html:45
+#: core/templates/core/user_uploads.html:60
 msgid "Code"
 msgstr "Código"
 
-#: core/templates/user_uploads.html:17 core/templates/user_uploads.html:32
-#: core/templates/user_uploads.html:47 core/templates/user_uploads.html:62
+#: core/templates/core/user_uploads.html:17
+#: core/templates/core/user_uploads.html:32
+#: core/templates/core/user_uploads.html:47
+#: core/templates/core/user_uploads.html:62
 msgid "You did not upload any files of this type yet."
 msgstr "Você não enviou nenhum arquivo deste tipo ainda."
 
-#: core/views.py:139
+#: core/views.py:144
 msgid "The shapefile is not in one of the accepted schemas."
 msgstr "O arquivo shape não está em um dos schemas aceitos."
 
-#: core/views.py:210
+#: core/views.py:215
 msgid "Please log in below..."
 msgstr "Por favor, faça o login abaixo..."
 
-#: core/views.py:220
+#: core/views.py:225
 msgid "Your account is not active. Please contact the system administrator"
 msgstr ""
 "Sua conta não está ativa. Por favor, entre em contato com o administrador do "
 "sistema."
 
-#: core/views.py:223
+#: core/views.py:228
 msgid "Invalid username or password."
 msgstr "Nome de usuário ou senha inválidos."
+
+#~ msgid "Upload"
+#~ msgstr "Enviar arquivo"
+
+#~ msgid "My Uploads"
+#~ msgstr "Meus envios"
+
+#~ msgid "Administration"
+#~ msgstr "Administração"
+
+#~ msgid "Log out"
+#~ msgstr "Sair"
 
 #~ msgid "Upload done successfully!"
 #~ msgstr "Arquivo enviado com sucesso!"

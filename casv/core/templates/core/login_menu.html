@@ -7,7 +7,7 @@
           <span class="glyphicon glyphicon-user"></span> {{ request.user.username }} <strong class="caret"></strong>
         </a>
         <ul class="dropdown-menu">
-          <li><a href="{% url 'core:logout' %}">Sair</a></li>
+          <li><a href="{% url 'core:logout' %}">{% trans 'Logout' %}</a></li>
         </ul>
       </li>
     </ul>

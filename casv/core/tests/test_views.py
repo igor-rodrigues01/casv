@@ -148,10 +148,16 @@ class UserUploadedFile(TestCase):
         url = reverse('core:asv', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        url = reverse('core:geo-asv', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_user_uploaded_asvma_response(self):
         pk = AsvMataAtlantica.objects.all()[0].pk
         url = reverse('core:asvma', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        url = reverse('core:geo-asvma', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -160,10 +166,17 @@ class UserUploadedFile(TestCase):
         url = reverse('core:compensacao', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        url = reverse('core:geo-compensacao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_user_uploaded_areasoltura_response(self):
         pk = AreaSoltura.objects.all()[0].pk
         url = reverse('core:areasoltura', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+        url = reverse('core:geo-areasoltura', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+
 

@@ -7,3 +7,12 @@
 .list-group {
   max-width: 400px !important;
 }
+
+.navbar{
+    border-radius: 0px;
+}
+
+.navbar-brand-img{
+    margin-top: -0.3em;
+    margin-right: -0.6em;
+}

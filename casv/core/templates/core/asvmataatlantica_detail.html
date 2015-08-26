@@ -1,83 +1,71 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "core/object_detail.html" %}
 
 <h1>{% block page_title %}Autorização de Supressão da Vegetação - Mata Atlântica: {{ asvma.pk }}{% endblock page_title %}</h1>
 
+{% block detail %}
 
-{% block content %}
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Processo</h4>
+        <p class="list-group-item-text">{{ asvma.processo }}</p>
+    </a>
 
-<div class="col-md-6 col-xs-12">
-    <div class="list-group ">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Processo</h4>
-            <p class="list-group-item-text">{{ asvma.processo }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">UF</h4>
+        <p class="list-group-item-text">{{ asvma.uf }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">UF</h4>
-            <p class="list-group-item-text">{{ asvma.uf }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Município</h4>
+        <p class="list-group-item-text">{{ asvma.municipio }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Município</h4>
-            <p class="list-group-item-text">{{ asvma.municipio }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Empreendedor</h4>
+        <p class="list-group-item-text">{{ asvma.empreendedor }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Empreendedor</h4>
-            <p class="list-group-item-text">{{ asvma.empreendedor }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Tipo de Empreendimento</h4>
+        <p class="list-group-item-text">{{ asvma.tipo_empreendimento }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Tipo de Empreendimento</h4>
-            <p class="list-group-item-text">{{ asvma.tipo_empreendimento }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPJ do Empreendedor</h4>
+        <p class="list-group-item-text">{{ asvma.cpfj }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">CPF ou CNPJ do Empreendedor</h4>
-            <p class="list-group-item-text">{{ asvma.cpfj }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área Total de Supressão (ha)</h4>
+        <p class="list-group-item-text">{{ asvma.area_supressao_total }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área Total de Supressão (ha)</h4>
-            <p class="list-group-item-text">{{ asvma.area_supressao_total }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Supressão de Vegetação Primária (ha)</h4>
+        <p class="list-group-item-text">{{ asvma.area_supressao_veg_primaria }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área de Supressão de Vegetação Primária (ha)</h4>
-            <p class="list-group-item-text">{{ asvma.area_supressao_veg_primaria }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Supressão em Estágio Médio (ha)</h4>
+        <p class="list-group-item-text">{{ asvma.area_supressao_estagio_medio }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área de Supressão em Estágio Médio (ha)</h4>
-            <p class="list-group-item-text">{{ asvma.area_supressao_estagio_medio }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Supressão em Estágio Avançado (ha)</h4>
+        <p class="list-group-item-text">{{ asvma.area_supressao_estagio_avancado }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área de Supressão em Estágio Avançado (ha)</h4>
-            <p class="list-group-item-text">{{ asvma.area_supressao_estagio_avancado }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Usuário</h4>
+        <p class="list-group-item-text">{{ asvma.usuario }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Usuário</h4>
-            <p class="list-group-item-text">{{ asvma.usuario }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de criação</h4>
+        <p class="list-group-item-text">{{ asvma.data_criacao }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Data de criação</h4>
-            <p class="list-group-item-text">{{ asvma.data_criacao }}</p>
-        </a>
+{% endblock detail %}
 
-
-    </div>
-</div>
-
-<div class="col-md-6 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
-
-{% endblock content %}
+{% block extra_js %}
+    {% include "core/map.html" with pk=asvma.pk geojson_url="core:geo-asvma" %}
+{% endblock extra_js %}

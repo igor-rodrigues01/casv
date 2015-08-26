@@ -1,127 +1,117 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "core/object_detail.html" %}
 
 <h1>{% block page_title %}Autorização de Supressão da Vegetação: {{ asv.pk }}{% endblock page_title %}</h1>
 
+{% block detail %}
 
-{% block content %}
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Código</h4>
+        <p class="list-group-item-text">{{ asv.codigo }}</p>
+    </a>
 
-<div class="col-md-6 col-xs-12">
-    <div class="list-group ">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Código</h4>
-            <p class="list-group-item-text">{{ asv.codigo }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Nº Autorização</h4>
+        <p class="list-group-item-text">{{ asv.n_autex }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Nº Autorização</h4>
-            <p class="list-group-item-text">{{ asv.n_autex }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">UF</h4>
+        <p class="list-group-item-text">{{ asv.uf }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">UF</h4>
-            <p class="list-group-item-text">{{ asv.uf }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Fitofisionomia</h4>
+        <p class="list-group-item-text">{{ asv.fito }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Fitofisionomia</h4>
-            <p class="list-group-item-text">{{ asv.fito }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Nome do Proprietário</h4>
+        <p class="list-group-item-text">{{ asv.nom_prop }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Nome do Proprietário</h4>
-            <p class="list-group-item-text">{{ asv.nom_prop }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPJ do Proprietário</h4>
+        <p class="list-group-item-text">{{ asv.cpfj_prop }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">CPF ou CNPJ do Proprietário</h4>
-            <p class="list-group-item-text">{{ asv.cpfj_prop }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Nome do Detentor</h4>
+        <p class="list-group-item-text">{{ asv.detentor }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Nome do Detentor</h4>
-            <p class="list-group-item-text">{{ asv.detentor }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPJ do Detentor</h4>
+        <p class="list-group-item-text">{{ asv.cpfj_dete }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">CPF ou CNPJ do Detentor</h4>
-            <p class="list-group-item-text">{{ asv.cpfj_dete }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">RT</h4>
+        <p class="list-group-item-text">{{ asv.rt }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">RT</h4>
-            <p class="list-group-item-text">{{ asv.rt }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">RT</h4>
+        <p class="list-group-item-text">{{ asv.rt }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">RT</h4>
-            <p class="list-group-item-text">{{ asv.rt }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPF do RT</h4>
+        <p class="list-group-item-text">{{ asv.cpfj_rt }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">CPF ou CNPF do RT</h4>
-            <p class="list-group-item-text">{{ asv.cpfj_rt }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área HA</h4>
+        <p class="list-group-item-text">{{ asv.area_ha }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área HA</h4>
-            <p class="list-group-item-text">{{ asv.area_ha }}</p>
-        </a>
-
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Lenha ST</h4>
-            <p class="list-group-item-text">{{ asv.lenha_st }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Lenha ST</h4>
+        <p class="list-group-item-text">{{ asv.lenha_st }}</p>
+    </a>
 
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Tora M</h4>
-            <p class="list-group-item-text">{{ asv.tora_m }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Tora M</h4>
+        <p class="list-group-item-text">{{ asv.tora_m }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Torete M</h4>
-            <p class="list-group-item-text">{{ asv.torete_m }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Torete M</h4>
+        <p class="list-group-item-text">{{ asv.torete_m }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Mourao M</h4>
-            <p class="list-group-item-text">{{ asv.mourao_m }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Mourao M</h4>
+        <p class="list-group-item-text">{{ asv.mourao_m }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Data de Autorização de Extração</h4>
-            <p class="list-group-item-text">{{ asv.data_autex }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de Autorização de Extração</h4>
+        <p class="list-group-item-text">{{ asv.data_autex }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Data de Validade da Autorização</h4>
-            <p class="list-group-item-text">{{ asv.valido_ate }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de Validade da Autorização</h4>
+        <p class="list-group-item-text">{{ asv.valido_ate }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Município</h4>
-            <p class="list-group-item-text">{{ asv.municipio }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Município</h4>
+        <p class="list-group-item-text">{{ asv.municipio }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Usuário</h4>
-            <p class="list-group-item-text">{{ asv.usuario}}</p>
-        </a>
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Data de Criação</h4>
-            <p class="list-group-item-text">{{ asv.data_criacao}}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Usuário</h4>
+        <p class="list-group-item-text">{{ asv.usuario}}</p>
+    </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de Criação</h4>
+        <p class="list-group-item-text">{{ asv.data_criacao}}</p>
+    </a>
 
-    </div>
-</div>
+{% endblock detail %}
 
-<div class="col-md-6 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
 
-{% endblock content %}
+{% block extra_js %}
+    {% include "core/map.html" with pk=asv.pk geojson_url="core:geo-asv" %}
+{% endblock extra_js %}

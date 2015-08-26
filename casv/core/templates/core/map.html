@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<script src="{% static 'js/leaflet.js' %}"></script>
+
+<script>
+    var map = L.map('map');
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    });
+
+    osm.addTo(map);
+    map.setView([-12, -54], 4);
+
+    $.getJSON("{% url geojson_url pk %}?format=json", function(data) {
+        var geoJSON = L.geoJson(data);
+        geoJSON.addTo(map);
+        map.fitBounds(geoJSON);
+    });
+</script>

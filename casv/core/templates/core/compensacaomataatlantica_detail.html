@@ -1,61 +1,52 @@
-{% extends "base.html" %}
-{% load i18n %}
+{% extends "core/object_detail.html" %}
 
 <h1>{% block page_title %}Área de Compensação - Mata Atlântica: {{ compensacao.pk }}{% endblock page_title %}</h1>
 
+{% block detail %}
 
-{% block content %}
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Processo</h4>
+        <p class="list-group-item-text">{{ compensacao.processo }}</p>
+    </a>
 
-<div class="col-md-6 col-xs-12">
-    <div class="list-group ">
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Processo</h4>
-            <p class="list-group-item-text">{{ compensacao.processo }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">UF</h4>
+        <p class="list-group-item-text">{{ compensacao.uf }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">UF</h4>
-            <p class="list-group-item-text">{{ compensacao.uf }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Município</h4>
+        <p class="list-group-item-text">{{ compensacao.municipio }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Município</h4>
-            <p class="list-group-item-text">{{ compensacao.municipio }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Empreendedor</h4>
+        <p class="list-group-item-text">{{ compensacao.empreendedor }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Empreendedor</h4>
-            <p class="list-group-item-text">{{ compensacao.empreendedor }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Tipo de Empreendimento</h4>
+        <p class="list-group-item-text">{{ compensacao.tipo_empreendimento }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Tipo de Empreendimento</h4>
-            <p class="list-group-item-text">{{ compensacao.tipo_empreendimento }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPJ do Empreendedor</h4>
+        <p class="list-group-item-text">{{ compensacao.proprietario }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">CPF ou CNPJ do Empreendedor</h4>
-            <p class="list-group-item-text">{{ compensacao.proprietario }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Compensação (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Área de Compensação (ha)</h4>
-            <p class="list-group-item-text">{{ compensacao.area_compensacao }}</p>
-        </a>
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de criação</h4>
+        <p class="list-group-item-text">{{ compensacao.data_criacao }}</p>
+    </a>
 
-        <a href="#" class="list-group-item">
-            <h4 class="list-group-item-heading">Data de criação</h4>
-            <p class="list-group-item-text">{{ compensacao.data_criacao }}</p>
-        </a>
-    </div>
-</div>
 
-<div class="col-md-6 col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div id="map"></div>
-        </div>
-    </div>
-</div>
+{% endblock detail %}
 
-{% endblock content %}
+{% block extra_js %}
+    {% include "core/map.html" with pk=compensacao.pk geojson_url="core:geo-compensacao" %}
+{% endblock extra_js %}

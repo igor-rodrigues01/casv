@@ -61,7 +61,7 @@ class AreaSoltura(models.Model):
         null=True, blank=True)
     cpf = models.CharField('CPF', null=True, blank=True, max_length=11)
     telefone = models.CharField(max_length=15, null=True, blank=True)
-    email = models.EmailField()
+    email = models.EmailField(null=True, blank=True)
     area = models.FloatField('Área da Propriedade (ha)', null=True, blank=True)
     arl_app = models.FloatField('Área de reserva legal e proteção permanente',
         null=True, blank=True)

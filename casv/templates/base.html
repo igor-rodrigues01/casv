@@ -51,7 +51,7 @@
           <ul class="nav navbar-nav">
             {% if request.user.is_authenticated %}
               <li><a href="{% url 'core:upload' %}"><span class="glyphicon glyphicon-upload"></span> {% trans 'Upload' %}</a></li>
-              <li><a href="{% url 'core:user-uploads' request.user.pk %}"><span class="glyphicon glyphicon-list"></span> {% trans 'My Uploads' %}</a></li>
+              <li><a href="{% url 'core:user-uploads' request.user.pk %}"><span class="glyphicon glyphicon-list"></span> {% trans 'MyUploads' %}</a></li>
               <li><a href="{% url 'core:file-models' %}"><span class="glyphicon glyphicon-file"></span> {% trans 'File models' %}</a></li>
             {% endif %}
             {% if request.user.is_staff %}

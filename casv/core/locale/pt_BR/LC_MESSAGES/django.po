@@ -124,7 +124,7 @@ msgstr "Nome de usuário ou senha inválidos."
 #~ msgid "Upload"
 #~ msgstr "Enviar arquivo"
 
-#~ msgid "My Uploads"
+#~ msgid "MyUploads"
 #~ msgstr "Meus envios"
 
 #~ msgid "Administration"

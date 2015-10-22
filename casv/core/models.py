@@ -67,6 +67,7 @@ class AreaSoltura(models.Model):
         null=True, blank=True)
     bioma = models.CharField('Bioma', max_length=255, null=True, blank=True)
     fitofisionomia = models.CharField(max_length=255, null=True, blank=True)
+    taxon = models.CharField(max_length=255, null=True, blank=True)
     conservacao = models.NullBooleanField()
     conectividade = models.NullBooleanField()
     uc = models.NullBooleanField()
@@ -81,8 +82,8 @@ class AreaSoltura(models.Model):
         null=True, blank=True)
     distancia = models.FloatField('Área da Propriedade (ha)', null=True,
         blank=True)
-    tempo = models.FloatField('Tempo de viagem ao CETAS mais próximo',
-        null=True, blank=True)
+    tempo = models.CharField('Tempo de viagem ao CETAS mais próximo',
+        max_length=5, null=True, blank=True)
     vistoria = models.DateField(null=True, blank=True)
 
     usuario = models.ForeignKey(User, related_name='area_soltura')

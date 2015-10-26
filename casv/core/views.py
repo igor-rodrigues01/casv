@@ -93,13 +93,13 @@ def get_mapping(schema):
         'properties': OrderedDict([('processo', 'int:10'), ('nome', 'str:254'),
         ('endereco', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
         ('proprietar', 'str:254'), ('cpf', 'str:11'), ('telefone', 'str:15'),
-        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15'),
-        ('bioma', 'str:254'), ('fitofision', 'str:254'), 
-        ('conservaca', 'int:1'), ('conectivid', 'int:1'), ('uc', 'int:1'), 
-        ('agua', 'int:1'), ('atividade', 'str:254'), ('documento', 'int:1'), 
-        ('mapa', 'int:1'), ('carta', 'int:1'), ('reabilitad', 'int:1'), 
-        ('viveiros', 'int:5'), ('distancia', 'float:24.15'), 
-        ('vistoria', 'date'), ('taxon', 'str:254'), ('tempo', 'str:5')])
+        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15')
+        ('bioma', 'str:254'), ('fitofision', 'str:254'),
+        ('conservaca', 'int:1'), ('conectivid', 'int:1'), ('uc', 'int:1'),
+        ('agua', 'int:1'), ('atividade', 'str:254'), ('documento', 'int:1'),
+        ('mapa', 'int:1'), ('carta', 'int:1'), ('reabilitad', 'int:1'),
+        ('viveiros', 'int:5'), ('distancia', 'float:24.15'),
+        ('vistoria', 'date'), ('tempo', 'str:5'), ('taxon', 'str:254')])
     }
     mapping_area_soltura = {
             'processo': 'processo',

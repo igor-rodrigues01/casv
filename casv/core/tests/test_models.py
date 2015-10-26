@@ -60,7 +60,8 @@ class TestAreaSoltura(TestCase):
             reabilitador=True,
             viveiros=99,
             distancia=87.9,
-            tempo=3.5,
+            tempo='09:21',
+            taxon='Teste',
             vistoria=date(2015, 1, 1),
             usuario=user,
             geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))

@@ -180,3 +180,34 @@ class UserUploadedFile(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class TestDeleteViews(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.asv_return = handle_uploaded_file(
+            abspath('core/fixtures/Asv.zip'),
+            self.user
+            )
+        self.area_soltura_return = handle_uploaded_file(
+            abspath('core/fixtures/AreaSoltura.zip'),
+            self.user
+            )
+        self.asvma_return = handle_uploaded_file(
+            abspath('core/fixtures/AsvMataAtlantica.zip'),
+            self.user
+            )
+        self.compensacao_return = handle_uploaded_file(
+            abspath('core/fixtures/CompensacaoMataAtlantica.zip'),
+            self.user
+            )
+
+    def test_asv_delete_view(self):
+        self.assertEqual(Asv.objects.count(), 1)
+        self.client.post(reverse('core:login'),
+            {'username': self.user.username, 'password': 'password'})
+
+        url = reverse('core:delete-asv', args=[Asv.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(url)
+        self.assertEqual(Asv.objects.count(), 0)

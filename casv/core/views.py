@@ -22,7 +22,6 @@ from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 
 
-
 class InvalidShapefileError(Exception):
     pass
 
@@ -93,7 +92,7 @@ def get_mapping(schema):
         'properties': OrderedDict([('processo', 'int:10'), ('nome', 'str:254'),
         ('endereco', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
         ('proprietar', 'str:254'), ('cpf', 'str:11'), ('telefone', 'str:15'),
-        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15')
+        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15'),
         ('bioma', 'str:254'), ('fitofision', 'str:254'),
         ('conservaca', 'int:1'), ('conectivid', 'int:1'), ('uc', 'int:1'),
         ('agua', 'int:1'), ('atividade', 'str:254'), ('documento', 'int:1'),

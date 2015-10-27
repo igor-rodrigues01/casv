@@ -16,7 +16,7 @@
         </div>
       {% else %}
         <div class="alert alert-danger" role="alert">
-          {% blocktrans %}The shapefile you sent is not in one of the defined formats.{% endblocktrans %}
+          {{ message }}
         </div>
       {% endif %}
     {% endif %}

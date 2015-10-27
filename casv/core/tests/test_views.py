@@ -16,6 +16,12 @@ class IndexTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
+class LoginTest(TestCase):
+    def test_index_response(self):
+        response = self.client.get(reverse('core:login'))
+        self.assertEqual(response.status_code, 200)
+
+
 class UploadTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
@@ -163,16 +169,16 @@ class UserUploadedFile(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
-    def test_user_uploaded_asvma_unlogged_response(self):
+    def test_user_uploaded_asvma_response(self):
         pk = AsvMataAtlantica.objects.all()[0].pk
         url = reverse('core:asvma', args=[pk])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
         url = reverse('core:geo-asvma', args=[pk])
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
-    def test_user_uploaded_asvma_response(self):
+    def test_user_uploaded_asvma_unlogged_response(self):
         self.client.post(reverse('core:login'),
             {'username': self.user.username, 'password': 'password'})
         pk = AsvMataAtlantica.objects.all()[0].pk

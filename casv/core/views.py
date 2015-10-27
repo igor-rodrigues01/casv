@@ -14,16 +14,23 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import DetailView
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
-
 from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 
 
 class InvalidShapefileError(Exception):
     pass
+
+
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view, login_url='core:login')
 
 
 def get_mapping(schema):
@@ -92,7 +99,7 @@ def get_mapping(schema):
         'properties': OrderedDict([('processo', 'int:10'), ('nome', 'str:254'),
         ('endereco', 'str:254'), ('uf', 'str:2'), ('municipio', 'str:254'),
         ('proprietar', 'str:254'), ('cpf', 'str:11'), ('telefone', 'str:15'),
-        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15'),
+        ('email', 'str:254'), ('area', 'float:24.15'), ('arl_app', 'float:24.15')
         ('bioma', 'str:254'), ('fitofision', 'str:254'),
         ('conservaca', 'int:1'), ('conectivid', 'int:1'), ('uc', 'int:1'),
         ('agua', 'int:1'), ('atividade', 'str:254'), ('documento', 'int:1'),
@@ -226,7 +233,7 @@ def login_view(request):
                 return redirect(reverse('core:login'))
         else:
             msg = _('Invalid username or password.')
-            return render(request, 'login_page.html', {'msg': msg})
+            return render(request, 'core/login_page.html', {'msg': msg})
 
     return render(request, 'core/login_page.html', {'msg': msg})
 
@@ -247,41 +254,41 @@ class UserUploads(DetailView):
         return context
 
 
-class AsvDetailView(DetailView):
+class AsvDetailView(LoginRequiredMixin, DetailView):
     model = Asv
     context_object_name = 'asv'
 
 
-class AreaSolturaDetailView(DetailView):
+class AreaSolturaDetailView(LoginRequiredMixin, DetailView):
     model = AreaSoltura
     context_object_name = 'areasoltura'
 
 
-class AsvMaDetailView(DetailView):
+class AsvMaDetailView(LoginRequiredMixin, DetailView):
     model = AsvMataAtlantica
     context_object_name = 'asvma'
 
 
-class CompensacaoDetailView(DetailView):
+class CompensacaoDetailView(LoginRequiredMixin, DetailView):
     model = CompensacaoMataAtlantica
     context_object_name = 'compensacao'
 
 
-class AsvGeoView(RetrieveAPIView):
+class AsvGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = Asv.objects.all()
     serializer_class = AsvSerializer
 
 
-class SolturaGeoView(RetrieveAPIView):
+class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = AreaSoltura.objects.all()
     serializer_class = SolturaSerializer
 
 
-class AsvMaGeoView(RetrieveAPIView):
+class AsvMaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = AsvMataAtlantica.objects.all()
     serializer_class = AsvMaSerializer
 
 
-class CompensacaoGeoView(RetrieveAPIView):
+class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = CompensacaoMataAtlantica.objects.all()
     serializer_class = CompensacaoSerializer

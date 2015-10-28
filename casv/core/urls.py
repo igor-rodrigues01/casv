@@ -4,7 +4,8 @@ from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
 from .views import upload_file, login_view, logout_view, UserUploads
-from .views import AsvDetailView, AsvMaDetailView
+from .views import AsvDetailView, AsvDeleteView
+from .views import AsvMaDetailView
 from .views import CompensacaoDetailView, AreaSolturaDetailView
 
 from .views import CompensacaoGeoView, AsvMaGeoView, AsvGeoView, SolturaGeoView
@@ -26,6 +27,9 @@ urlpatterns = patterns('',
     url(r'^asv/(?P<pk>\d+)/$',
         AsvDetailView.as_view(),
         name='asv'),
+    url(r'^asv/(?P<pk>\d+)/delete/$',
+        AsvDeleteView.as_view(),
+        name='delete-asv'),
     url(r'^areasoltura/(?P<pk>\d+)/$',
         AreaSolturaDetailView.as_view(),
         name='areasoltura'),

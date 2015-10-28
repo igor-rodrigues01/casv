@@ -7,14 +7,14 @@ from os import path, mkdir
 from shutil import rmtree
 
 from rest_framework.generics import RetrieveAPIView
-from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
-from django.contrib.gis.geos import Polygon
-from django.utils.translation import ugettext as _
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import DetailView
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.gis.geos import Polygon
+from django.shortcuts import render, redirect
+from django.views.generic import DetailView, DeleteView
+from django.utils.translation import ugettext as _
 
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
@@ -273,6 +273,16 @@ class AsvDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'asv'
 
 
+class CommonDeleteView(LoginRequiredMixin, DeleteView):
+
+    def get_success_url(self):
+        return reverse('core:user-uploads', args=[self.request.user.pk])
+
+
+class AsvDeleteView(CommonDeleteView):
+    model = Asv
+
+
 class AreaSolturaDetailView(LoginRequiredMixin, DetailView):
     model = AreaSoltura
     context_object_name = 'areasoltura'
@@ -288,6 +298,7 @@ class CompensacaoDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'compensacao'
 
 
+# GeoViews
 class AsvGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = Asv.objects.all()
     serializer_class = AsvSerializer

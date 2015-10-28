@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans 'Page Not found{% endblock %}
+{% block title %}{% trans '404 Error' %}{% endblock %}
 
-{% block page_title %}{% trans 'Page Not found' %}{% endblock page_title %}
+{% block page_title %}<h1>{% trans '404 Error - Page not found!' %}</h1>{% endblock page_title %}
 
 {% block content %}
-<p>{% trans 'This is not the page you were looking for.' %}</p>
+  <p>{% trans 'This is not the page you were looking for.' %}</p>
 {% endblock content %}

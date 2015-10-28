@@ -23,7 +23,9 @@ from .serializers import AsvSerializer, SolturaSerializer
 
 
 class InvalidShapefileError(Exception):
-    pass
+
+    def __init__(self, message):
+        self.message = message
 
 
 class LoginRequiredMixin(object):
@@ -186,8 +188,13 @@ def handle_uploaded_file(file, user):
                 entry.save()
 
             rmtree(upload_path)
-
             return {'type': type_str, 'quantity': number_of_features}
+        else:
+            raise InvalidShapefileError(
+                _('There is not a .shp file inside of the zip file.')
+            )
+    else:
+        raise InvalidShapefileError(_('The uploaded file is not a zip file.'))
 
 
 def upload_file(request):
@@ -209,9 +216,16 @@ def upload_file(request):
                     'type': upload_return.get('type'),
                     'form': form
                 }
-            except InvalidShapefileError:
-                context = {'uploaded': True, 'success': False, 'form': form}
-
+            except InvalidShapefileError as error:
+                context = {
+                    'uploaded': True,
+                    'success': False,
+                    'form': form,
+                    'message': error.message
+                }
+        else:
+            context = {'form': UploadFileForm()}
+            return render(request, 'core/upload.html', context)
     else:
         context = {'form': UploadFileForm()}
 

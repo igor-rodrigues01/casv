@@ -1,0 +1,47 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-10-28 11:34-0200\n"
+"PO-Revision-Date: 2015-10-28 11:35-0200\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.5\n"
+
+#: templates/404.html:4
+msgid "404 Error"
+msgstr "Erro 404"
+
+#: templates/404.html:6
+msgid "404 Error - Page not found!"
+msgstr "Erro 404 - Página não encontrada"
+
+#: templates/404.html:9
+msgid "This is not the page you were looking for."
+msgstr "Esta não é a página que você procurava"
+
+#: templates/base.html:53 templates/base.html.py:76
+msgid "Upload"
+msgstr "Enviar arquivo"
+
+#: templates/base.html:54
+msgid "My Uploads"
+msgstr "Meus envios"
+
+#: templates/base.html:57
+msgid "File models"
+msgstr "Modelos de arquivo"
+
+#: templates/base.html:60
+msgid "Administration"
+msgstr "Administração"

@@ -1,4 +1,5 @@
 {% extends "core/object_detail.html" %}
+{% load i18n %}
 
 {% block page_title %}<h2>Autorização de Supressão da Vegetação - Mata Atlântica: {{ asvma.pk }}</h2>{% endblock page_title %}
 
@@ -65,6 +66,10 @@
     </a>
 
 {% endblock detail %}
+
+{% block delete_button %}
+  <a class="btn btn-danger" href="{% url 'core:delete-asvma' asvma.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+{% endblock delete_button %}
 
 {% block extra_js %}
     {% include "core/map.html" with pk=asvma.pk geojson_url="core:geo-asvma" %}

@@ -1,4 +1,5 @@
 {% extends "core/object_detail.html" %}
+{% load i18n %}
 
 {% block page_title %}<h2>Área de Soltura de Animais Silvestres: {{ areasoltura.pk }}</h2>{% endblock page_title %}
 
@@ -145,6 +146,10 @@
     </a>
 
 {% endblock detail %}
+
+{% block delete_button %}
+  <a class="btn btn-danger" href="{% url 'core:delete-areasoltura' areasoltura.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+{% endblock delete_button %}
 
 {% block extra_js %}
     {% include "core/map.html" with pk=areasoltura.pk geojson_url="core:geo-areasoltura" %}

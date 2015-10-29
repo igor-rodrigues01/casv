@@ -12,8 +12,13 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.asv.all %}
-          <li class="list-group-item"><strong><a href="{% url 'core:asv' item.pk %}" >Processo: {{ item }} </a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
-          <!-- <li class="list-group-item"><strong><a href="{% url 'core:asv' item.pk %}" >{% trans 'Process' %}: {{ item }} </a></strong> - {{ item.data_criacao|date:"d M Y" }}</li> -->
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:asv' item.pk %}" >ID: {{ item.pk }} </a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-asv' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -28,8 +33,13 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.asvma.all %}
-          <li class="list-group-item"><strong><a href="{% url 'core:asvma' item.pk %}" >Processo: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
-          <!-- <li class="list-group-item"><strong><a href="{% url 'core:asvma' item.pk %}" >{% trans 'Process' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li> -->
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:asvma' item.pk %}" >ID: {{ item.pk }}</a></strong>
+           - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-asvma' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -44,8 +54,13 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.compensacao.all %}
-          <li class="list-group-item"><strong><a href="{% url 'core:compensacao' item.pk %}" >Processo: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
-          <!-- <li class="list-group-item"><strong><a href="{% url 'core:compensacao' item.pk %}" >{% trans 'Process' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li> -->
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:compensacao' item.pk %}">ID: {{ item.pk }}</a></strong>
+            - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-compensacao' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}
@@ -60,8 +75,13 @@
     <div class="panel-body">
       <ul class="list-group">
         {% for item in user.area_soltura.all %}
-          <li class="list-group-item"><strong><a href="{% url 'core:areasoltura' item.pk %}" >Processo: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li>
-          <!-- <li class="list-group-item"><strong><a href="{% url 'core:areasoltura' item.pk %}" >{% trans 'Process' %}: {{ item }}</a></strong> - {{ item.data_criacao|date:"d M Y" }}</li> -->
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:areasoltura' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-areasoltura' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
         {% empty %}
           <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
         {% endfor %}

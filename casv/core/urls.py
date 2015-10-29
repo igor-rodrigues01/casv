@@ -5,10 +5,11 @@ from django.contrib.auth.decorators import login_required
 
 from .views import upload_file, login_view, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
-from .views import AsvMaDetailView
-from .views import CompensacaoDetailView, AreaSolturaDetailView
+from .views import AsvMaDetailView, AsvMaDeleteView
+from .views import CompensacaoDetailView, CompensacaoDeleteView
+from .views import AreaSolturaDetailView, AreaSolturaDeleteView
 
-from .views import CompensacaoGeoView, AsvMaGeoView, AsvGeoView, SolturaGeoView
+from .views import AsvMaGeoView, AsvGeoView, SolturaGeoView, CompensacaoGeoView
 
 
 urlpatterns = patterns('',
@@ -21,7 +22,7 @@ urlpatterns = patterns('',
         name='file-models'),
     url(r'^login/', login_view, name='login'),
     url(r'^logout/', logout_view, name='logout'),
-    url(r'^user/(?P<pk>\d+)/uploads/$',
+    url(r'^user-uploads/',
         UserUploads.as_view(),
         name='user-uploads'),
     url(r'^asv/(?P<pk>\d+)/$',
@@ -33,12 +34,21 @@ urlpatterns = patterns('',
     url(r'^areasoltura/(?P<pk>\d+)/$',
         AreaSolturaDetailView.as_view(),
         name='areasoltura'),
+    url(r'^areasoltura/(?P<pk>\d+)/delete/$',
+        AreaSolturaDeleteView.as_view(),
+        name='delete-areasoltura'),
     url(r'^asvma/(?P<pk>\d+)/$',
         AsvMaDetailView.as_view(),
         name='asvma'),
+    url(r'^asvma/(?P<pk>\d+)/delete/$',
+        AsvMaDeleteView.as_view(),
+        name='delete-asvma'),
     url(r'^compensacao/(?P<pk>\d+)/$',
         CompensacaoDetailView.as_view(),
         name='compensacao'),
+    url(r'^compensacao/(?P<pk>\d+)/delete/$',
+        CompensacaoDeleteView.as_view(),
+        name='delete-compensacao'),
 
     url(r'^compensacao/geo/(?P<pk>\d+)/$',
         CompensacaoGeoView.as_view(),

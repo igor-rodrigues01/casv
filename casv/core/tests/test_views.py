@@ -133,8 +133,15 @@ class UserUploadsTest(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
 
+    def test_user_uploads_unlogged_response(self):
+        url = reverse('core:user-uploads')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
     def test_user_uploads_response(self):
-        url = reverse('core:user-uploads', args=[self.user.pk])
+        self.client.post(reverse('core:login'),
+            {'username': self.user.username, 'password': 'password'})
+        url = reverse('core:user-uploads')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -244,6 +251,7 @@ class TestDeleteViews(TestCase):
 
     def setUp(self):
         self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user2 = User.objects.create_user('user2', 'i@t.com', 'password')
         self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
             self.user
@@ -271,3 +279,68 @@ class TestDeleteViews(TestCase):
         self.assertEqual(response.status_code, 200)
         response = self.client.post(url)
         self.assertEqual(Asv.objects.count(), 0)
+
+    def test_asv_delete_view_user_permission(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user2.username, 'password': 'password'})
+
+        url = reverse('core:delete-asv', args=[Asv.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_asvma_delete_view(self):
+        self.assertEqual(AsvMataAtlantica.objects.count(), 1)
+        self.client.post(reverse('core:login'),
+            {'username': self.user.username, 'password': 'password'})
+
+        url = reverse('core:delete-asvma', args=[AsvMataAtlantica.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(url)
+        self.assertEqual(AsvMataAtlantica.objects.count(), 0)
+
+    def test_asvma_delete_view_user_permission(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user2.username, 'password': 'password'})
+
+        url = reverse('core:delete-asvma', args=[AsvMataAtlantica.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_compensacao_delete_view(self):
+        self.assertEqual(CompensacaoMataAtlantica.objects.count(), 1)
+        self.client.post(reverse('core:login'),
+            {'username': self.user.username, 'password': 'password'})
+
+        url = reverse('core:delete-compensacao', args=[CompensacaoMataAtlantica.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(url)
+        self.assertEqual(CompensacaoMataAtlantica.objects.count(), 0)
+
+    def test_compensacao_delete_view_user_permission(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user2.username, 'password': 'password'})
+
+        url = reverse('core:delete-compensacao', args=[CompensacaoMataAtlantica.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_areasoltura_delete_view(self):
+        self.assertEqual(AreaSoltura.objects.count(), 1)
+        self.client.post(reverse('core:login'),
+            {'username': self.user.username, 'password': 'password'})
+
+        url = reverse('core:delete-areasoltura', args=[AreaSoltura.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        response = self.client.post(url)
+        self.assertEqual(AreaSoltura.objects.count(), 0)
+
+    def test_areasoltura_delete_view_user_permission(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user2.username, 'password': 'password'})
+
+        url = reverse('core:delete-areasoltura', args=[AreaSoltura.objects.all()[0].pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)

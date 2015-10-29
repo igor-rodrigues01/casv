@@ -28,13 +28,6 @@ class InvalidShapefileError(Exception):
         self.message = message
 
 
-class LoginRequiredMixin(object):
-    @classmethod
-    def as_view(cls, **initkwargs):
-        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
-        return login_required(view, login_url='core:login')
-
-
 def get_mapping(schema):
     asv = {'properties': OrderedDict([('codigo', 'int:10'), ('n_autex', 'str:30'),
         ('uf', 'str:2'), ('fito', 'str:60'), ('nom_prop', 'str:60'),
@@ -257,7 +250,14 @@ def logout_view(request):
     return redirect(reverse('core:index'))
 
 
-class UserUploads(DetailView):
+class LoginRequiredMixin(object):
+    @classmethod
+    def as_view(cls, **initkwargs):
+        view = super(LoginRequiredMixin, cls).as_view(**initkwargs)
+        return login_required(view, login_url='core:login')
+
+
+class UserUploads(LoginRequiredMixin, DetailView):
 
     model = User
     template_name = 'core/user_uploads.html'
@@ -266,6 +266,9 @@ class UserUploads(DetailView):
     def get_context_data(self, **kwargs):
         context = super(UserUploads, self).get_context_data(**kwargs)
         return context
+
+    def get_object(self):
+        return self.request.user
 
 
 class AsvDetailView(LoginRequiredMixin, DetailView):
@@ -276,11 +279,27 @@ class AsvDetailView(LoginRequiredMixin, DetailView):
 class CommonDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_success_url(self):
-        return reverse('core:user-uploads', args=[self.request.user.pk])
+        return reverse('core:user-uploads')
+
+    def get_queryset(self):
+        qs = super(CommonDeleteView, self).get_queryset()
+        return qs.filter(usuario=self.request.user)
 
 
 class AsvDeleteView(CommonDeleteView):
     model = Asv
+
+
+class AsvMaDeleteView(CommonDeleteView):
+    model = AsvMataAtlantica
+
+
+class AreaSolturaDeleteView(CommonDeleteView):
+    model = AreaSoltura
+
+
+class CompensacaoDeleteView(CommonDeleteView):
+    model = CompensacaoMataAtlantica
 
 
 class AreaSolturaDetailView(LoginRequiredMixin, DetailView):

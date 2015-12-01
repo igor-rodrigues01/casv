@@ -100,7 +100,7 @@ def get_mapping(schema):
         ('agua', 'int:1'), ('atividade', 'str:254'), ('documento', 'int:1'),
         ('mapa', 'int:1'), ('carta', 'int:1'), ('reabilitad', 'int:1'),
         ('viveiros', 'int:5'), ('distancia', 'float:24.15'),
-        ('vistoria', 'date'), ('tempo', 'str:5'), ('taxon', 'str:254')])
+        ('tempo', 'str:5'), ('vistoria', 'date'), ('taxon', 'str:254')])
     }
     mapping_area_soltura = {
             'processo': 'processo',

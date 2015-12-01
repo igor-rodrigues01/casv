@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-29 17:51-0200\n"
+"POT-Creation-Date: 2015-12-01 11:53-0200\n"
 "PO-Revision-Date: 2015-10-29 17:52-0200\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: \n"
@@ -95,14 +95,12 @@ msgstr[1] ""
 "          "
 
 #: core/templates/core/upload.html:25
-msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
+#, fuzzy
+#| msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
+msgid "Upload a zip file containing the shp, pbf, shx and prj."
 msgstr ""
 "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
 "os "
-
-#: core/templates/core/upload.html:26
-msgid "file models."
-msgstr "modelos de arquivo."
 
 #: core/templates/core/user_uploads.html:5
 msgid "Uploads of the user"
@@ -140,6 +138,9 @@ msgstr ""
 #: core/views.py:242
 msgid "Invalid username or password."
 msgstr "Nome de usuário ou senha inválidos."
+
+#~ msgid "file models."
+#~ msgstr "modelos de arquivo."
 
 #~ msgid "Process"
 #~ msgstr "Processar"

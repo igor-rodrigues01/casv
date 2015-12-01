@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-tes
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 
@@ -20,7 +20,7 @@ class Asv(models.Model):
         max_length=22, null=True, blank=True)
     rt = models.CharField(max_length=60, null=True, blank=True)
     cpfj_rt = models.CharField(max_length=22, null=True, blank=True)
-    area_ha = models.FloatField(null=True, blank=True)
+    area_ha = models.FloatField('Área da Propriedade (ha)', null=True, blank=True)
     lenha_st = models.FloatField(null=True, blank=True)
     tora_m = models.FloatField(null=True, blank=True)
     torete_m = models.FloatField(null=True, blank=True)
@@ -80,7 +80,7 @@ class AreaSoltura(models.Model):
     reabilitador = models.NullBooleanField()
     viveiros = models.PositiveSmallIntegerField('Número de viveiros',
         null=True, blank=True)
-    distancia = models.FloatField('Área da Propriedade (ha)', null=True,
+    distancia = models.FloatField('Distância até o CETAS mais próximo', null=True,
         blank=True)
     tempo = models.CharField('Tempo de viagem ao CETAS mais próximo',
         max_length=5, null=True, blank=True)

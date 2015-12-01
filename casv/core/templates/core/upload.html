@@ -22,7 +22,8 @@
     {% endif %}
 
     <p>
-      {% blocktrans %}Upload a zip file containing the shp, pbf, shx and prj.{% endblocktrans %}
+      {% blocktrans %}Upload a zip file containing the shp, pbf, shx and prj. See the {% endblocktrans %}
+      <a href='{% url 'core:file-models' %}'>{% trans 'file models.' %}</a>
     </p>
 
     <form enctype="multipart/form-data" action="{% url 'core:upload' %}" method="post">{% csrf_token %}

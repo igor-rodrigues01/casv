@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-01 11:53-0200\n"
-"PO-Revision-Date: 2015-10-29 17:52-0200\n"
+"POT-Creation-Date: 2015-12-01 16:34-0200\n"
+"PO-Revision-Date: 2015-12-01 17:00-0200\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.5\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: core/forms.py:7
 msgid "Upload file"
@@ -95,12 +95,14 @@ msgstr[1] ""
 "          "
 
 #: core/templates/core/upload.html:25
-#, fuzzy
-#| msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
-msgid "Upload a zip file containing the shp, pbf, shx and prj."
+msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
 msgstr ""
 "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
 "os "
+
+#: core/templates/core/upload.html:26
+msgid "file models."
+msgstr "modelos de arquivo."
 
 #: core/templates/core/user_uploads.html:5
 msgid "Uploads of the user"
@@ -138,9 +140,6 @@ msgstr ""
 #: core/views.py:242
 msgid "Invalid username or password."
 msgstr "Nome de usuário ou senha inválidos."
-
-#~ msgid "file models."
-#~ msgstr "modelos de arquivo."
 
 #~ msgid "Process"
 #~ msgstr "Processar"

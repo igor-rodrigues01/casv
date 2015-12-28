@@ -2,10 +2,10 @@
 from datetime import date
 
 from django.test import TestCase
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos import Polygon, MultiPolygon
 from django.contrib.auth.models import User
 
-from ..models import Asv, AreaSoltura, AsvMataAtlantica
+from ..models import Asv, AreaSoltura, AsvMataAtlantica, AutoInfracaoOEMA, EmbargoOEMA
 from ..models import CompensacaoMataAtlantica
 
 
@@ -21,14 +21,14 @@ class TestAsv(TestCase):
             data_autex='2014-9-1', valido_ate='2015-1-1',
             municipio='Itacaré', usuario=user,
             geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
-            )
+        )
 
     def test_asv_creation(self):
         self.assertIsInstance(self.asv, Asv)
         self.assertEqual(self.asv.__str__(), "%s" % self.asv.codigo)
         self.assertEqual(
             Asv.objects.get(codigo=1).data_autex, date(2014, 9, 1)
-            )
+        )
 
 
 class TestAreaSoltura(TestCase):
@@ -57,11 +57,7 @@ class TestAreaSoltura(TestCase):
             documento=True,
             mapa=True,
             carta=True,
-            reabilitador=True,
-            viveiros=99,
             distancia=87.9,
-            tempo='09:21',
-            taxon='Teste',
             vistoria=date(2015, 1, 1),
             usuario=user,
             geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
@@ -70,6 +66,51 @@ class TestAreaSoltura(TestCase):
     def test_area_soltura_creation(self):
         self.assertEqual(AreaSoltura.objects.all().count(), 1)
         self.assertIsInstance(self.area_soltura, AreaSoltura)
+
+
+class TestEmbargoOEMA(TestCase):
+
+    def setUp(self):
+        self.embargo = EmbargoOEMA.objects.create(
+            proc='Teste',
+            num_ai='0000000001',
+            num_tei='0000000002',
+            area_ha=100000.99,
+            desc='Testando',
+            legislacao='Teste',
+            status='Teste 01',
+            nome='Empresa teste',
+            cpfj='123.323.678/0001-23',
+            municipio='',
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
+        )
+
+    def test_embargo_creation(self):
+        self.assertEqual(EmbargoOEMA.objects.all().count(), 1)
+        self.assertIsInstance(self.embargo, EmbargoOEMA)
+
+
+class TestAutoInfracaoOEMA(TestCase):
+
+    def setUp(self):
+        self.autoinfracao = AutoInfracaoOEMA.objects.create(
+            proc='Teste',
+            num_ai='0000000001',
+            num_tei='0000000002',
+            area_ha=100000.99,
+            desc='Testando',
+            legislacao='Teste',
+            status='Teste 01',
+            nome='Empresa teste',
+            cpfj='123.323.678/0001-23',
+            municipio='',
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
+        )
+
+    def test_auto_infracao_creation(self):
+        self.assertEqual(AutoInfracaoOEMA.objects.all().count(), 1)
+        self.assertIsInstance(self.autoinfracao, AutoInfracaoOEMA)
+
 
 
 class TestAsvMataAtlantica(TestCase):

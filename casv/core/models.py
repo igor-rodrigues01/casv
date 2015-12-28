@@ -2,6 +2,37 @@
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
 
+class AutoInfracaoOEMA(models.Model):
+
+    proc = models.CharField(max_length=30, null=True, blank=True)
+    num_ai = models.CharField(max_length=20, null=True, blank=True)
+    num_tei = models.CharField(max_length=20, null=True, blank=True)
+    area_ha = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    desc = models.CharField(max_length=2500)
+    legislacao = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    nome = models.CharField(max_length=100)
+    cpfj = models.CharField(max_length=20)
+    municipio = models.CharField(max_length=250)
+    geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
+    objects = models.GeoManager()
+
+
+class EmbargoOEMA(models.Model):
+
+    proc = models.CharField(max_length=30, null=True, blank=True)
+    num_ai = models.CharField(max_length=20, null=True, blank=True)
+    num_tei = models.CharField(max_length=20, null=True, blank=True)
+    area_ha = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    desc = models.CharField(max_length=2500)
+    legislacao = models.CharField(max_length=100)
+    status = models.CharField(max_length=100)
+    nome = models.CharField(max_length=100)
+    cpfj = models.CharField(max_length=20)
+    municipio = models.CharField(max_length=250)
+    geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
+    objects = models.GeoManager()
+
 
 class Asv(models.Model):
 

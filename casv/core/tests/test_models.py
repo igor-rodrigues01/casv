@@ -2,11 +2,11 @@
 from datetime import date
 
 from django.test import TestCase
-from django.contrib.gis.geos import Polygon, MultiPolygon
+from django.contrib.gis.geos import Polygon
 from django.contrib.auth.models import User
 
-from ..models import Asv, AreaSoltura, AsvMataAtlantica, AutoInfracaoOEMA, EmbargoOEMA
-from ..models import CompensacaoMataAtlantica
+from ..models import Asv, AreaSoltura, AsvMataAtlantica, AutoInfracaoOEMA
+from ..models import EmbargoOEMA, CompensacaoMataAtlantica
 
 
 class TestAsv(TestCase):
@@ -71,6 +71,7 @@ class TestAreaSoltura(TestCase):
 class TestEmbargoOEMA(TestCase):
 
     def setUp(self):
+        user = User.objects.create_user('user', 'i@t.com', 'password')
         self.embargo = EmbargoOEMA.objects.create(
             proc='Teste',
             num_ai='0000000001',
@@ -82,7 +83,8 @@ class TestEmbargoOEMA(TestCase):
             nome='Empresa teste',
             cpfj='123.323.678/0001-23',
             municipio='',
-            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
+            usuario=user,
+            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
         )
 
     def test_embargo_creation(self):
@@ -93,6 +95,7 @@ class TestEmbargoOEMA(TestCase):
 class TestAutoInfracaoOEMA(TestCase):
 
     def setUp(self):
+        user=user = User.objects.create_user('user', 'i@t.com', 'password')
         self.autoinfracao = AutoInfracaoOEMA.objects.create(
             proc='Teste',
             num_ai='0000000001',
@@ -104,7 +107,8 @@ class TestAutoInfracaoOEMA(TestCase):
             nome='Empresa teste',
             cpfj='123.323.678/0001-23',
             municipio='',
-            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
+            usuario=user,
+            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
         )
 
     def test_auto_infracao_creation(self):

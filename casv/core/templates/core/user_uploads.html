@@ -88,4 +88,47 @@
       </ul>
     </div>
   </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Embargos</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.embargo.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:embargo' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-embargo' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Autos de infração</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.infracao.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:infracao' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-infracao' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
 {% endblock content %}

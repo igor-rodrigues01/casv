@@ -8,11 +8,15 @@ from .views import AsvDetailView, AsvDeleteView
 from .views import AsvMaDetailView, AsvMaDeleteView
 from .views import CompensacaoDetailView, CompensacaoDeleteView
 from .views import AreaSolturaDetailView, AreaSolturaDeleteView
-
 from .views import AsvMaGeoView, AsvGeoView, SolturaGeoView, CompensacaoGeoView
+from .views import EmbargoDetailView, EmbargoDeleteView
+from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
+from .views import EmbargoGeoView, AutoInfracaoGeoView
 
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
+
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
 
     url(r'^upload/',
@@ -63,6 +67,30 @@ urlpatterns = patterns('',
         CompensacaoDeleteView.as_view(),
         name='delete-compensacao'),
 
+    url(r'^embargo/(?P<pk>\d+)/$',
+        EmbargoDetailView.as_view(),
+        name='embargo'),
+
+    url(r'^embargo/(?P<pk>\d+)/delete/$',
+        EmbargoDeleteView.as_view(),
+        name='delete-embargo'),
+
+    url(r'^infracao/(?P<pk>\d+)/$',
+        AutoInfracaoDetailView.as_view(),
+        name='infracao'),
+
+    url(r'^infracao/(?P<pk>\d+)/delete/$',
+        AutoInfracaoDeleteView.as_view(),
+        name='delete-infracao'),
+
+    url(r'^embargo/geo/(?P<pk>\d+)/$',
+        EmbargoGeoView.as_view(),
+        name='geo-embargo'),
+
+    url(r'^infracao/geo/(?P<pk>\d+)/$',
+        AutoInfracaoGeoView.as_view(),
+        name='geo-infracao'),
+
     url(r'^compensacao/geo/(?P<pk>\d+)/$',
         CompensacaoGeoView.as_view(),
         name='geo-compensacao'),
@@ -77,5 +105,4 @@ urlpatterns = patterns('',
 
     url(r'^areasoltura/geo/(?P<pk>\d+)/$',
         SolturaGeoView.as_view(),
-        name='geo-areasoltura'),
-)
+        name='geo-areasoltura'))

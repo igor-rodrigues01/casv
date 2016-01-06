@@ -1,6 +1,21 @@
 from django.contrib.gis import admin
 
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
+from .models import EmbargoOEMA, AutoInfracaoOEMA
+
+
+class AutoInfracaoAdmin(admin.OSMGeoAdmin):
+
+    list_display = ['proc', 'nome', 'data_criacao', 'legislacao', 'usuario']
+    list_filter = ['municipio']
+    search_fields = ['proc', 'nome', 'data_criacao', 'legislacao', 'usuario']
+
+
+class EmbargoAdmin(admin.OSMGeoAdmin):
+
+    list_display = ['proc', 'nome', 'data_criacao', 'legislacao', 'usuario']
+    list_filter = ['municipio']
+    search_fields = ['proc', 'nome', 'data_criacao', 'legislacao', 'usuario']
 
 
 class AsvAdmin(admin.OSMGeoAdmin):
@@ -35,6 +50,8 @@ class CompensacaoMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
 
 admin.site.register(Asv, AsvAdmin)
+admin.site.register(EmbargoOEMA, EmbargoAdmin)
+admin.site.register(AutoInfracaoOEMA, AutoInfracaoAdmin)
 admin.site.register(AreaSoltura, AreaSolturaAdmin)
 admin.site.register(AsvMataAtlantica, AsvMataAtlanticaAdmin)
 admin.site.register(CompensacaoMataAtlantica, CompensacaoMataAtlanticaAdmin)

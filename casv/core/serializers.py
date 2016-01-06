@@ -3,9 +3,11 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
+from .models import EmbargoOEMA, AutoInfracaoOEMA
 
 
 class AsvSerializer(GeoFeatureModelSerializer):
+
     class Meta:
         model = Asv
         id_field = False
@@ -14,6 +16,7 @@ class AsvSerializer(GeoFeatureModelSerializer):
 
 
 class SolturaSerializer(GeoFeatureModelSerializer):
+
     class Meta:
         model = AreaSoltura
         id_field = False
@@ -22,6 +25,7 @@ class SolturaSerializer(GeoFeatureModelSerializer):
 
 
 class AsvMaSerializer(GeoFeatureModelSerializer):
+
     class Meta:
         model = AsvMataAtlantica
         id_field = False
@@ -30,6 +34,7 @@ class AsvMaSerializer(GeoFeatureModelSerializer):
 
 
 class CompensacaoSerializer(GeoFeatureModelSerializer):
+
     class Meta:
         model = CompensacaoMataAtlantica
         id_field = False
@@ -37,4 +42,19 @@ class CompensacaoSerializer(GeoFeatureModelSerializer):
         fields = []
 
 
+class EmbargoSerializer(GeoFeatureModelSerializer):
 
+    class Meta:
+        model = EmbargoOEMA
+        id_field = False
+        fields = []
+        geo_field = 'geom'
+
+
+class AutoInfracaoSerializer(GeoFeatureModelSerializer):
+
+    class Meta:
+        model = AutoInfracaoOEMA
+        id_field = False
+        fields = []
+        geo_field = 'geom'

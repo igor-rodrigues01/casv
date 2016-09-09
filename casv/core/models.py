@@ -15,7 +15,7 @@ class AutoInfracaoOEMA(models.Model):
     nome = models.CharField(max_length=100, null=True, blank=True)
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
-    geom = models.PolygonField(srid=4674, null=True, blank=True)
+    geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
     usuario = models.ForeignKey(User, related_name='infracao')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
@@ -37,7 +37,7 @@ class EmbargoOEMA(models.Model):
     nome = models.CharField(max_length=100, null=True, blank=True)
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
-    geom = models.PolygonField(srid=4674, null=True, blank=True)
+    geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
     usuario = models.ForeignKey(User, related_name='embargo')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
@@ -99,7 +99,7 @@ class Asv(models.Model):
         blank=True)
     usuario = models.ForeignKey(User, related_name='asv')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom = models.PolygonField(srid=4674)
+    geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
 
     def __str__(self):
@@ -178,7 +178,7 @@ class AreaSoltura(models.Model):
     vistoria = models.DateField(null=True, blank=True)
     usuario = models.ForeignKey(User, related_name='area_soltura')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom = models.PolygonField(srid=4674)
+    geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
 
     def __str__(self):
@@ -231,7 +231,7 @@ class AsvMataAtlantica(models.Model):
         blank=True)
     usuario = models.ForeignKey(User, related_name='asvma')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom = models.PolygonField(srid=4674)
+    geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
 
     def __str__(self):
@@ -273,7 +273,7 @@ class CompensacaoMataAtlantica(models.Model):
         blank=True)
     usuario = models.ForeignKey(User, related_name='compensacao')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom = models.PolygonField(srid=4674)
+    geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
 
     def __str__(self):

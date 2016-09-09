@@ -11,11 +11,11 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos import Polygon, MultiPolygon
 from django.shortcuts import render, redirect
 from django.views.generic import DetailView, DeleteView
 from django.utils.translation import ugettext as _
-
+from shapely.geometry.base import BaseGeometry
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
 from .models import AutoInfracaoOEMA, EmbargoOEMA
@@ -54,6 +54,80 @@ def get_mapping(schema):
         ]),
         'geometry': 'Polygon'
     }
+
+    asv2 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:10'),
+            ('n_autex', 'str:30'),
+            ('uf', 'str:2'),
+            ('fito', 'str:60'),
+            ('nom_prop', 'str:60'),
+            ('cpfj_prop', 'str:22'),
+            ('detentor', 'str:60'),
+            ('cpfj_dete', 'str:22'),
+            ('rt', 'str:60'),
+            ('cpfj_rt', 'str:22'),
+            ('area_ha', 'float:20.15'),
+            ('lenha_st', 'float:20.15'),
+            ('tora_m', 'float:20.15'),
+            ('torete_m', 'float:20.15'),
+            ('mourao_m', 'float:20.15'),
+            ('data_autex', 'date'),
+            ('valido_ate', 'date'),
+            ('municipio', 'str:40')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
+    asv3 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'),
+            ('n_autex', 'str:30'),
+            ('uf', 'str:2'),
+            ('fito', 'str:60'),
+            ('nom_prop', 'str:60'),
+            ('cpfj_prop', 'str:22'),
+            ('detentor', 'str:60'),
+            ('cpfj_dete', 'str:22'),
+            ('rt', 'str:60'),
+            ('cpfj_rt', 'str:22'),
+            ('area_ha', 'float:20'),
+            ('lenha_st', 'float:20'),
+            ('tora_m', 'float:20'),
+            ('torete_m', 'float:20'),
+            ('mourao_m', 'float:20'),
+            ('data_autex', 'date'),
+            ('valido_ate', 'date'),
+            ('municipio', 'str:40')
+        ]),
+        'geometry': 'Polygon'
+    }
+
+    asv4 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'),
+            ('n_autex', 'str:30'),
+            ('uf', 'str:2'),
+            ('fito', 'str:60'),
+            ('nom_prop', 'str:60'),
+            ('cpfj_prop', 'str:22'),
+            ('detentor', 'str:60'),
+            ('cpfj_dete', 'str:22'),
+            ('rt', 'str:60'),
+            ('cpfj_rt', 'str:22'),
+            ('area_ha', 'float:20'),
+            ('lenha_st', 'float:20'),
+            ('tora_m', 'float:20'),
+            ('torete_m', 'float:20'),
+            ('mourao_m', 'float:20'),
+            ('data_autex', 'date'),
+            ('valido_ate', 'date'),
+            ('municipio', 'str:40')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
+
     mapping_asv = {
         'codigo': 'codigo',
         'n_autex': 'n_autex',
@@ -91,6 +165,54 @@ def get_mapping(schema):
         'geometry': 'Polygon'
     }
 
+    asv_mata_atlantica2 = {
+        'properties': OrderedDict([
+            ('processo', 'int:10'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_total', 'float:20.15'),
+            ('a_veg_prim', 'float:20.15'),
+            ('a_est_medi', 'float:20.15'),
+            ('a_est_avan', 'float:20.15')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
+    asv_mata_atlantica3 = {
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_total', 'float:20'),
+            ('a_veg_prim', 'float:20'),
+            ('a_est_medi', 'float:20'),
+            ('a_est_avan', 'float:20')
+        ]),
+        'geometry': 'Polygon'
+    }
+
+    asv_mata_atlantica4 = {
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_total', 'float:20'),
+            ('a_veg_prim', 'float:20'),
+            ('a_est_medi', 'float:20'),
+            ('a_est_avan', 'float:20')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
     mapping_asv_mata_atlantica = {
         'processo': 'processo',
         'uf': 'uf',
@@ -116,6 +238,46 @@ def get_mapping(schema):
         ]),
         'geometry': 'Polygon'
     }
+
+    compensacao2 = {
+        'properties': OrderedDict([
+            ('processo', 'int:10'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_compe', 'float:20.15')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
+    compensacao3 = {
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_compe', 'float:20')
+        ]),
+        'geometry': 'Polygon'
+    }
+
+    compensacao4 = {
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_compe', 'float:20')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
     mapping_compensacao = {
         'processo': 'processo',
         'uf': 'uf',
@@ -157,6 +319,134 @@ def get_mapping(schema):
             ('vistoria', 'date'),
             ('taxon', 'str:254')])
     }
+
+    area_soltura2 = {
+        'geometry': 'Multipolygon',
+        'properties': OrderedDict([
+            ('processo', 'int:10'),
+            ('nome', 'str:254'),
+            ('endereco', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('proprietar', 'str:254'),
+            ('cpf', 'str:11'),
+            ('telefone', 'str:15'),
+            ('email', 'str:254'),
+            ('area', 'float:20.15'),
+            ('arl_app', 'float:20.15'),
+            ('bioma', 'str:254'),
+            ('fitofision', 'str:254'),
+            ('conservaca', 'int:1'),
+            ('conectivid', 'int:1'),
+            ('uc', 'int:1'),
+            ('agua', 'int:1'),
+            ('atividade', 'str:254'),
+            ('documento', 'int:1'),
+            ('mapa', 'int:1'),
+            ('carta', 'int:1'),
+            ('reabilitad', 'int:1'),
+            ('viveiros', 'int:5'),
+            ('distancia', 'float:20.15'),
+            ('tempo', 'str:5'),
+            ('vistoria', 'date'),
+            ('taxon', 'str:254')])
+    }
+
+    area_soltura3 = {
+        'geometry': 'Multipolygon',
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('nome', 'str:254'),
+            ('endereco', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('proprietar', 'str:254'),
+            ('cpf', 'str:11'),
+            ('telefone', 'str:15'),
+            ('email', 'str:254'),
+            ('area', 'float:20.15'),
+            ('arl_app', 'float:20.15'),
+            ('bioma', 'str:254'),
+            ('fitofision', 'str:254'),
+            ('conservaca', 'int:1'),
+            ('conectivid', 'int:1'),
+            ('uc', 'int:1'),
+            ('agua', 'int:1'),
+            ('atividade', 'str:254'),
+            ('documento', 'int:1'),
+            ('mapa', 'int:1'),
+            ('carta', 'int:1'),
+            ('reabilitad', 'int:1'),
+            ('viveiros', 'int:5'),
+            ('distancia', 'float:20.15'),
+            ('tempo', 'str:5'),
+            ('vistoria', 'date'),
+            ('taxon', 'str:254')])
+    }
+    area_soltura4 = {
+        'geometry': 'Polygon',
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('nome', 'str:254'),
+            ('endereco', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('proprietar', 'str:254'),
+            ('cpf', 'str:11'),
+            ('telefone', 'str:15'),
+            ('email', 'str:254'),
+            ('area', 'float:20.15'),
+            ('arl_app', 'float:20.15'),
+            ('bioma', 'str:254'),
+            ('fitofision', 'str:254'),
+            ('conservaca', 'int:1'),
+            ('conectivid', 'int:1'),
+            ('uc', 'int:1'),
+            ('agua', 'int:1'),
+            ('atividade', 'str:254'),
+            ('documento', 'int:1'),
+            ('mapa', 'int:1'),
+            ('carta', 'int:1'),
+            ('reabilitad', 'int:1'),
+            ('viveiros', 'int:5'),
+            ('distancia', 'float:20.15'),
+            ('tempo', 'str:5'),
+            ('vistoria', 'date'),
+            ('taxon', 'str:254')])
+    }
+
+    area_soltura5 = {
+        'geometry': 'Polygon',
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('nome', 'str:254'),
+            ('endereco', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('proprietar', 'str:254'),
+            ('cpf', 'str:11'),
+            ('telefone', 'str:15'),
+            ('email', 'str:254'),
+            ('area', 'float:20'),
+            ('arl_app', 'float:20'),
+            ('bioma', 'str:254'),
+            ('fitofision', 'str:254'),
+            ('conservaca', 'int:9'),
+            ('conectivid', 'int:9'),
+            ('uc', 'int:9'),
+            ('agua', 'int:9'),
+            ('atividade', 'str:254'),
+            ('documento', 'int:9'),
+            ('mapa', 'int:9'),
+            ('carta', 'int:9'),
+            ('reabilitad', 'int:9'),
+            ('viveiros', 'int:9'),
+            ('distancia', 'float:20'),
+            ('tempo', 'str:5'),
+            ('vistoria', 'date'),
+            ('taxon', 'str:254')])
+    }
+
     mapping_area_soltura = {
         'processo': 'processo',
         'nome': 'nome',
@@ -202,6 +492,23 @@ def get_mapping(schema):
         ]),
         'geometry': 'Polygon'
     }
+
+    auto_infracao2 = {
+        'properties': OrderedDict([
+            ('proc', 'str:30'),
+            ('num_ai', 'str:20'),
+            ('num_tei', 'str:20'),
+            ('area_ha', 'float:9.2'),
+            ('desc', 'str:254'),
+            ('legislacao', 'str:100'),
+            ('status', 'str:100'),
+            ('nome', 'str:100'),
+            ('cpfj', 'str:20'),
+            ('municipio', 'str:250')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
     mapping_auto_infracao = {
         'proc': 'proc',
         'num_ai': 'num_ai',
@@ -230,6 +537,23 @@ def get_mapping(schema):
         ]),
         'geometry': 'Polygon'
     }
+
+    embargo_oema2 = {
+        'properties': OrderedDict([
+            ('proc', 'str:30'),
+            ('num_ai', 'str:20'),
+            ('num_tei', 'str:20'),
+            ('area_ha', 'float:9.2'),
+            ('desc', 'str:254'),
+            ('legislacao', 'str:100'),
+            ('nome', 'str:100'),
+            ('cpfj', 'str:20'),
+            ('municipio', 'str:250'),
+            ('status', 'str:100')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
     mapping_embargo_oema = {
         'proc': 'proc',
         'num_ai': 'num_ai',
@@ -242,20 +566,23 @@ def get_mapping(schema):
         'municipio': 'municipio',
         'status': 'status'
     }
-
-    if schema == asv:
+   
+    if schema == asv or schema == asv2 or schema == asv3:
         return [Asv, mapping_asv, 'Asv']
-    elif schema == area_soltura:
+    elif schema == area_soltura or schema == area_soltura2 or \
+        schema == area_soltura3 or schema == area_soltura4 or schema == area_soltura5:
         return [AreaSoltura, mapping_area_soltura, 'AreaSoltura']
-    elif schema == asv_mata_atlantica:
+    elif schema == asv_mata_atlantica or schema == asv_mata_atlantica2 \
+        or schema == asv_mata_atlantica3 or schema == asv_mata_atlantica4 :
         return [AsvMataAtlantica, mapping_asv_mata_atlantica,
                 'AsvMataAtlantica']
-    elif schema == compensacao:
+    elif schema == compensacao or schema == compensacao2 or schema == compensacao3 \
+        or schema == compensacao3:
         return [CompensacaoMataAtlantica, mapping_compensacao,
                 'CompensacaoMataAtlantica']
-    elif schema == embargo_oema:
+    elif schema == embargo_oema or schema == embargo_oema2:
         return [EmbargoOEMA, mapping_embargo_oema, 'EmbargoOEMA']
-    elif schema == auto_infracao:
+    elif schema == auto_infracao or schema == auto_infracao2:
         return [AutoInfracaoOEMA, mapping_auto_infracao, 'AutoInfracaoOEMA']
     else:
         raise InvalidShapefileError(
@@ -279,21 +606,27 @@ def handle_uploaded_file(file, user):
             mkdir(upload_path)
             shp_zip.extractall(upload_path)
             shp_file = fiona.open(path=path.join(upload_path, shp[0]))
-            try:       
-                model, mapping, type_str = get_mapping(_schema)
+            try:  
+                model, mapping, type_str = get_mapping(shp_file.schema)
             except IndexError as error:
                 raise InvalidShapefileError(
-                    _('The shapefile is not in one of the accepted schemas.')
+                    _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
                 )
             number_of_features = len(shp_file)
-
             for i in range(number_of_features):
                 feature = shp_file.next()
                 dict_data = dict(zip(
                     mapping.keys(),
                     [feature['properties'].get(v) for v in mapping.values()]))
                 entry = model(**dict_data)
-                entry.geom = Polygon(feature['geometry']['coordinates'][0])
+                if feature['geometry']['type'] == 'Polygon':
+                    entry.geom = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
+                else:
+                    try:
+                        entry.geom = MultiPolygon(feature['geometry']['coordinates'][0])
+                    except TypeError:
+                        print('Geometria inválida..')
+                        continue                       
                 entry.usuario = user
                 entry.save()
 

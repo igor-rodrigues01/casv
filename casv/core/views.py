@@ -43,11 +43,11 @@ def get_mapping(schema):
             ('cpfj_dete', 'str:22'),
             ('rt', 'str:60'),
             ('cpfj_rt', 'str:22'),
-            ('area_ha', 'float:24.15'),
-            ('lenha_st', 'float:24.15'),
-            ('tora_m', 'float:24.15'),
-            ('torete_m', 'float:24.15'),
-            ('mourao_m', 'float:24.15'),
+            ('area_ha', 'float:20.15'),
+            ('lenha_st', 'float:20.15'),
+            ('tora_m', 'float:20.15'),
+            ('torete_m', 'float:20.15'),
+            ('mourao_m', 'float:20.15'),
             ('data_autex', 'date'),
             ('valido_ate', 'date'),
             ('municipio', 'str:40')
@@ -83,10 +83,10 @@ def get_mapping(schema):
             ('municipio', 'str:254'),
             ('tipo_empre', 'str:254'),
             ('cpfj', 'str:22'),
-            ('area_total', 'float:24.15'),
-            ('a_veg_prim', 'float:24.15'),
-            ('a_est_medi', 'float:24.15'),
-            ('a_est_avan', 'float:24.15')
+            ('area_total', 'float:20.15'),
+            ('a_veg_prim', 'float:20.15'),
+            ('a_est_medi', 'float:20.15'),
+            ('a_est_avan', 'float:20.15')
         ]),
         'geometry': 'Polygon'
     }
@@ -112,7 +112,7 @@ def get_mapping(schema):
             ('municipio', 'str:254'),
             ('tipo_empre', 'str:254'),
             ('cpfj', 'str:22'),
-            ('area_compe', 'float:24.15')
+            ('area_compe', 'float:20.15')
         ]),
         'geometry': 'Polygon'
     }
@@ -138,8 +138,8 @@ def get_mapping(schema):
             ('cpf', 'str:11'),
             ('telefone', 'str:15'),
             ('email', 'str:254'),
-            ('area', 'float:24.15'),
-            ('arl_app', 'float:24.15'),
+            ('area', 'float:20.15'),
+            ('arl_app', 'float:20.15'),
             ('bioma', 'str:254'),
             ('fitofision', 'str:254'),
             ('conservaca', 'int:1'),
@@ -152,7 +152,7 @@ def get_mapping(schema):
             ('carta', 'int:1'),
             ('reabilitad', 'int:1'),
             ('viveiros', 'int:5'),
-            ('distancia', 'float:24.15'),
+            ('distancia', 'float:20.15'),
             ('tempo', 'str:5'),
             ('vistoria', 'date'),
             ('taxon', 'str:254')])
@@ -279,8 +279,12 @@ def handle_uploaded_file(file, user):
             mkdir(upload_path)
             shp_zip.extractall(upload_path)
             shp_file = fiona.open(path=path.join(upload_path, shp[0]))
-
-            model, mapping, type_str = get_mapping(shp_file.schema)
+            try:       
+                model, mapping, type_str = get_mapping(_schema)
+            except IndexError as error:
+                raise InvalidShapefileError(
+                    _('The shapefile is not in one of the accepted schemas.')
+                )
             number_of_features = len(shp_file)
 
             for i in range(number_of_features):

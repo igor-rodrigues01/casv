@@ -622,11 +622,14 @@ def handle_uploaded_file(file, user):
                 if feature['geometry']['type'] == 'Polygon':
                     entry.geom = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
                 else:
+                    gemetries = []
+                    geom = feature['geometry']['coordinates'][0]
+                    for geometry in range(0, len(geom)):
+                        gemetries.append(Polygon(geom[geometry]))
                     try:
-                        entry.geom = MultiPolygon(feature['geometry']['coordinates'][0])
+                        entry.geom = MultiPolygon(gemetries)
                     except TypeError:
-                        print('Geometria inválida..')
-                        continue                       
+                        raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))                     
                 entry.usuario = user
                 entry.save()
 

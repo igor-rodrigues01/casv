@@ -16,6 +16,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import DetailView, DeleteView
 from django.utils.translation import ugettext as _
 from shapely.geometry.base import BaseGeometry
+from shapely.geometry import shape
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
 from .models import AutoInfracaoOEMA, EmbargoOEMA
@@ -622,14 +623,11 @@ def handle_uploaded_file(file, user):
                 if feature['geometry']['type'] == 'Polygon':
                     entry.geom = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
                 else:
-                    gemetries = []
-                    geom = feature['geometry']['coordinates'][0]
-                    for geometry in range(0, len(geom)):
-                        gemetries.append(Polygon(geom[geometry]))
+                    multipolygon = shape(feature['geometry'])
                     try:
-                        entry.geom = MultiPolygon(gemetries)
+                        entry.geom = multipolygon.wkt
                     except TypeError:
-                        raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))                     
+                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))               
                 entry.usuario = user
                 entry.save()
 

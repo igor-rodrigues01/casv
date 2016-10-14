@@ -5,6 +5,7 @@ from datetime import datetime
 from collections import OrderedDict
 from os import path, mkdir
 from shutil import rmtree
+from shapely.geometry import shape
 
 from rest_framework.generics import RetrieveAPIView
 from django.core.urlresolvers import reverse
@@ -16,7 +17,6 @@ from django.shortcuts import render, redirect
 from django.views.generic import DetailView, DeleteView
 from django.utils.translation import ugettext as _
 from shapely.geometry.base import BaseGeometry
-from shapely.geometry import shape
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
 from .models import AutoInfracaoOEMA, EmbargoOEMA
@@ -125,6 +125,54 @@ def get_mapping(schema):
             ('valido_ate', 'date'),
             ('municipio', 'str:40')
         ]),
+        'geometry': 'Multipolygon'
+    }
+
+    asv5 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'), 
+            ('n_autex', 'str:30'), 
+            ('uf', 'str:2'), 
+            ('fito', 'str:60'), 
+            ('nom_prop', 'str:60'), 
+            ('cpfj_prop', 'str:22'), 
+            ('detentor', 'str:60'), 
+            ('cpfj_dete', 'str:22'), 
+            ('rt', 'str:60'), 
+            ('cpfj_rt', 'str:22'), 
+            ('area_ha', 'float'), 
+            ('lenha_st', 'float'), 
+            ('tora_m', 'float'), 
+            ('torete_m', 'float'), 
+            ('mourao_m', 'float'), 
+            ('data_autex', 'date'), 
+            ('valido_ate', 'date'), 
+            ('municipio', 'str:40')
+        ]), 
+        'geometry': 'Polygon'
+    }
+
+    asv6 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'), 
+            ('n_autex', 'str:30'), 
+            ('uf', 'str:2'), 
+            ('fito', 'str:60'), 
+            ('nom_prop', 'str:60'), 
+            ('cpfj_prop', 'str:22'), 
+            ('detentor', 'str:60'), 
+            ('cpfj_dete', 'str:22'), 
+            ('rt', 'str:60'), 
+            ('cpfj_rt', 'str:22'), 
+            ('area_ha', 'float'), 
+            ('lenha_st', 'float'), 
+            ('tora_m', 'float'), 
+            ('torete_m', 'float'), 
+            ('mourao_m', 'float'), 
+            ('data_autex', 'date'), 
+            ('valido_ate', 'date'), 
+            ('municipio', 'str:40')
+        ]), 
         'geometry': 'Multipolygon'
     }
 
@@ -568,7 +616,8 @@ def get_mapping(schema):
         'status': 'status'
     }
    
-    if schema == asv or schema == asv2 or schema == asv3:
+    if schema == asv or schema == asv2 or schema == asv3 or \
+        schema == asv4 or schema == asv5  or schema == asv6:
         return [Asv, mapping_asv, 'Asv']
     elif schema == area_soltura or schema == area_soltura2 or \
         schema == area_soltura3 or schema == area_soltura4 or schema == area_soltura5:
@@ -607,7 +656,7 @@ def handle_uploaded_file(file, user):
             mkdir(upload_path)
             shp_zip.extractall(upload_path)
             shp_file = fiona.open(path=path.join(upload_path, shp[0]))
-            try:  
+            try:
                 model, mapping, type_str = get_mapping(shp_file.schema)
             except IndexError as error:
                 raise InvalidShapefileError(
@@ -627,7 +676,7 @@ def handle_uploaded_file(file, user):
                     try:
                         entry.geom = multipolygon.wkt
                     except TypeError:
-                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))               
+                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
                 entry.usuario = user
                 entry.save()
 

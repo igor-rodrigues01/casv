@@ -176,6 +176,54 @@ def get_mapping(schema):
         'geometry': 'Multipolygon'
     }
 
+    asv7 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'), 
+            ('n_autex', 'str:30'), 
+            ('uf', 'str:2'), 
+            ('fito', 'str:60'), 
+            ('nom_prop', 'str:60'), 
+            ('cpfj_prop', 'str:22'), 
+            ('detentor', 'str:60'), 
+            ('cpfj_dete', 'str:22'), 
+            ('rt', 'str:60'), 
+            ('cpfj_rt', 'str:22'), 
+            ('area_ha', 'float:24.15'), 
+            ('lenha_st', 'float:24.15'), 
+            ('tora_m', 'float:24.15'), 
+            ('torete_m', 'float:24.15'), 
+            ('mourao_m', 'float:24.15'), 
+            ('data_autex', 'date'), 
+            ('valido_ate', 'date'), 
+            ('municipio', 'str:40')
+        ]),
+        'geometry': 'Polygon'
+    }
+
+    asv8 = {
+        'properties': OrderedDict([
+            ('codigo', 'int:9'), 
+            ('n_autex', 'str:30'), 
+            ('uf', 'str:2'), 
+            ('fito', 'str:60'), 
+            ('nom_prop', 'str:60'), 
+            ('cpfj_prop', 'str:22'), 
+            ('detentor', 'str:60'), 
+            ('cpfj_dete', 'str:22'), 
+            ('rt', 'str:60'), 
+            ('cpfj_rt', 'str:22'), 
+            ('area_ha', 'float:24.15'), 
+            ('lenha_st', 'float:24.15'), 
+            ('tora_m', 'float:24.15'), 
+            ('torete_m', 'float:24.15'), 
+            ('mourao_m', 'float:24.15'), 
+            ('data_autex', 'date'), 
+            ('valido_ate', 'date'), 
+            ('municipio', 'str:40')
+        ]),
+        'geometry': 'Multipolygon'
+    }
+
 
     mapping_asv = {
         'codigo': 'codigo',
@@ -617,7 +665,8 @@ def get_mapping(schema):
     }
    
     if schema == asv or schema == asv2 or schema == asv3 or \
-        schema == asv4 or schema == asv5  or schema == asv6:
+        schema == asv4 or schema == asv5  or schema == asv6 \
+        schema == asv7 or schema == asv8:
         return [Asv, mapping_asv, 'Asv']
     elif schema == area_soltura or schema == area_soltura2 or \
         schema == area_soltura3 or schema == area_soltura4 or schema == area_soltura5:

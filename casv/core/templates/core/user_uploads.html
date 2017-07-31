@@ -36,7 +36,7 @@
       <ul class="list-group">
         {% for item in user.pedanuencia.all %}
           <li class="list-group-item">
-            <strong><a href="#" >ID: {{ item.pk }}</a></strong>
+            <strong><a href="{% url 'core:pedido_anuencia' item.pk %}" >ID: {{ item.pk }}</a></strong>
            - {{ item.data_criacao|date:"d M Y" }}
             
             <a class="pull-right" href="{% url 'core:delete-pedido_anuencia' item.pk %}">

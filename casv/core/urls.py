@@ -14,7 +14,8 @@ from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
 from .views import EmbargoGeoView, AutoInfracaoGeoView
 
 # ==============================
-from .views import PedidoAnuenciaMa,PedidoAnuenciaMaDelete
+from .views import (PedidoAnuenciaMaDeleteView,
+    PedidoAnuenciaMaDetailView, PedidoAnuenciaMaGeoView)
 
 
 urlpatterns = patterns(
@@ -111,11 +112,15 @@ urlpatterns = patterns(
     
     #==================
     url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-        PedidoAnuenciaMa.as_view(),name='pedido_anuencia'),
+        PedidoAnuenciaMaDetailView.as_view(),
+        name='pedido_anuencia'),
 
     url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
-    PedidoAnuenciaMaDelete.as_view(template_name='core/confirm_delete.html'),
-    name='delete-pedido_anuencia')
-    
+    PedidoAnuenciaMaDeleteView.as_view(),
+    name='delete-pedido_anuencia'),
+
+    url(r'^pedido-anuencia/(?P<pk>\d+)/$',
+        PedidoAnuenciaMaGeoView.as_view(),
+        name='geo-pedido_anuencia'),
     #================== 
 )

@@ -25,7 +25,12 @@ from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
 
+# ================================
+
+from .serializers import PedidoAnuenciaMaSerializer
 from pdb import set_trace
+
+# ================================
 
 
 class InvalidShapefileError(Exception):
@@ -1087,12 +1092,15 @@ class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
 
 # ==================================================
 
-class PedidoAnuenciaMa(LoginRequiredMixin,DetailView):
-    model = PedidoAnuenciaMataAtlantica
-    # context_object_name = 'pedido_anuencia'
-
-class PedidoAnuenciaMaDelete(CommonDeleteView):
+class PedidoAnuenciaMaDeleteView(CommonDeleteView):
     model = PedidoAnuenciaMataAtlantica
 
+class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
+    model = PedidoAnuenciaMataAtlantica
+    context_object_name = 'pedidoanuencia'
+
+class PedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+    queryset = PedidoAnuenciaMataAtlantica.objects.all()
+    serializer_class = PedidoAnuenciaMaSerializer
 
 # ==================================================

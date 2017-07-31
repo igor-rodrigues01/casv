@@ -63,7 +63,7 @@ class AnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
     list_display = ['processo', 'empreendedor', 'municipio',
         'tipo_empreendimento',  'data_criacao']
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
-    search_fields = ['processo', 'empreendedor', 'cpfj']
+    search_fields = ['processo', 'empreendedor', 'cpf_cnpj']
 
 
 admin.site.register(Asv, AsvAdmin)

@@ -5,17 +5,19 @@ from django.contrib.auth.decorators import login_required
 
 from .views import upload_file, login_view, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
-from .views import AsvMaDetailView, AsvMaDeleteView
+# from .views import AsvMaDetailView, AsvMaDeleteView,AsvMaGeoView
+from .views import (PedidoAnuenciaMaDeleteView,
+    PedidoAnuenciaMaDetailView,PedidoAnuenciaMaGeoView)
+from .views import (AnuenciaConcedidaMaDeleteView,
+    AnuenciaConcedidaMaDetailView,AnuenciaConcedidaMaGeoView)
 from .views import CompensacaoDetailView, CompensacaoDeleteView
 from .views import AreaSolturaDetailView, AreaSolturaDeleteView
-from .views import AsvMaGeoView, AsvGeoView, SolturaGeoView, CompensacaoGeoView
+from .views import AsvGeoView, SolturaGeoView, CompensacaoGeoView
 from .views import EmbargoDetailView, EmbargoDeleteView
 from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
 from .views import EmbargoGeoView, AutoInfracaoGeoView
 
 # ==============================
-from .views import (PedidoAnuenciaMaDeleteView,
-    PedidoAnuenciaMaDetailView, PedidoAnuenciaMaGeoView)
 
 
 urlpatterns = patterns(
@@ -54,13 +56,41 @@ urlpatterns = patterns(
         AreaSolturaDeleteView.as_view(),
         name='delete-areasoltura'),
 
-    url(r'^asvma/(?P<pk>\d+)/$',
-        AsvMaDetailView.as_view(),
-        name='asvma'),
+    # url(r'^asvma/(?P<pk>\d+)/$',
+    #     AsvMaDetailView.as_view(),
+    #     name='asvma'),
 
-    url(r'^asvma/(?P<pk>\d+)/delete/$',
-        AsvMaDeleteView.as_view(),
-        name='delete-asvma'),
+    # url(r'^asvma/(?P<pk>\d+)/delete/$',
+    #     AsvMaDeleteView.as_view(),
+    #     name='delete-asvma'),
+
+    # url(r'^asvma/geo/(?P<pk>\d+)/$',
+    #     AsvMaGeoView.as_view(),
+    #     name='geo-asvma'),
+
+    url(r'^pedido-anuencia/(?P<pk>\d+)/$',
+        PedidoAnuenciaMaDetailView.as_view(),
+        name='pedido_anuencia'),
+
+    url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
+        PedidoAnuenciaMaDeleteView.as_view(),
+        name='delete-pedido_anuencia'),
+
+    url(r'^pedido-anuencia/geo/(?P<pk>\d+)/$',
+        PedidoAnuenciaMaGeoView.as_view(),
+        name='geo-pedido_anuencia'),
+
+    url(r'^anuencia-concedida/(?P<pk>\d+)/$',
+        AnuenciaConcedidaMaDetailView.as_view(),
+        name='anuencia_concedida'),
+
+    url(r'^anuencia-concedida/(?P<pk>\d+)/delete/$',
+        AnuenciaConcedidaMaDeleteView.as_view(),
+        name='delete-anuencia_concedida'),
+
+    url(r'^anuencia-concedida/geo/(?P<pk>\d+)/$',
+        AnuenciaConcedidaMaGeoView.as_view(),
+        name='geo-anuencia_concedida'),
 
     url(r'^compensacao/(?P<pk>\d+)/$',
         CompensacaoDetailView.as_view(),
@@ -98,10 +128,6 @@ urlpatterns = patterns(
         CompensacaoGeoView.as_view(),
         name='geo-compensacao'),
 
-    url(r'^asvma/geo/(?P<pk>\d+)/$',
-        AsvMaGeoView.as_view(),
-        name='geo-asvma'),
-
     url(r'^asv/geo/(?P<pk>\d+)/$',
         AsvGeoView.as_view(),
         name='geo-asv'),
@@ -110,17 +136,4 @@ urlpatterns = patterns(
         SolturaGeoView.as_view(),
         name='geo-areasoltura'),
     
-    #==================
-    url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-        PedidoAnuenciaMaDetailView.as_view(),
-        name='pedido_anuencia'),
-
-    url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
-    PedidoAnuenciaMaDeleteView.as_view(),
-    name='delete-pedido_anuencia'),
-
-    url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-        PedidoAnuenciaMaGeoView.as_view(),
-        name='geo-pedido_anuencia'),
-    #================== 
 )

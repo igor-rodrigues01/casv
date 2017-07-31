@@ -18,20 +18,16 @@ from django.views.generic import DetailView, DeleteView
 from django.utils.translation import ugettext as _
 from shapely.geometry.base import BaseGeometry
 from .forms import UploadFileForm
-from .models import (Asv, AreaSoltura, AsvMataAtlantica,
-CompensacaoMataAtlantica,PedidoAnuenciaMataAtlantica,)
+from .models import Asv, AreaSoltura
+# from .models import AsvMataAtlantica
+from .models import (CompensacaoMataAtlantica,PedidoAnuenciaMataAtlantica,
+AnuenciaConcedidaMataAtlantica,)
 from .models import AutoInfracaoOEMA, EmbargoOEMA
 from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
-
-# ================================
-
-from .serializers import PedidoAnuenciaMaSerializer
-from pdb import set_trace
-
-# ================================
-
+from .serializers import (PedidoAnuenciaMaSerializer,
+AnuenciaConcedidaMaSerializer,)
 
 class InvalidShapefileError(Exception):
 
@@ -254,100 +250,167 @@ def get_mapping(schema):
         'municipio': 'municipio',
     }
 
-    asv_mata_atlantica = {
-        'properties': OrderedDict([
-            ('processo', 'int:10'),
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
-            ('cpfj', 'str:22'),
-            ('area_total', 'float:20.15'),
-            ('a_veg_prim', 'float:20.15'),
-            ('a_est_medi', 'float:20.15'),
-            ('a_est_avan', 'float:20.15')
-        ]),
-        'geometry': 'Polygon'
-    }
-
-    asv_mata_atlantica2 = {
-        'properties': OrderedDict([
-            ('processo', 'int:10'),
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
-            ('cpfj', 'str:22'),
-            ('area_total', 'float:20.15'),
-            ('a_veg_prim', 'float:20.15'),
-            ('a_est_medi', 'float:20.15'),
-            ('a_est_avan', 'float:20.15')
-        ]),
-        'geometry': 'Multipolygon'
-    }
-
-    asv_mata_atlantica3 = {
+    pedido_anuencia_mata_atlantica = {
         'properties': OrderedDict([
             ('processo', 'int:9'),
             ('empreended', 'str:254'),
             ('uf', 'str:2'),
             ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
+            ('tipo_empre','str:254'),
             ('cpfj', 'str:22'),
-            ('area_total', 'float:20'),
-            ('a_veg_prim', 'float:20'),
-            ('a_est_medi', 'float:20'),
-            ('a_est_avan', 'float:20')
+            ('area_total', 'float:20.15'),
+            ('urb_met', 'str:3'),
+            ('a_veg_prim', 'float:20.15'),
+            ('a_est_medi', 'float:20.15'),
+            ('a_est_avan','float:20.15'),
+            ('obs', 'str:250')
         ]),
         'geometry': 'Polygon'
     }
 
-    asv_mata_atlantica4 = {
+
+    mapping_ped_anuencia_mata_atlantica = {
+        'processo':'processo',
+        'uf':'uf',
+        'municipio':'municipio',
+        'empreendedor':'empreended',
+        'tipo_empreendimento':'tipo_empre',
+        'cpfj':'cpfj',
+        'area_empreendimento_total':'area_total',
+        'area_empreendimento_veg_primaria':'a_veg_prim',
+        'area_empreendimento_estagio_medio':'a_est_medi',
+        'area_empreendimento_estagio_avancado':'a_est_avan',
+        'urbano_metropolitano':'urb_met',
+        'observacao':'obs'
+    }
+
+    anuencia_concedida_mata_atlantica = {
         'properties': OrderedDict([
             ('processo', 'int:9'),
             ('empreended', 'str:254'),
             ('uf', 'str:2'),
             ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
-            ('cpfj', 'str:22'),
-            ('area_total', 'float:20'),
-            ('a_veg_prim', 'float:20'),
-            ('a_est_medi', 'float:20'),
-            ('a_est_avan', 'float:20')
+            ('tipo_empre','str:254'),
+            ('area_total', 'float:20.15'),
+            ('urb_met', 'str:4'),
+            ('a_veg_prim', 'float:20.15'),
+            ('a_est_medi', 'float:20.15'),
+            ('a_est_avan','float:20.15'),
+            ('obs', 'str:250'),
+            ('cpf_cnpj', 'str:254')
         ]),
-        'geometry': 'Multipolygon'
+        'geometry': 'Polygon'
     }
+
+    mapping_anuecia_concedida_mata_atlantica = {
+        'processo':'processo',
+        'uf':'uf',
+        'municipio':'municipio',
+        'empreendedor':'empreended',
+        'tipo_empreendimento':'tipo_empre',
+        'cpf_cnpj':'cpf_cnpj',
+        'area_empreendimento_total':'area_total',
+        'area_empreendimento_veg_primaria':'a_veg_prim',
+        'area_empreendimento_estagio_medio':'a_est_medi',
+        'area_empreendimento_estagio_avancado':'a_est_avan',
+        'urbano_metropolitano':'urb_met',
+        'observacao':'obs'
+    }
+
+    # asv_mata_atlantica = {
+    #     'properties': OrderedDict([
+    #         ('processo', 'int:10'),
+    #         ('empreended', 'str:254'),
+    #         ('uf', 'str:2'),
+    #         ('municipio', 'str:254'),
+    #         ('tipo_empre', 'str:254'),
+    #         ('cpfj', 'str:22'),
+    #         ('area_total', 'float:20.15'),
+    #         ('a_veg_prim', 'float:20.15'),
+    #         ('a_est_medi', 'float:20.15'),
+    #         ('a_est_avan', 'float:20.15')
+    #     ]),
+    #     'geometry': 'Polygon'
+    # }
+
+    # asv_mata_atlantica2 = {
+    #     'properties': OrderedDict([
+    #         ('processo', 'int:10'),
+    #         ('empreended', 'str:254'),
+    #         ('uf', 'str:2'),
+    #         ('municipio', 'str:254'),
+    #         ('tipo_empre', 'str:254'),
+    #         ('cpfj', 'str:22'),
+    #         ('area_total', 'float:20.15'),
+    #         ('a_veg_prim', 'float:20.15'),
+    #         ('a_est_medi', 'float:20.15'),
+    #         ('a_est_avan', 'float:20.15')
+    #     ]),
+    #     'geometry': 'Multipolygon'
+    # }
+
+    # asv_mata_atlantica3 = {
+    #     'properties': OrderedDict([
+    #         ('processo', 'int:9'),
+    #         ('empreended', 'str:254'),
+    #         ('uf', 'str:2'),
+    #         ('municipio', 'str:254'),
+    #         ('tipo_empre', 'str:254'),
+    #         ('cpfj', 'str:22'),
+    #         ('area_total', 'float:20'),
+    #         ('a_veg_prim', 'float:20'),
+    #         ('a_est_medi', 'float:20'),
+    #         ('a_est_avan', 'float:20')
+    #     ]),
+    #     'geometry': 'Polygon'
+    # }
+
+    # asv_mata_atlantica4 = {
+    #     'properties': OrderedDict([
+    #         ('processo', 'int:9'),
+    #         ('empreended', 'str:254'),
+    #         ('uf', 'str:2'),
+    #         ('municipio', 'str:254'),
+    #         ('tipo_empre', 'str:254'),
+    #         ('cpfj', 'str:22'),
+    #         ('area_total', 'float:20'),
+    #         ('a_veg_prim', 'float:20'),
+    #         ('a_est_medi', 'float:20'),
+    #         ('a_est_avan', 'float:20')
+    #     ]),
+    #     'geometry': 'Multipolygon'
+    # }
 
     #add 
-    asv_mata_atlantica5 = {
-        'properties': OrderedDict([
-            ('processo', 'int:9'), 
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
-            ('cpfj', 'str:22'),
-            ('area_total', 'float:20.15'),
-            ('a_veg_prim', 'float:20.15'),
-            ('a_est_medi', 'float:20.15'),
-            ('a_est_avan', 'float:20.15')
-        ]),
-        'geometry': 'Polygon'
-    }
+    # asv_mata_atlantica5 = {
+    #     'properties': OrderedDict([
+    #         ('processo', 'int:9'), 
+    #         ('empreended', 'str:254'),
+    #         ('uf', 'str:2'),
+    #         ('municipio', 'str:254'),
+    #         ('tipo_empre', 'str:254'),
+    #         ('cpfj', 'str:22'),
+    #         ('area_total', 'float:20.15'),
+    #         ('a_veg_prim', 'float:20.15'),
+    #         ('a_est_medi', 'float:20.15'),
+    #         ('a_est_avan', 'float:20.15')
+    #     ]),
+    #     'geometry': 'Polygon'
+    # }
 
     #old
-    mapping_asv_mata_atlantica = {
-        'processo': 'processo',
-        'uf': 'uf',
-        'municipio': 'municipio',
-        'empreendedor': 'empreended',
-        'tipo_empreendimento': 'tipo_empre',
-        'cpfj': 'cpfj',
-        'area_supressao_total': 'area_total',
-        'area_supressao_veg_primaria': 'a_veg_prim',
-        'area_supressao_estagio_medio': 'a_est_medi',
-        'area_supressao_estagio_avancado': 'a_est_avan',
-    }
+    # mapping_asv_mata_atlantica = {
+    #     'processo': 'processo',
+    #     'uf': 'uf',
+    #     'municipio': 'municipio',
+    #     'empreendedor': 'empreended',
+    #     'tipo_empreendimento': 'tipo_empre',
+    #     'cpfj': 'cpfj',
+    #     'area_supressao_total': 'area_total',
+    #     'area_supressao_veg_primaria': 'a_veg_prim',
+    #     'area_supressao_estagio_medio': 'a_est_medi',
+    #     'area_supressao_estagio_avancado': 'a_est_avan',
+    # }
 
     compensacao = {
         'properties': OrderedDict([
@@ -414,16 +477,51 @@ def get_mapping(schema):
         'geometry': 'Polygon'
     }
 
-    #old
-    mapping_compensacao = {
-        'processo': 'processo',
-        'uf': 'uf',
-        'municipio': 'municipio',
-        'empreendedor': 'empreended',
-        'tipo_empreendimento': 'tipo_empre',
-        'cpfj': 'cpfj',
-        'area_compensacao': 'area_compe',
+    compensacao6 = {
+        'properties': OrderedDict([
+            ('processo', 'int:9'),
+            ('empreended', 'str:254'),
+            ('uf', 'str:2'),
+            ('municipio', 'str:254'),
+            ('tipo_empre', 'str:254'),
+            ('cpfj', 'str:22'),
+            ('area_compe', 'float:20.15'),
+            ('tipo_comp', 'str:10'),
+            ('c_veg_prim','float:11.10'),
+            ('c_est_inic', 'float:11.10'),
+            ('c_est_med', 'float:11.10'),
+            ('c_est_avan', 'float:11.10'),
+            ('obs', 'str:250')
+        ]),
+        'geometry': 'Polygon'
     }
+
+    mapping_compensacao = {
+        'processo':'processo',
+        'uf':'uf',
+        'municipio':'municipio',
+        'empreendedor':'empreended',
+        'tipo_empreendimento':'tipo_empre',
+        'cpfj':'cpfj',
+        'area_compensacao_total':'area_compe',
+        'tipo_compensacao':'tipo_comp',
+        'area_compensacao_veg_primaria':'c_veg_prim',
+        'area_compensacao_estagio_inicial':'c_est_inic',
+        'area_compensacao_estagio_medio':'c_est_med',
+        'area_compensacao_estagio_avancado':'c_est_avan',
+        'observacao':'obs'
+    }
+
+    #old
+    # mapping_compensacao = {
+    #     'processo': 'processo',
+    #     'uf': 'uf',
+    #     'municipio': 'municipio',
+    #     'empreendedor': 'empreended',
+    #     'tipo_empreendimento': 'tipo_empre',
+    #     'cpfj': 'cpfj',
+    #     'area_compensacao': 'area_compe',
+    # }
 
     area_soltura = {
         'geometry': 'Polygon',
@@ -735,81 +833,6 @@ def get_mapping(schema):
         'municipio': 'municipio',
         'status': 'status'
     }
-
-    # ======================================================
-
-    pedido_anuencia_mata_atlantica = {
-        'properties': OrderedDict([
-            ('processo', 'int:9'),
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre','str:254'),
-            ('cpfj', 'str:22'),
-            ('area_total', 'float:20.15'),
-            ('urb_met', 'str:3'),
-            ('a_veg_prim', 'float:20.15'),
-            ('a_est_medi', 'float:20.15'),
-            ('a_est_avan','float:20.15'),
-            ('obs', 'str:250')
-        ]),
-        'geometry': 'Polygon'
-    }
-
-    mapping_ped_anuencia_mata_atlantica = {
-        'processo':'processo',
-        'uf':'uf',
-        'municipio':'municipio',
-        'empreendedor':'empreended',
-        'tipo_empreendimento':'tipo_empre',
-        'cpfj':'cpfj',
-        'area_empreendimento_total':'area_total',
-        'area_empreendimento_veg_primaria':'a_veg_prim',
-        'area_empreendimento_estagio_medio':'a_est_medi',
-        'area_empreendimento_estagio_avancado':'a_est_avan',
-        'urbano_metropolitano':'urb_met',
-        'observacao':'obs'
-    }
- 
-    compensacao6 = {
-        'properties': OrderedDict([
-            ('processo', 'int:9'),
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre', 'str:254'),
-            ('cpfj', 'str:22'),
-            ('area_compe', 'float:20.15'),
-            ('tipo_comp', 'str:10'),
-            ('c_veg_prim','float:11.10'),
-            ('c_est_inic', 'float:11.10'),
-            ('c_est_med', 'float:11.10'),
-            ('c_est_avan', 'float:11.10'),
-            ('obs', 'str:250')
-        ]),
-        'geometry': 'Polygon'
-    }
-
-    mapping_new_compensacao = {
-        'processo':'processo',
-        'uf':'uf',
-        'municipio':'municipio',
-        'empreendedor':'empreended',
-        'tipo_empreendimento':'tipo_empre',
-        'cpfj':'cpfj',
-        'area_compensacao_total':'area_compe',
-        'tipo_compensacao':'tipo_comp',
-        'area_compensacao_veg_primaria':'c_veg_prim',
-        'area_compensacao_estagio_inicial':'c_est_inic',
-        'area_compensacao_estagio_medio':'c_est_med',
-        'area_compensacao_estagio_avancado':'c_est_avan',
-        'observacao':'obs'
-    }
-
-
-
-
-    # ======================================================
    
     if schema == asv or schema == asv2 or schema == asv3 or \
         schema == asv4 or schema == asv5  or schema == asv6 or \
@@ -821,26 +844,24 @@ def get_mapping(schema):
         schema == area_soltura5 or schema == area_soltura6:
         return [AreaSoltura, mapping_area_soltura, 'AreaSoltura']
 
-    elif schema == asv_mata_atlantica or schema == asv_mata_atlantica2 \
-        or schema == asv_mata_atlantica3 or schema == asv_mata_atlantica4\
-        or schema == asv_mata_atlantica5:
-        return [AsvMataAtlantica, mapping_asv_mata_atlantica,
-                'AsvMataAtlantica']
+    # elif schema == asv_mata_atlantica or schema == asv_mata_atlantica2 \
+    #     or schema == asv_mata_atlantica3 or schema == asv_mata_atlantica4\
+    #     or schema == asv_mata_atlantica5:
+    #     return [AsvMataAtlantica, mapping_asv_mata_atlantica,
+    #             'AsvMataAtlantica']
 
     elif schema == pedido_anuencia_mata_atlantica:
         return [PedidoAnuenciaMataAtlantica,mapping_ped_anuencia_mata_atlantica,
                 'PedidoAnuenciaMataAtlantica']
 
-    # elif schema == compensacao or schema == compensacao2 or\
-    #     schema == compensacao3 or schema == compensacao4 or \
-    #     schema == compensacao5:
-    #     return [CompensacaoMataAtlantica, mapping_compensacao,
-    #             'CompensacaoMataAtlantica']
+    elif schema == anuencia_concedida_mata_atlantica:
+        return [AnuenciaConcedidaMataAtlantica,mapping_anuecia_concedida_mata_atlantica,
+                'AnuenciaConcedidaMataAtlantica']
 
     elif schema == compensacao or schema == compensacao2 or\
         schema == compensacao3 or schema == compensacao4 or \
         schema == compensacao5 or schema == compensacao6:
-        return [CompensacaoMataAtlantica, mapping_new_compensacao,
+        return [CompensacaoMataAtlantica, mapping_compensacao,
                 'CompensacaoMataAtlantica']
 
     elif schema == embargo_oema or schema == embargo_oema2:
@@ -875,15 +896,13 @@ def handle_uploaded_file(file, user):
             
             try:
 
-                # mappig = campos 
                 model, mapping, type_str = get_mapping(shp_file.schema)               
             except IndexError as error:
                 raise InvalidShapefileError(
                     _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
                 )
             number_of_features = len(shp_file)
-            
-            # ==== salva no banco =======
+          
             for i in range(number_of_features):
                 feature = shp_file.next()
                 
@@ -903,8 +922,6 @@ def handle_uploaded_file(file, user):
                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
                 entry.usuario = user
                 entry.save()
-
-            # ==================
 
             rmtree(upload_path)
             return {'type': type_str, 'quantity': number_of_features}
@@ -1015,9 +1032,18 @@ class AreaSolturaDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'areasoltura'
 
 
-class AsvMaDetailView(LoginRequiredMixin, DetailView):
-    model = AsvMataAtlantica
-    context_object_name = 'asvma'
+# class AsvMaDetailView(LoginRequiredMixin, DetailView):
+#     model = AsvMataAtlantica
+#     context_object_name = 'asvma'
+
+class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
+    model = PedidoAnuenciaMataAtlantica
+    context_object_name = 'pedidoanuencia'
+
+
+class AnuenciaConcedidaMaDetailView(LoginRequiredMixin, DetailView):
+    model = AnuenciaConcedidaMataAtlantica
+    context_object_name = 'anuenciaconcedida'
 
 
 class CompensacaoDetailView(LoginRequiredMixin, DetailView):
@@ -1039,8 +1065,15 @@ class AsvDeleteView(CommonDeleteView):
     model = Asv
 
 
-class AsvMaDeleteView(CommonDeleteView):
-    model = AsvMataAtlantica
+# class AsvMaDeleteView(CommonDeleteView):
+#     model = AsvMataAtlantica
+
+class PedidoAnuenciaMaDeleteView(CommonDeleteView):
+    model = PedidoAnuenciaMataAtlantica
+
+
+class AnuenciaConcedidaMaDeleteView(CommonDeleteView):
+    model = AnuenciaConcedidaMataAtlantica
 
 
 class AreaSolturaDeleteView(CommonDeleteView):
@@ -1080,27 +1113,20 @@ class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     serializer_class = SolturaSerializer
 
 
-class AsvMaGeoView(LoginRequiredMixin, RetrieveAPIView):
-    queryset = AsvMataAtlantica.objects.all()
-    serializer_class = AsvMaSerializer
-
-
-class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
-    queryset = CompensacaoMataAtlantica.objects.all()
-    serializer_class = CompensacaoSerializer
-
-
-# ==================================================
-
-class PedidoAnuenciaMaDeleteView(CommonDeleteView):
-    model = PedidoAnuenciaMataAtlantica
-
-class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
-    model = PedidoAnuenciaMataAtlantica
-    context_object_name = 'pedidoanuencia'
+# class AsvMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+#     queryset = AsvMataAtlantica.objects.all()
+#     serializer_class = AsvMaSerializer
 
 class PedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = PedidoAnuenciaMataAtlantica.objects.all()
     serializer_class = PedidoAnuenciaMaSerializer
 
-# ==================================================
+
+class AnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+    queryset = AnuenciaConcedidaMataAtlantica.objects.all()
+    serializer_class = AnuenciaConcedidaMaSerializer
+
+
+class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
+    queryset = CompensacaoMataAtlantica.objects.all()
+    serializer_class = CompensacaoSerializer

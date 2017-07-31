@@ -26,7 +26,6 @@
       </ul>
     </div>
   </div>
-  <!-- &===============================  -->
   
   <div class="panel panel-default">
     <div class="panel-heading">
@@ -50,19 +49,18 @@
     </div>
   </div>
 
-  <!-- &===============================  -->
-
-  <div class="panel panel-default">
+    <div class="panel panel-default">
     <div class="panel-heading">
-        <h3 class="panel-title">Autorização de Supressão de Vegetação - Mata Atlântica</h3>
+        <h3 class="panel-title">Anuência Concedida - Mata Atlântica</h3>
     </div>
     <div class="panel-body">
       <ul class="list-group">
-        {% for item in user.asvma.all %}
+        {% for item in user.anuenciaconcedida.all %}
           <li class="list-group-item">
-            <strong><a href="{% url 'core:asvma' item.pk %}" >ID: {{ item.pk }}</a></strong>
+            <strong><a href="{% url 'core:anuencia_concedida' item.pk %}" >ID: {{ item.pk }}</a></strong>
            - {{ item.data_criacao|date:"d M Y" }}
-            <a class="pull-right" href="{% url 'core:delete-asvma' item.pk %}">
+            
+            <a class="pull-right" href="{% url 'core:delete-anuencia_concedida' item.pk %}">
               <span class="text-danger glyphicon glyphicon-remove-circle"></span>
             </a>
           </li>

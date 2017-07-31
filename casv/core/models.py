@@ -244,7 +244,8 @@ class PedidoAnuenciaMataAtlantica(models.Model):
         verbose_name_plural = """ Pedidos de Anuência -
             Mata Atlântica"""
 
-
+# the difference in between 'AnuenciaConcedidaMataAtlantica' and
+# 'PedidoAnuenciaMataAtlantica' is the field cpfj - cpf_cnpj
 class AnuenciaConcedidaMataAtlantica(models.Model):
 
     processo = models.IntegerField(null=True, blank=True)
@@ -264,7 +265,7 @@ class AnuenciaConcedidaMataAtlantica(models.Model):
         max_length=255,
         null=True,
         blank=True)
-    cpfj = models.CharField(
+    cpf_cnpj = models.CharField(
         'CPF ou CNPJ do Empreendedor',
         max_length=22,
         null=True,
@@ -285,11 +286,11 @@ class AnuenciaConcedidaMataAtlantica(models.Model):
         """Área de Empreendimento em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario      = models.ForeignKey(User, related_name='anuConcedMat')
+    usuario      = models.ForeignKey(User, related_name='anuenciaconcedida')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom         = models.MultiPolygonField(srid=4674)
     objects      = models.GeoManager()
-    urbano_metropolitano = models.BooleanField('Local Urbarno')
+    urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
     observacao = models.TextField('Observação',null=True,blank=True) 
     def __str__(self):
         return '%s' % self.processo
@@ -423,43 +424,3 @@ class CompensacaoMataAtlantica(models.Model):
         verbose_name = 'Área de Compensação - Mata Atlântica'
         verbose_name_plural = 'Áreas de Compensação - Mata Atlântica'
 
-
-# class CompensacaoMataAtlantica(models.Model):
-
-#     processo = models.IntegerField(null=True, blank=True)
-#     uf = models.CharField(
-#         'Unidade da Federação',
-#         max_length=2,
-#         null=True,
-#         blank=True)
-#     municipio = models.CharField(
-#         'Município',
-#         max_length=255,
-#         null=True,
-#         blank=True)
-#     empreendedor = models.CharField(max_length=255, null=True, blank=True)
-#     tipo_empreendimento = models.CharField(
-#         'Tipo de Empreendimento',
-#         max_length=255,
-#         null=True,
-#         blank=True)
-#     cpfj = models.CharField(
-#         'CPF ou CNPJ do Empreendedor',
-#         max_length=22,
-#         null=True,
-#         blank=True)
-#     area_compensacao = models.FloatField(
-#         'Área de Compensação (ha)',
-#         null=True,
-#         blank=True)
-#     usuario = models.ForeignKey(User, related_name='compensacao')
-#     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-#     geom = models.MultiPolygonField(srid=4674)
-#     objects = models.GeoManager()
-
-#     def __str__(self):
-#         return '%s' % self.processo
-
-#     class Meta:
-#         verbose_name = 'Área de Compensação - Mata Atlântica'
-#         verbose_name_plural = 'Áreas de Compensação - Mata Atlântica'

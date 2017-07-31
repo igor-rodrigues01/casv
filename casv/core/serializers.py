@@ -3,7 +3,8 @@
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
-from .models import EmbargoOEMA, AutoInfracaoOEMA,PedidoAnuenciaMataAtlantica
+from .models import (EmbargoOEMA, AutoInfracaoOEMA,
+PedidoAnuenciaMataAtlantica,AnuenciaConcedidaMataAtlantica)
 
 
 class AsvSerializer(GeoFeatureModelSerializer):
@@ -64,6 +65,15 @@ class PedidoAnuenciaMaSerializer(GeoFeatureModelSerializer):
     
     class Meta:
         model = PedidoAnuenciaMataAtlantica
+        id_field = False
+        fields = []
+        geo_field = 'geom'
+
+
+class AnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
+    
+    class Meta:
+        model = AnuenciaConcedidaMataAtlantica
         id_field = False
         fields = []
         geo_field = 'geom'

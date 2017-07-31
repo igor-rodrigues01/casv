@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+<h1>{% block page_title %}{% trans 'Login' %}{% endblock page_title %}</h1>
+
+{% block content %}
+  {% if msg %}
+    <div class="alert alert-danger" role="alert">{{ msg }}</div>
+  {% endif %}
+  <div class="col-xs-12 col-md-3">
+    {% include 'core/login_form.html' %}
+  </div>
+{% endblock content %}

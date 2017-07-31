@@ -1,0 +1,71 @@
+{% extends "core/object_detail.html" %}
+{% load i18n %}
+
+{% block page_title %}<h2>Embargo: {{ embargo.pk }}</h2>{% endblock page_title %}
+
+{% block detail %}
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Processo</h4>
+        <p class="list-group-item-text">{{ embargo.proc }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Número do auto de infração</h4>
+        <p class="list-group-item-text">{{ embargo.num_ai }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Número TEI</h4>
+        <p class="list-group-item-text">{{ embargo.num_tei }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área da Propriedade (ha)</h4>
+        <p class="list-group-item-text">{{ embargo.area_ha }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Descrição</h4>
+        <p class="list-group-item-text">{{ embargo.desc }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Legislação</h4>
+        <p class="list-group-item-text">{{ embargo.legislacao }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Status</h4>
+        <p class="list-group-item-text">{{ embargo.status }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Nome do proprietário</h4>
+        <p class="list-group-item-text">{{ embargo.nome }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF ou CNPJ</h4>
+        <p class="list-group-item-text">{{ embargo.cpfj }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Município</h4>
+        <p class="list-group-item-text">{{ embargo.municipio }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de Criação</h4>
+        <p class="list-group-item-text">{{ embargo.data_criacao }}</p>
+    </a>
+
+{% endblock detail %}
+
+{% block delete_button %}
+  <a class="btn btn-danger" href="{% url 'core:delete-embargo' embargo.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+{% endblock delete_button %}
+
+{% block extra_js %}
+    {% include "core/map.html" with pk=embargo.pk geojson_url="core:geo-embargo" %}
+{% endblock extra_js %}

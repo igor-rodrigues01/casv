@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+<h1>{% block page_title %}{% blocktrans %}Uploads of the user{% endblocktrans %} {{ user.first_name }}{% endblock page_title %}</h1>
+
+{% block content %}
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Autorização de Supressão de Vegetação</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.asv.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:asv' item.pk %}" >ID: {{ item.pk }} </a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-asv' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <!-- &===============================  -->
+  
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Pedido de Anuência - Mata Atlântica</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.pedanuencia.all %}
+          <li class="list-group-item">
+            <strong><a href="#" >ID: {{ item.pk }}</a></strong>
+           - {{ item.data_criacao|date:"d M Y" }}
+            
+            <a class="pull-right" href="{% url 'core:delete-pedido_anuencia' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- &===============================  -->
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Autorização de Supressão de Vegetação - Mata Atlântica</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.asvma.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:asvma' item.pk %}" >ID: {{ item.pk }}</a></strong>
+           - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-asvma' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Área de Compensação - Mata Atlântica</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.compensacao.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:compensacao' item.pk %}">ID: {{ item.pk }}</a></strong>
+            - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-compensacao' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Área de Soltura de Animais Silvestres</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.area_soltura.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:areasoltura' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-areasoltura' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Embargos</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.embargo.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:embargo' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-embargo' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Autos de infração</h3>
+    </div>
+    <div class="panel-body">
+      <ul class="list-group">
+        {% for item in user.infracao.all %}
+          <li class="list-group-item">
+            <strong><a href="{% url 'core:infracao' item.pk %}" >ID: {{ item.pk }}</a></strong>
+             - {{ item.data_criacao|date:"d M Y" }}
+            <a class="pull-right" href="{% url 'core:delete-infracao' item.pk %}">
+              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
+            </a>
+          </li>
+        {% empty %}
+          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+{% endblock content %}

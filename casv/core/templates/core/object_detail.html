@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block extra_css %}
+    <link href="{% static 'css/leaflet.css' %}" rel="stylesheet">
+{% endblock extra_css%}
+
+{% block page_title %}{% endblock page_title %}
+
+{% block content %}
+
+  <div class="col-md-6 col-xs-12">
+    <div class="list-group ">
+        {% block detail %}
+        {% endblock detail %}
+    </div>
+  </div>
+
+  <div class="col-md-6 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-body">
+         <div id="map"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    {% block delete_button %}
+    {% endblock delete_button %}
+  </div>
+
+{% endblock content %}
+
+{% block extra_js %}{% endblock extra_js %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+
+<h1>{% block page_title %}{% trans 'Upload a shape file' %}{% endblock page_title %}</h1>
+
+{% block content %}
+
+    {% if uploaded %}
+      {% if success %}
+
+        <div class="alert alert-success" role="alert">
+          {% blocktrans count quantity=quantity %}
+            You uploaded {{ quantity }} item of {{ type }}.
+          {% plural %}
+            You uploaded {{ quantity }} items of {{ type }}.
+          {% endblocktrans %}
+        </div>
+      
+      {% else %}
+        
+        <div class="alert alert-danger" role="alert">
+          {{ message }}
+        </div>
+      
+      {% endif %}
+    {% endif %}
+
+    <p>
+      {% blocktrans %}Upload a zip file containing the shp, pbf, shx and prj. See the {% endblocktrans %}
+      <a href='{% url 'core:file-models' %}'>{% trans 'file models.' %}</a>
+    </p>
+
+    <form enctype="multipart/form-data" action="{% url 'core:upload' %}" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="btn btn-primary" type="submit" value="Enviar" />
+    </form>
+
+{% endblock content %}

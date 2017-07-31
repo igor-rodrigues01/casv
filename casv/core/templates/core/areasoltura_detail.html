@@ -1,0 +1,156 @@
+{% extends "core/object_detail.html" %}
+{% load i18n %}
+
+{% block page_title %}<h2>Área de Soltura de Animais Silvestres: {{ areasoltura.pk }}</h2>{% endblock page_title %}
+
+{% block detail %}
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Processo</h4>
+        <p class="list-group-item-text">{{ areasoltura.processo }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Nome</h4>
+        <p class="list-group-item-text">{{ areasoltura.nome }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Endereço</h4>
+        <p class="list-group-item-text">{{ areasoltura.endereco }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">UF</h4>
+        <p class="list-group-item-text">{{ areasoltura.uf }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Município</h4>
+        <p class="list-group-item-text">{{ areasoltura.municipio }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Proprietário</h4>
+        <p class="list-group-item-text">{{ areasoltura.proprietario }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">CPF</h4>
+        <p class="list-group-item-text">{{ areasoltura.cpf }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Telefone</h4>
+        <p class="list-group-item-text">{{ areasoltura.telefone }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Email</h4>
+        <p class="list-group-item-text">{{ areasoltura.email }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área da Propriedade (ha)</h4>
+        <p class="list-group-item-text">{{ areasoltura.area }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de reserva legal e proteção permanente</h4>
+        <p class="list-group-item-text">{{ areasoltura.arl_app }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Bioma</h4>
+        <p class="list-group-item-text">{{ areasoltura.bioma }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Fitofisionomia</h4>
+        <p class="list-group-item-text">{{ areasoltura.fitofisionomia }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Conservação</h4>
+        <p class="list-group-item-text">{{ areasoltura.conservacao }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Conectividade</h4>
+        <p class="list-group-item-text">{{ areasoltura.conectividade }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Unidade de Conservação</h4>
+        <p class="list-group-item-text">{{ areasoltura.uc }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Água</h4>
+        <p class="list-group-item-text">{{ areasoltura.agua }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Atividade Econômica</h4>
+        <p class="list-group-item-text">{{ areasoltura.atividade }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Documento da Propriedade</h4>
+        <p class="list-group-item-text">{{ areasoltura.documento }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Mapa</h4>
+        <p class="list-group-item-text">{{ areasoltura.mapa }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Carta de Intenção e Compromisso</h4>
+        <p class="list-group-item-text">{{ areasoltura.carta }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Termo de Compromisso Reabilitador</h4>
+        <p class="list-group-item-text">{{ areasoltura.reabilitador }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Número de viveiros</h4>
+        <p class="list-group-item-text">{{ areasoltura.viveiros }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Distância até o CETAS mais próximo</h4>
+        <p class="list-group-item-text">{{ areasoltura.distancia }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Tempo de viagem ao CETAS mais próximo</h4>
+        <p class="list-group-item-text">{{ areasoltura.tempo }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Taxon</h4>
+        <p class="list-group-item-text">{{ areasoltura.taxon }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Usuário</h4>
+        <p class="list-group-item-text">{{ areasoltura.usuario }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Data de Criação</h4>
+        <p class="list-group-item-text">{{ areasoltura.data_criacao }}</p>
+    </a>
+
+{% endblock detail %}
+
+{% block delete_button %}
+  <a class="btn btn-danger" href="{% url 'core:delete-areasoltura' areasoltura.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+{% endblock delete_button %}
+
+{% block extra_js %}
+    {% include "core/map.html" with pk=areasoltura.pk geojson_url="core:geo-areasoltura" %}
+{% endblock extra_js %}

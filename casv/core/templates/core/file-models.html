@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+
+<h1>{% block page_title %}{% trans 'File models' %}{% endblock page_title %}</h1>
+
+{% block content %}
+  <ul class="list-group">
+    <li class="list-group-item">
+      <a href="{% static 'shapes/EmbargoOEMA.zip' %}">Embargo</a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% static 'shapes/AutoInfracaoOEMA.zip' %}">Auto de infração</a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% static 'shapes/Asv.zip' %}">Autorização de Supressão de Vegetação</a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% static 'shapes/AsvMataAtlantica.zip' %}">Autorização de Supressão de Vegetação - Mata Atlântica</a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% static 'shapes/CompensacaoMataAtlantica.zip' %}">Área de Compensação - Mata Atlântica</a>
+    </li>
+    <li class="list-group-item">
+      <a href="{% static 'shapes/AreaSoltura.zip' %}">Área de Soltura de Animais Silvestres</a>
+    </li>
+  </ul>
+{% endblock content %}

@@ -189,9 +189,9 @@ class AreaSoltura(models.Model):
         verbose_name_plural = 'Áreas de Soltura de Animais Silvestres'
 
 
-class PedidoAnuenciaMataAtlantica(models.Model):
-
-    processo = models.IntegerField(null=True, blank=True)
+class DadosAnuenciaMataAtlantica(models.Model):
+    
+    processo = models.IntegerField(null=True, blank=True,unique=True)
     uf = models.CharField(
         'Unidade da Federação',
         max_length=2,
@@ -229,76 +229,153 @@ class PedidoAnuenciaMataAtlantica(models.Model):
         """Área de Empreendimento em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario      = models.ForeignKey(User, related_name='pedanuencia')
+    usuario      = models.ForeignKey(User, related_name='dadosanuencia')
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom         = models.MultiPolygonField(srid=4674)
     objects      = models.GeoManager()
     urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
-    observacao = models.TextField('Observação',null=True,blank=True) 
+    status      = models.CharField('Status',max_length=30)
+    observacao = models.TextField('Observação',null=True,blank=True)
 
     def __str__(self):
         return '%s' % self.processo
 
     class Meta:
-        verbose_name = 'Pedido de Anuência - Mata Atlântica'
-        verbose_name_plural = """ Pedidos de Anuência -
-            Mata Atlântica"""
+        verbose_name = 'Dados de Anuência - Mata Atlântica'
+        verbose_name_plural = 'Dados de Anuência - Mata Atlântica'
+
+
+class GeomPedidoAnuenciaMataAtlantica(models.Model):
+    
+    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo')
+    geom     = models.MultiPolygonField(srid=4674)
+    objects  = models.GeoManager()
+    
+    class Meta:
+        verbose_name = 'Geometria do Pedido de Anuência - Mata Atlântica'
+        verbose_name_plural = 'Geometrias dos Pedidos de Anuência - Mata Atlântica'
+
+
+class GeomAnuenciaConcedidaMataAtlantica(models.Model):
+    
+    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo')
+    geom     = models.MultiPolygonField(srid=4674)
+    objects  = models.GeoManager()
+    
+    class Meta:
+        verbose_name = 'Geometria de Anuência Concedida - Mata Atlântica'
+        verbose_name_plural = 'Geometrias das Anuências Concedidas'
+
+# class PedidoAnuenciaMataAtlantica(models.Model):
+
+#     processo = models.IntegerField(null=True, blank=True)
+#     uf = models.CharField(
+#         'Unidade da Federação',
+#         max_length=2,
+#         null=True,
+#         blank=True)
+#     municipio = models.CharField(
+#         'Município',
+#         max_length=255,
+#         null=True,
+#         blank=True)
+#     empreendedor = models.CharField(max_length=255, null=True, blank=True)
+#     tipo_empreendimento = models.CharField(
+#         'Tipo de Empreendimento',
+#         max_length=255,
+#         null=True,
+#         blank=True)
+#     cpfj = models.CharField(
+#         'CPF ou CNPJ do Empreendedor',
+#         max_length=22,
+#         null=True,
+#         blank=True)
+#     area_empreendimento_total = models.FloatField(
+#         'Área Total de Empreendimento (ha)',
+#         null=True,
+#         blank=True)
+#     area_empreendimento_veg_primaria = models.FloatField(
+#         """Área Empreendida em Vegetação Primária (ha)""",
+#         null=True,
+#         blank=True)
+#     area_empreendimento_estagio_medio = models.FloatField(
+#         """Área de Empreendimento em Estágio Médio (ha)""",
+#         null=True,
+#         blank=True)
+#     area_empreendimento_estagio_avancado = models.FloatField(
+#         """Área de Empreendimento em Estágio Avançado (ha)""",
+#         null=True,
+#         blank=True)
+#     usuario      = models.ForeignKey(User, related_name='pedanuencia')
+#     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
+#     geom         = models.MultiPolygonField(srid=4674)
+#     objects      = models.GeoManager()
+#     urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
+#     observacao = models.TextField('Observação',null=True,blank=True) 
+
+#     def __str__(self):
+#         return '%s' % self.processo
+
+#     class Meta:
+#         verbose_name = 'Pedido de Anuência - Mata Atlântica'
+#         verbose_name_plural = """ Pedidos de Anuência -
+#             Mata Atlântica"""
+
 
 # the difference in between 'AnuenciaConcedidaMataAtlantica' and
 # 'PedidoAnuenciaMataAtlantica' is the field cpfj - cpf_cnpj
-class AnuenciaConcedidaMataAtlantica(models.Model):
+# class AnuenciaConcedidaMataAtlantica(models.Model):
 
-    processo = models.IntegerField(null=True, blank=True)
-    uf = models.CharField(
-        'Unidade da Federação',
-        max_length=2,
-        null=True,
-        blank=True)
-    municipio = models.CharField(
-        'Município',
-        max_length=255,
-        null=True,
-        blank=True)
-    empreendedor = models.CharField(max_length=255, null=True, blank=True)
-    tipo_empreendimento = models.CharField(
-        'Tipo de Empreendimento',
-        max_length=255,
-        null=True,
-        blank=True)
-    cpf_cnpj = models.CharField(
-        'CPF ou CNPJ do Empreendedor',
-        max_length=22,
-        null=True,
-        blank=True)
-    area_empreendimento_total = models.FloatField(
-        'Área Total de Empreendimento (ha)',
-        null=True,
-        blank=True)
-    area_empreendimento_veg_primaria = models.FloatField(
-        """Área Empreendida em Vegetação Primária (ha)""",
-        null=True,
-        blank=True)
-    area_empreendimento_estagio_medio = models.FloatField(
-        """Área de Empreendimento em Estágio Médio (ha)""",
-        null=True,
-        blank=True)
-    area_empreendimento_estagio_avancado = models.FloatField(
-        """Área de Empreendimento em Estágio Avançado (ha)""",
-        null=True,
-        blank=True)
-    usuario      = models.ForeignKey(User, related_name='anuenciaconcedida')
-    data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    geom         = models.MultiPolygonField(srid=4674)
-    objects      = models.GeoManager()
-    urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
-    observacao = models.TextField('Observação',null=True,blank=True) 
-    def __str__(self):
-        return '%s' % self.processo
+#     processo = models.IntegerField(null=True, blank=True)
+#     uf = models.CharField(
+#         'Unidade da Federação',
+#         max_length=2,
+#         null=True,
+#         blank=True)
+#     municipio = models.CharField(
+#         'Município',
+#         max_length=255,
+#         null=True,
+#         blank=True)
+#     empreendedor = models.CharField(max_length=255, null=True, blank=True)
+#     tipo_empreendimento = models.CharField(
+#         'Tipo de Empreendimento',
+#         max_length=255,
+#         null=True,
+#         blank=True)
+#     cpf_cnpj = models.CharField(
+#         'CPF ou CNPJ do Empreendedor',
+#         max_length=22,
+#         null=True,
+#         blank=True)
+#     area_empreendimento_total = models.FloatField(
+#         'Área Total de Empreendimento (ha)',
+#         null=True,
+#         blank=True)
+#     area_empreendimento_veg_primaria = models.FloatField(
+#         """Área Empreendida em Vegetação Primária (ha)""",
+#         null=True,
+#         blank=True)
+#     area_empreendimento_estagio_medio = models.FloatField(
+#         """Área de Empreendimento em Estágio Médio (ha)""",
+#         null=True,
+#         blank=True)
+#     area_empreendimento_estagio_avancado = models.FloatField(
+#         """Área de Empreendimento em Estágio Avançado (ha)""",
+#         null=True,
+#         blank=True)
+#     usuario      = models.ForeignKey(User, related_name='anuenciaconcedida')
+#     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
+#     geom         = models.MultiPolygonField(srid=4674)
+#     objects      = models.GeoManager()
+#     urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
+#     observacao = models.TextField('Observação',null=True,blank=True) 
+#     def __str__(self):
+#         return '%s' % self.processo
 
-    class Meta:
-        verbose_name = 'Anuência Concedida - Mata Atlântica'
-        verbose_name_plural = """Anuências Concedidas -
-            Mata Atlântica"""
+#     class Meta:
+#         verbose_name = 'Anuência Concedida - Mata Atlântica'
+#         verbose_name_plural = """Anuências Concedidas -
+#             Mata Atlântica"""
 
 
 class AsvMataAtlantica(models.Model):

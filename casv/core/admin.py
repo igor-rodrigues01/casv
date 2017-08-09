@@ -1,7 +1,8 @@
 from django.contrib.gis import admin
 
 from .models import (Asv, AreaSoltura, AsvMataAtlantica,CompensacaoMataAtlantica,
-AnuenciaConcedidaMataAtlantica,PedidoAnuenciaMataAtlantica,)
+GeomPedidoAnuenciaMataAtlantica,GeomAnuenciaConcedidaMataAtlantica,
+DadosAnuenciaMataAtlantica)
 from .models import EmbargoOEMA, AutoInfracaoOEMA
 
 
@@ -49,22 +50,40 @@ class CompensacaoMataAtlanticaAdmin(admin.OSMGeoAdmin):
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
     search_fields = ['processo', 'empreendedor', 'cpfj']
 
-
-class PedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
+# class PedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
     
+#     list_display = ['processo', 'empreendedor', 'municipio',
+#         'tipo_empreendimento',  'data_criacao','urbano_metropolitano','observacao']
+#     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
+#     search_fields = ['processo', 'empreendedor', 'cpfj']
+
+
+# class AnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
+    
+#     list_display = ['processo', 'empreendedor', 'municipio',
+#         'tipo_empreendimento',  'data_criacao']
+#     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
+#     search_fields = ['processo', 'empreendedor', 'cpf_cnpj']
+
+class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
+    
+    list_display  = ['processo','geom']
+    list_filter   = ['processo']
+    search_fields = ['processo']
+
+class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
+
+    list_display  = ['processo','geom']
+    list_filter   = ['processo']
+    search_fields = ['processo']
+
+class DadosAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
+
+
     list_display = ['processo', 'empreendedor', 'municipio',
         'tipo_empreendimento',  'data_criacao','urbano_metropolitano','observacao']
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
     search_fields = ['processo', 'empreendedor', 'cpfj']
-
-
-class AnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
-    
-    list_display = ['processo', 'empreendedor', 'municipio',
-        'tipo_empreendimento',  'data_criacao']
-    list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
-    search_fields = ['processo', 'empreendedor', 'cpf_cnpj']
-
 
 admin.site.register(Asv, AsvAdmin)
 admin.site.register(EmbargoOEMA, EmbargoAdmin)
@@ -72,6 +91,11 @@ admin.site.register(AutoInfracaoOEMA, AutoInfracaoAdmin)
 admin.site.register(AreaSoltura, AreaSolturaAdmin)
 admin.site.register(AsvMataAtlantica)
 admin.site.register(CompensacaoMataAtlantica, CompensacaoMataAtlanticaAdmin)
-admin.site.register(PedidoAnuenciaMataAtlantica,PedidoAnuenciaMataAtlanticaAdmin)
-admin.site.register(AnuenciaConcedidaMataAtlantica,
-    AnuenciaConcedidaMataAtlanticaAdmin)
+# admin.site.register(PedidoAnuenciaMataAtlantica,PedidoAnuenciaMataAtlanticaAdmin)
+# admin.site.register(AnuenciaConcedidaMataAtlantica,
+#     AnuenciaConcedidaMataAtlanticaAdmin)
+admin.site.register(GeomPedidoAnuenciaMataAtlantica,
+    GeomPedidoAnuenciaMataAtlanticaAdmin)
+admin.site.register(GeomAnuenciaConcedidaMataAtlantica,
+    GeomAnuenciaConcedidaMataAtlanticaAdmin)
+admin.site.register(DadosAnuenciaMataAtlantica,DadosAnuenciaMataAtlanticaAdmin)

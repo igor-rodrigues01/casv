@@ -36,8 +36,34 @@
     </a>
 
     <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Tipo de Compensação (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.tipo_compensacao }}</p>
+    </a>
+
+
+    <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Área de Compensação (ha)</h4>
-        <p class="list-group-item-text">{{ compensacao.area_compensacao }}</p>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao_total }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Compensação de Vegetação Primária (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao_veg_primaria }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Compensação de Estágio Inicial (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao_estagio_inicial }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Compensação de Estágio Médio (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao_estagio_medio }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Área de Compensação de Estágio Avançado (ha)</h4>
+        <p class="list-group-item-text">{{ compensacao.area_compensacao_estagio_avancado }}</p>
     </a>
 
     <a href="#" class="list-group-item">
@@ -46,9 +72,15 @@
     </a>
 
     <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Observações</h4>
+        <p class="list-group-item-text">{{ compensacao.observacao }}</p>
+    </a>
+    
+    <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Data de criação</h4>
         <p class="list-group-item-text">{{ compensacao.data_criacao }}</p>
     </a>
+
 
 {% endblock detail %}
 

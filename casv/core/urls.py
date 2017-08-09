@@ -6,16 +6,19 @@ from django.contrib.auth.decorators import login_required
 from .views import upload_file, login_view, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
 # from .views import AsvMaDetailView, AsvMaDeleteView,AsvMaGeoView
-from .views import (PedidoAnuenciaMaDeleteView,
-    PedidoAnuenciaMaDetailView,PedidoAnuenciaMaGeoView)
-from .views import (AnuenciaConcedidaMaDeleteView,
-    AnuenciaConcedidaMaDetailView,AnuenciaConcedidaMaGeoView)
+# from .views import (PedidoAnuenciaMaDeleteView,
+#     PedidoAnuenciaMaDetailView,PedidoAnuenciaMaGeoView)
+# from .views import (AnuenciaConcedidaMaDeleteView,
+#     AnuenciaConcedidaMaDetailView,AnuenciaConcedidaMaGeoView)
 from .views import CompensacaoDetailView, CompensacaoDeleteView
 from .views import AreaSolturaDetailView, AreaSolturaDeleteView
 from .views import AsvGeoView, SolturaGeoView, CompensacaoGeoView
 from .views import EmbargoDetailView, EmbargoDeleteView
 from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
 from .views import EmbargoGeoView, AutoInfracaoGeoView
+
+from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
+from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
 
 # ==============================
 
@@ -67,29 +70,41 @@ urlpatterns = patterns(
     # url(r'^asvma/geo/(?P<pk>\d+)/$',
     #     AsvMaGeoView.as_view(),
     #     name='geo-asvma'),
+    
+    #===================================
+
+    # url(r'^pedido-anuencia/(?P<pk>\d+)/$',
+    #     PedidoAnuenciaMaDetailView.as_view(),
+    #     name='pedido_anuencia'),
 
     url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-        PedidoAnuenciaMaDetailView.as_view(),
+        DadosAnuenciaMaDetailView.as_view(
+        template_name = 'core/pedidoanuenciamataatlantica_detail.html'),
         name='pedido_anuencia'),
 
     url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
-        PedidoAnuenciaMaDeleteView.as_view(),
+        DadosAnuenciaMaDeleteView.as_view(
+        template_name = 'core/pedidoanuenciamataatlantica_confirm_delete.html'),
         name='delete-pedido_anuencia'),
 
-    url(r'^pedido-anuencia/geo/(?P<pk>\d+)/$',
-        PedidoAnuenciaMaGeoView.as_view(),
-        name='geo-pedido_anuencia'),
-
     url(r'^anuencia-concedida/(?P<pk>\d+)/$',
-        AnuenciaConcedidaMaDetailView.as_view(),
+        DadosAnuenciaMaDetailView.as_view(
+        template_name = 'core/anuenciaconcedidamataatlantica_detail.html'),
         name='anuencia_concedida'),
 
     url(r'^anuencia-concedida/(?P<pk>\d+)/delete/$',
-        AnuenciaConcedidaMaDeleteView.as_view(),
+        DadosAnuenciaMaDeleteView.as_view(
+        template_name = 'core/anuenciaconcedidamataatlantica_confirm_delete.html'),
         name='delete-anuencia_concedida'),
+    
+    #===== 
 
+    url(r'^pedido-anuencia/geo/(?P<pk>\d+)/$',
+        GeomPedidoAnuenciaMaGeoView.as_view(),
+        name='geo-pedido_anuencia'),
+    
     url(r'^anuencia-concedida/geo/(?P<pk>\d+)/$',
-        AnuenciaConcedidaMaGeoView.as_view(),
+        GeomAnuenciaConcedidaMaGeoView.as_view(),
         name='geo-anuencia_concedida'),
 
     url(r'^compensacao/(?P<pk>\d+)/$',

@@ -1,76 +1,81 @@
 {% extends "core/object_detail.html" %}
 {% load i18n %}
 
-{% block page_title %}<h2>Anuência Concedida - Mata Atlântica: {{ anuenciaconcedida.pk }}</h2>{% endblock page_title %}
+{% block page_title %}<h2>Anuência Concedida - Mata Atlântica: {{ dados_anuencia.pk }}</h2>{% endblock page_title %}
 
 {% block detail %}
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Processo</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.processo }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.processo }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">UF</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.uf }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.uf }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Município</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.municipio }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.municipio }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Empreendedor</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.empreendedor }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.empreendedor }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Tipo de Empreendimento</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.tipo_empreendimento }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.tipo_empreendimento }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">CPF ou CNPJ do Empreendedor</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.cpf_cnpj }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.cpfj }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Área Total de Supressão (ha)</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.area_supressao_total }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.area_empreendimento_total }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Área de Supressão de Vegetação Primária (ha)</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.area_supressao_veg_primaria }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.area_empreendimento_veg_primaria }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Área de Supressão em Estágio Médio (ha)</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.area_supressao_estagio_medio }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.area_empreendimento_estagio_medio }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Área de Supressão em Estágio Avançado (ha)</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.area_supressao_estagio_avancado }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.area_empreendimento_estagio_avancado }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Usuário</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.usuario }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.usuario }}</p>
+    </a>
+
+    <a href="#" class="list-group-item">
+        <h4 class="list-group-item-heading">Observações</h4>
+        <p class="list-group-item-text">{{ dados_anuencia.observacao }}</p>
     </a>
 
     <a href="#" class="list-group-item">
         <h4 class="list-group-item-heading">Data de criação</h4>
-        <p class="list-group-item-text">{{ anuenciaconcedida.data_criacao }}</p>
+        <p class="list-group-item-text">{{ dados_anuencia.data_criacao }}</p>
     </a>
 
 {% endblock detail %}
 
 {% block delete_button %}
-  <a class="btn btn-danger" href="{% url 'core:delete-anuencia_concedida' anuenciaconcedida.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
-{% endblock delete_button %}
+     <a class="btn btn-danger" href="{% url 'core:delete-anuencia_concedida' dados_anuencia.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+{% endblock %}
 
 {% block extra_js %}
-    {% include "core/map.html" with pk=anuenciaconcedida.pk geojson_url="core:geo-anuencia_concedida" %}
+    {% include "core/map.html" with pk=dados_anuencia.pk geojson_url="core:geo-anuencia_concedida" %}
 {% endblock extra_js %}

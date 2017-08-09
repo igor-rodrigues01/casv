@@ -20,14 +20,13 @@ from shapely.geometry.base import BaseGeometry
 from .forms import UploadFileForm
 from .models import Asv, AreaSoltura
 # from .models import AsvMataAtlantica
-from .models import (CompensacaoMataAtlantica,PedidoAnuenciaMataAtlantica,
-AnuenciaConcedidaMataAtlantica,)
+from .models import (CompensacaoMataAtlantica,GeomPedidoAnuenciaMataAtlantica,
+GeomAnuenciaConcedidaMataAtlantica,DadosAnuenciaMataAtlantica)
 from .models import AutoInfracaoOEMA, EmbargoOEMA
 from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
-from .serializers import (PedidoAnuenciaMaSerializer,
-AnuenciaConcedidaMaSerializer,)
+from .serializers import (GeomPedidoAnuenciaMaSerializer,GeomAnuenciaConcedidaMaSerializer)
 
 class InvalidShapefileError(Exception):
 
@@ -302,13 +301,14 @@ def get_mapping(schema):
         'geometry': 'Polygon'
     }
 
+
     mapping_anuecia_concedida_mata_atlantica = {
         'processo':'processo',
         'uf':'uf',
         'municipio':'municipio',
         'empreendedor':'empreended',
         'tipo_empreendimento':'tipo_empre',
-        'cpf_cnpj':'cpf_cnpj',
+        'cpfj':'cpf_cnpj',
         'area_empreendimento_total':'area_total',
         'area_empreendimento_veg_primaria':'a_veg_prim',
         'area_empreendimento_estagio_medio':'a_est_medi',
@@ -316,6 +316,7 @@ def get_mapping(schema):
         'urbano_metropolitano':'urb_met',
         'observacao':'obs'
     }
+
 
     # asv_mata_atlantica = {
     #     'properties': OrderedDict([
@@ -850,13 +851,15 @@ def get_mapping(schema):
     #     return [AsvMataAtlantica, mapping_asv_mata_atlantica,
     #             'AsvMataAtlantica']
 
+    #================================
+    
     elif schema == pedido_anuencia_mata_atlantica:
-        return [PedidoAnuenciaMataAtlantica,mapping_ped_anuencia_mata_atlantica,
-                'PedidoAnuenciaMataAtlantica']
+        return [DadosAnuenciaMataAtlantica,GeomPedidoAnuenciaMataAtlantica,
+        mapping_ped_anuencia_mata_atlantica,'GeomPedidoAnuenciaMataAtlantica']
 
     elif schema == anuencia_concedida_mata_atlantica:
-        return [AnuenciaConcedidaMataAtlantica,mapping_anuecia_concedida_mata_atlantica,
-                'AnuenciaConcedidaMataAtlantica']
+        return [DadosAnuenciaMataAtlantica,GeomAnuenciaConcedidaMataAtlantica,
+        mapping_anuecia_concedida_mata_atlantica,'GeomAnuenciaConcedidaMataAtlantica']
 
     elif schema == compensacao or schema == compensacao2 or\
         schema == compensacao3 or schema == compensacao4 or \
@@ -888,15 +891,22 @@ def handle_uploaded_file(file, user):
     if zipfile.is_zipfile(file):
         shp_zip = zipfile.ZipFile(file)
         shp = [filename for filename in shp_zip.namelist() if filename[-3:].lower() == 'shp']
-        
+        dict_data_geo = {}
+
         if len(shp) == 1:
             mkdir(upload_path)
             shp_zip.extractall(upload_path)
             shp_file = fiona.open(path=path.join(upload_path, shp[0]))
             
             try:
+                list_result_mapping = get_mapping(shp_file.schema)
 
-                model, mapping, type_str = get_mapping(shp_file.schema)               
+                if len(list_result_mapping) == 4:                
+                    model_data,model_geom, mapping, type_str = list_result_mapping
+                
+                else:
+                    model_data, mapping, type_str = get_mapping(shp_file.schema)
+            
             except IndexError as error:
                 raise InvalidShapefileError(
                     _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
@@ -905,23 +915,48 @@ def handle_uploaded_file(file, user):
           
             for i in range(number_of_features):
                 feature = shp_file.next()
-                
                 dict_data = dict( \
                 zip(  
                     mapping.keys(),[feature['properties'].get(v) for v in mapping.values()]
                 ))
-
-                entry = model(**dict_data)
+                entry = model_data(**dict_data)
+                
                 if feature['geometry']['type'] == 'Polygon':
-                    entry.geom = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
+
+                    if len(list_result_mapping) == 4:
+                        dict_data_geo['geom']  = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
+                        entry_geom             = model_geom(**dict_data_geo)
+                        entry_geom.processo_id = feature['properties'].get('processo')
+                    
+                    else:
+                        entry.geom = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
+
                 else:
-                    multipolygon = shape(feature['geometry'])
                     try:
-                        entry.geom = multipolygon.wkt
+                        if len(list_result_mapping) == 4:
+                            multipolygon = shape(feature['geometry'])
+                            entry.geom   = multipolygon.wkt                           
+                            # entry.geom = multipolygon.wkt
                     except TypeError:
                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
-                entry.usuario = user
-                entry.save()
+                
+                entry.usuario     = user
+                
+                if len(list_result_mapping) == 4: 
+                    existing_processo = model_data.objects.filter(processo=\
+                    feature['properties'].get('processo'))
+                    
+                    if len(existing_processo) == 0:
+                        entry.save()
+                        entry_geom.pk = entry.pk
+                        entry_geom.save()
+                    
+                    else:
+                        raise InvalidShapefileError(_('{} - Processo Existente.'\
+                        .format(feature['properties'].get('processo'))))
+
+                else:
+                    entry.save()
 
             rmtree(upload_path)
             return {'type': type_str, 'quantity': number_of_features}
@@ -1016,6 +1051,13 @@ class UserUploads(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserUploads, self).get_context_data(**kwargs)
+        context['dados_pedido_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(\
+            geompedidoanuenciamataatlantica__processo_id=\
+            DadosAnuenciaMataAtlantica.objects.values_list('processo'))
+        
+        context['dados_anuencia_concedida'] = DadosAnuenciaMataAtlantica.objects.filter(\
+            geomanuenciaconcedidamataatlantica__processo_id=\
+            DadosAnuenciaMataAtlantica.objects.values_list('processo'))
         return context
 
     def get_object(self):
@@ -1036,17 +1078,24 @@ class AreaSolturaDetailView(LoginRequiredMixin, DetailView):
 #     model = AsvMataAtlantica
 #     context_object_name = 'asvma'
 
-class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
-    model = PedidoAnuenciaMataAtlantica
-    context_object_name = 'pedidoanuencia'
+# ==============
 
+# class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
+#     model = PedidoAnuenciaMataAtlantica
+#     context_object_name = 'pedidoanuencia'
 
-class AnuenciaConcedidaMaDetailView(LoginRequiredMixin, DetailView):
-    model = AnuenciaConcedidaMataAtlantica
-    context_object_name = 'anuenciaconcedida'
+class DadosAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
+    model = DadosAnuenciaMataAtlantica
+    context_object_name = 'dados_anuencia'
+ 
+        
+# class AnuenciaConcedidaMaDetailView(LoginRequiredMixin, DetailView):
+#     model = AnuenciaConcedidaMataAtlantica
+#     context_object_name = 'anuenciaconcedida'
 
 
 class CompensacaoDetailView(LoginRequiredMixin, DetailView):
+
     model = CompensacaoMataAtlantica
     context_object_name = 'compensacao'
 
@@ -1068,12 +1117,17 @@ class AsvDeleteView(CommonDeleteView):
 # class AsvMaDeleteView(CommonDeleteView):
 #     model = AsvMataAtlantica
 
-class PedidoAnuenciaMaDeleteView(CommonDeleteView):
-    model = PedidoAnuenciaMataAtlantica
+# =====================
+
+# class PedidoAnuenciaMaDeleteView(CommonDeleteView):
+#     model = PedidoAnuenciaMataAtlantica
+
+class DadosAnuenciaMaDeleteView(CommonDeleteView):
+    model = DadosAnuenciaMataAtlantica
 
 
-class AnuenciaConcedidaMaDeleteView(CommonDeleteView):
-    model = AnuenciaConcedidaMataAtlantica
+# class AnuenciaConcedidaMaDeleteView(CommonDeleteView):
+#     model = AnuenciaConcedidaMataAtlantica
 
 
 class AreaSolturaDeleteView(CommonDeleteView):
@@ -1117,14 +1171,24 @@ class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
 #     queryset = AsvMataAtlantica.objects.all()
 #     serializer_class = AsvMaSerializer
 
-class PedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
-    queryset = PedidoAnuenciaMataAtlantica.objects.all()
-    serializer_class = PedidoAnuenciaMaSerializer
+# ===============
+
+# class PedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+#     queryset = PedidoAnuenciaMataAtlantica.objects.all()
+#     serializer_class = PedidoAnuenciaMaSerializer
+
+class GeomPedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+    queryset = GeomPedidoAnuenciaMataAtlantica.objects.all()
+    serializer_class = GeomPedidoAnuenciaMaSerializer
 
 
-class AnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
-    queryset = AnuenciaConcedidaMataAtlantica.objects.all()
-    serializer_class = AnuenciaConcedidaMaSerializer
+# class AnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+#     queryset = AnuenciaConcedidaMataAtlantica.objects.all()
+#     serializer_class = AnuenciaConcedidaMaSerializer
+
+class GeomAnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
+    queryset = GeomAnuenciaConcedidaMataAtlantica.objects.all()
+    serializer_class = GeomAnuenciaConcedidaMaSerializer
 
 
 class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):

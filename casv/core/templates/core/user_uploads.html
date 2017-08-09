@@ -2,7 +2,12 @@
 {% load i18n %}
 
 
-<h1>{% block page_title %}{% blocktrans %}Uploads of the user{% endblocktrans %} {{ user.first_name }}{% endblock page_title %}</h1>
+<h1>
+  {% block page_title %}
+    {% blocktrans %}Uploads of the user{% endblocktrans %} 
+    {{ user.first_name }}
+  {% endblock page_title %}
+</h1>
 
 {% block content %}
 
@@ -33,7 +38,7 @@
     </div>
     <div class="panel-body">
       <ul class="list-group">
-        {% for item in user.pedanuencia.all %}
+        {% for item in dados_pedido_anuencia%}
           <li class="list-group-item">
             <strong><a href="{% url 'core:pedido_anuencia' item.pk %}" >ID: {{ item.pk }}</a></strong>
            - {{ item.data_criacao|date:"d M Y" }}
@@ -55,7 +60,7 @@
     </div>
     <div class="panel-body">
       <ul class="list-group">
-        {% for item in user.anuenciaconcedida.all %}
+        {% for item in dados_anuencia_concedida %}
           <li class="list-group-item">
             <strong><a href="{% url 'core:anuencia_concedida' item.pk %}" >ID: {{ item.pk }}</a></strong>
            - {{ item.data_criacao|date:"d M Y" }}

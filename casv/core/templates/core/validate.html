@@ -1,0 +1,18 @@
+<script type="text/javascript">
+    
+    function validate(){
+        div_error = document.getElementById('div-error');
+        status    = document.getElementById('select_status').value;
+        upload    = document.getElementById('id_upload_file').value;
+        
+        div_error.style.display = 'none';
+
+        if(status == "Status" && upload == ""){
+            div_error.style.display = 'block';
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+</script>

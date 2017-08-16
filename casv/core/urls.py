@@ -15,10 +15,12 @@ from .views import AreaSolturaDetailView, AreaSolturaDeleteView
 from .views import AsvGeoView, SolturaGeoView, CompensacaoGeoView
 from .views import EmbargoDetailView, EmbargoDeleteView
 from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
-from .views import EmbargoGeoView, AutoInfracaoGeoView
+from .views import EmbargoGeoView, AutoInfracaoGeoView,IbamaAnuenciaDetailView
+from .views import IbamaAnuenciaListView,IbamaAnuenciaConcessaoView
 
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
+
 
 # ==============================
 
@@ -42,6 +44,18 @@ urlpatterns = patterns(
     url(r'^user-uploads/',
         UserUploads.as_view(),
         name='user-uploads'),
+
+    url(r'^ibama/$',
+        IbamaAnuenciaListView.as_view(),
+        name='ibama-list'),
+    
+    url(r'^ibama/(?P<pk>\d+)/concessao$',
+        IbamaAnuenciaConcessaoView.as_view(),
+        name='ibama-concessao'),
+
+     url(r'^ibama/geo/(?P<pk>\d+)/$',
+        IbamaAnuenciaDetailView.as_view(),
+        name='ibama-geo'),
 
     url(r'^asv/(?P<pk>\d+)/$',
         AsvDetailView.as_view(),

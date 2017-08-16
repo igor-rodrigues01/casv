@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-tes
 from django.contrib.gis.db import models
 from django.contrib.auth.models import User
-
+from django.utils import timezone
 
 class AutoInfracaoOEMA(models.Model):
 
@@ -246,8 +246,9 @@ class DadosAnuenciaMataAtlantica(models.Model):
 
 class GeomPedidoAnuenciaMataAtlantica(models.Model):
     
-    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo')
-    geom     = models.MultiPolygonField(srid=4674)
+    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo',null=True,blank=True)
+    geom     = models.MultiPolygonField('Geometria',srid=4674)
+    usuario  = models.ForeignKey(User, related_name='geom_pedido_anuencia',null=True)
     objects  = models.GeoManager()
     
     class Meta:
@@ -257,9 +258,11 @@ class GeomPedidoAnuenciaMataAtlantica(models.Model):
 
 class GeomAnuenciaConcedidaMataAtlantica(models.Model):
     
-    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo')
-    geom     = models.MultiPolygonField(srid=4674)
-    objects  = models.GeoManager()
+    processo     = models.ForeignKey(DadosAnuenciaMataAtlantica,null=True,blank=True)
+    geom         = models.MultiPolygonField('Geometria',srid=4674)
+    usuario      = models.ForeignKey(User, related_name='geom_anuencia_concedida',null=True)
+    data_criacao = models.DateTimeField('Data de Criação',auto_now_add=True,null=True) 
+    objects      = models.GeoManager()
     
     class Meta:
         verbose_name = 'Geometria de Anuência Concedida - Mata Atlântica'

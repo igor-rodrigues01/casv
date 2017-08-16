@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% load i18n %}
+    
+    {% block page_title %}
+        <h1>Em Análise</h1>
+    {% endblock page_title %}
+
+{% block content %}
+    <p>
+    {% blocktrans %}Upload a zip file containing the shp, dbf, shx and prj. See the {%endblocktrans %}
+      <a href="{% static 'shapes/Anuencia_Concedida.zip'%}">{% trans 'file models.' %}</a>
+          
+    </p>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">Conceder Anuência</h3>
+        </div>
+        <div class="panel-body">
+            
+            <div class="alert alert-danger" style="display:none;" id="div-error" role="alert">
+                Selecione o status ou envie um arquivo.
+            </div>
+            
+            {% if status %}
+                <div class="alert alert-success" role="alert">
+                    {% blocktrans %}
+                        Status update with success.
+                    {% endblocktrans %}
+                </div>
+            {% endif %}
+
+            {% if uploaded %}
+                {% if success %}
+
+
+                <div class="alert alert-success" role="alert">
+                    {% blocktrans count quantity=quantity %}
+                        You uploaded {{ quantity }} item of {{ type }}.
+                        The status of proccess has been defined how <strong>Deferred</strong>.
+                    {% plural %}
+                        You uploaded {{ quantity }} items of {{ type }}.
+                        The status of proccess has been defined how <strong>Deferred</strong>
+                    {% endblocktrans %}
+                </div>
+              
+                {% else %}
+                    
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                  
+                {% endif %}
+            {% endif %}
+
+            <form enctype="multipart/form-data" onsubmit="return validate();" method="post">{% csrf_token %}
+                
+                <select name="status" id="select_status" class="form-control">  
+                    {% for choice in combobox.Status.field.choices %}S
+                        <option value="{{choice}}">{{choice}}</option>
+                    {% endfor %}
+                </select>
+
+                <br/>
+
+                {{ form.as_p }}
+
+                <input type="hidden" name="processo" value="{{processo}}"/>
+                <input class="btn btn-primary" type="submit" id="btn-enviar" value="Enviar" />
+
+            </form>
+                <br/>
+            <div>
+                <p class="text-danger"><strong class="text-danger">Atenção:</strong> Apenas o responsável pelo processo poderá alterar seu <strong>status</strong>.Toda alteração está sendo monitorada.</p>
+            </div>
+            
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block extra_js %}
+    {% include 'core/validate.html' %}
+{% endblock extra_js %}

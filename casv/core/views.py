@@ -14,10 +14,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.gis.geos import Polygon, MultiPolygon
 from django.shortcuts import render, redirect
-from django.views.generic import DetailView, DeleteView
+from django.views.generic import DetailView, DeleteView,TemplateView
+from django.views.generic.list import ListView 
 from django.utils.translation import ugettext as _
 from shapely.geometry.base import BaseGeometry
-from .forms import UploadFileForm
+from .forms import UploadFileForm,ComboboxStatusForm
 from .models import Asv, AreaSoltura
 # from .models import AsvMataAtlantica
 from .models import (CompensacaoMataAtlantica,GeomPedidoAnuenciaMataAtlantica,
@@ -300,7 +301,6 @@ def get_mapping(schema):
         ]),
         'geometry': 'Polygon'
     }
-
 
     mapping_anuecia_concedida_mata_atlantica = {
         'processo':'processo',
@@ -972,7 +972,6 @@ def upload_file(request):
 
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
-        
         if form.is_valid():
             try:
                 upload_return = handle_uploaded_file(
@@ -1033,7 +1032,6 @@ class LoginRequiredMixin(object):
         return login_required(view, login_url='core:login')
 
 
-
 class EmbargoDetailView(LoginRequiredMixin, DetailView):
     model = EmbargoOEMA
     context_object_name = 'embargo'
@@ -1074,25 +1072,161 @@ class AreaSolturaDetailView(LoginRequiredMixin, DetailView):
     context_object_name = 'areasoltura'
 
 
-# class AsvMaDetailView(LoginRequiredMixin, DetailView):
-#     model = AsvMataAtlantica
-#     context_object_name = 'asvma'
-
-# ==============
-
-# class PedidoAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
-#     model = PedidoAnuenciaMataAtlantica
-#     context_object_name = 'pedidoanuencia'
-
 class DadosAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
     model = DadosAnuenciaMataAtlantica
     context_object_name = 'dados_anuencia'
- 
-        
-# class AnuenciaConcedidaMaDetailView(LoginRequiredMixin, DetailView):
-#     model = AnuenciaConcedidaMataAtlantica
-#     context_object_name = 'anuenciaconcedida'
 
+
+class IbamaAnuenciaListView(LoginRequiredMixin,ListView):
+    model = DadosAnuenciaMataAtlantica
+    template_name = "core/anuenciaIbama_list.html"
+
+
+class IbamaAnuenciaConcessaoView(LoginRequiredMixin,TemplateView):
+    model = DadosAnuenciaMataAtlantica
+    template_name = "core/anuenciaIbama_concessao.html"
+
+    def get_processo(self,pk):
+        processo = DadosAnuenciaMataAtlantica.objects.filter(pk=pk).values_list('processo')
+        return processo
+
+    def get_context_data(self,**kwargs):
+        context = super(IbamaAnuenciaConcessaoView,self).get_context_data(**kwargs)
+        context['form']        = UploadFileForm()
+        context['combobox']    = ComboboxStatusForm()
+        context['processo']    = self.get_processo(kwargs['pk'])[0][0]
+        return context
+
+    def get_mapping_geom(self, schema):
+        geom_anuencia_concedida_mata_atlantica = {
+            'geometry': 'Polygon',
+            'properties': OrderedDict()
+        }
+        
+        mapping_geom_anuencia_concedida_mata_atlantica = {
+            'processo':'processo'
+        }
+
+        if schema == geom_anuencia_concedida_mata_atlantica:
+            return [GeomAnuenciaConcedidaMataAtlantica,
+            mapping_geom_anuencia_concedida_mata_atlantica,
+            'GeomAnuenciaConcedidaMataAtlantica']
+
+        else:
+            raise InvalidShapefileError(
+                _('The shapefile is not in one of the accepted schemas.')
+            )
+
+    def update_status(self,pk,status):
+        DadosAnuenciaMataAtlantica.objects.filter(pk=pk).update(status=status)
+
+    def handle_uploaded_file_geom(self, file, user, processo):
+        '''Function to process a uploaded file, test if it is a valid zip file and
+        if it has a .shp file within, convert the shp file to geojson and import
+        it, creating a new Asv file'''
+
+        upload_folder = 'media/'
+        upload_path   = path.join(
+            upload_folder,
+            user.username + datetime.now().strftime('%f'))
+
+        if zipfile.is_zipfile(file):
+            shp_zip = zipfile.ZipFile(file)
+            shp     = [filename for filename in shp_zip.namelist() if filename[-3:].lower() == 'shp']
+            
+            if len(shp) == 1:
+                mkdir(upload_path)
+                shp_zip.extractall(upload_path)
+                
+                dict_data          = {}      
+                shp_file           = fiona.open(path=path.join(upload_path, shp[0]))
+                model              = GeomAnuenciaConcedidaMataAtlantica
+                type_str           = 'GeomAnuenciaConcedidaMataAtlantica'          
+                feature            = shp_file.next()
+                processo_instance  = DadosAnuenciaMataAtlantica.objects.filter(processo=processo)[0]
+                number_of_features = len(shp_file)
+                
+                if feature['geometry']['type'] == 'Polygon':
+                    dict_data['geom'] = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
+                
+                else:
+                    try:
+                        multipolygon      = shape(feature['geometry'])
+                        dict_data['geom'] = multipolygon.wkt                           
+                    
+                    except TypeError:
+                        raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
+
+                existing_processo = \
+                GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=processo_instance).values_list('processo')
+                import pdb; pdb.set_trace()
+                if len(existing_processo) == 0:
+                    dict_data['processo'] = processo_instance
+                    entry                 = model.objects.create(**dict_data)
+                    entry.usuario         = user
+                    entry.save()
+
+                else:
+                    raise InvalidShapefileError('Processo Nº {} já está concedido.'.format(processo))
+
+                rmtree(upload_path)
+                return {'type': type_str, 'quantity': number_of_features}
+            
+            else:
+                raise InvalidShapefileError(
+                    _('There is not a .shp file inside of the zip file.'))
+        else:
+            raise InvalidShapefileError(_('The uploaded file is not a zip file.'))
+
+    def post(self,*args,**kwargs):
+        form      = UploadFileForm(self.request.POST, self.request.FILES)
+        combobox  = ComboboxStatusForm()
+        processo  = self.get_processo(kwargs['pk'])[0][0]
+        pk        = int(kwargs['pk'])
+        status    = self.request.POST['status']
+       
+        if self.request.FILES.get('upload_file') is not None:
+            
+            if form.is_valid():
+                try:
+                    upload_return = self.handle_uploaded_file_geom(
+                        self.request.FILES['upload_file'],
+                        self.request.user,
+                        processo
+                        )
+                                        
+                    context = {
+                        'uploaded': True,
+                        'success': True,
+                        'quantity': upload_return.get('quantity'),
+                        'type': upload_return.get('type'),
+                        'combobox':combobox,
+                        'form': form}
+                    
+                    self.update_status(pk,'Deferido')      
+                        
+                except InvalidShapefileError as error:
+                    context = {
+                        'uploaded': True,
+                        'success': False,
+                        'form': form,
+                        'combobox':combobox,
+                        'message': error.message}
+            
+            else:
+                context = {'form': UploadFileForm(),'combobox':combobox}
+        else:
+            context = {
+                'combobox':combobox,
+                'status':True,
+                'form': form}
+
+            self.update_status(pk,status)      
+
+            return render(self.request,self.template_name, context)
+       
+        return render(self.request,self.template_name,context)
+    
 
 class CompensacaoDetailView(LoginRequiredMixin, DetailView):
 
@@ -1114,20 +1248,8 @@ class AsvDeleteView(CommonDeleteView):
     model = Asv
 
 
-# class AsvMaDeleteView(CommonDeleteView):
-#     model = AsvMataAtlantica
-
-# =====================
-
-# class PedidoAnuenciaMaDeleteView(CommonDeleteView):
-#     model = PedidoAnuenciaMataAtlantica
-
 class DadosAnuenciaMaDeleteView(CommonDeleteView):
     model = DadosAnuenciaMataAtlantica
-
-
-# class AnuenciaConcedidaMaDeleteView(CommonDeleteView):
-#     model = AnuenciaConcedidaMataAtlantica
 
 
 class AreaSolturaDeleteView(CommonDeleteView):
@@ -1166,6 +1288,16 @@ class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = AreaSoltura.objects.all()
     serializer_class = SolturaSerializer
 
+
+class IbamaAnuenciaDetailView(LoginRequiredMixin, DetailView):
+    model = DadosAnuenciaMataAtlantica
+    context_object_name = 'dados_anuencia'
+    template_name = 'core/anuenciaIbama_detail.html'
+
+    def get_context_data(self,**kwargs):
+        context = super(IbamaAnuenciaDetailView,self).get_context_data(**kwargs)
+        context['pk'] = kwargs['object'].pk
+        return context
 
 # class AsvMaGeoView(LoginRequiredMixin, RetrieveAPIView):
 #     queryset = AsvMataAtlantica.objects.all()

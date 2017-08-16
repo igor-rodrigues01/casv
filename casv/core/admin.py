@@ -73,16 +73,15 @@ class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
 class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
-    list_display  = ['processo','geom']
+    list_display  = ['processo','geom','data_criacao']
     list_filter   = ['processo']
     search_fields = ['processo']
 
 class DadosAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
-
-    list_display = ['processo', 'empreendedor', 'municipio',
-        'tipo_empreendimento',  'data_criacao','urbano_metropolitano','observacao']
-    list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
+    list_display = ['processo','usuario' ,'empreendedor', 'municipio',
+        'tipo_empreendimento',  'data_criacao','urbano_metropolitano','status','observacao']
+    list_filter = ['uf', 'data_criacao', 'tipo_empreendimento','data_criacao']
     search_fields = ['processo', 'empreendedor', 'cpfj']
 
 admin.site.register(Asv, AsvAdmin)
@@ -91,9 +90,6 @@ admin.site.register(AutoInfracaoOEMA, AutoInfracaoAdmin)
 admin.site.register(AreaSoltura, AreaSolturaAdmin)
 admin.site.register(AsvMataAtlantica)
 admin.site.register(CompensacaoMataAtlantica, CompensacaoMataAtlanticaAdmin)
-# admin.site.register(PedidoAnuenciaMataAtlantica,PedidoAnuenciaMataAtlanticaAdmin)
-# admin.site.register(AnuenciaConcedidaMataAtlantica,
-#     AnuenciaConcedidaMataAtlanticaAdmin)
 admin.site.register(GeomPedidoAnuenciaMataAtlantica,
     GeomPedidoAnuenciaMataAtlanticaAdmin)
 admin.site.register(GeomAnuenciaConcedidaMataAtlantica,

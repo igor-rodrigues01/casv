@@ -20,7 +20,7 @@ from .views import IbamaAnuenciaListView,IbamaConcederAnuenciaView
 
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
-from .views import IbamaAnuenciaConcedida
+from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida
 
 
 # ==============================
@@ -57,6 +57,10 @@ urlpatterns = patterns(
     url(r'^ibama/concedidos/$',
         IbamaAnuenciaConcedida.as_view(),
         name='ibama-concedidos'),
+
+    url(r'^ibama/concedidos/(?P<processo>\d+)/$',
+        IbamaDadosAnuenciaConcedida.as_view(),
+        name='ibama-concedidos-dados'),
 
     url(r'^ibama/geo/(?P<pk>\d+)/$',
         IbamaAnuenciaDetailView.as_view(),
@@ -106,15 +110,15 @@ urlpatterns = patterns(
         template_name = 'core/pedidoanuenciamataatlantica_confirm_delete.html'),
         name='delete-pedido_anuencia'),
 
-    url(r'^anuencia-concedida/(?P<pk>\d+)/$',
-        DadosAnuenciaMaDetailView.as_view(
-        template_name = 'core/anuenciaconcedidamataatlantica_detail.html'),
-        name='anuencia_concedida'),
+    # url(r'^anuencia-concedida/(?P<pk>\d+)/$',
+    #     DadosAnuenciaMaDetailView.as_view(
+    #     template_name = 'core/anuenciaconcedidamataatlantica_detail.html'),
+    #     name='anuencia_concedida'),
 
-    url(r'^anuencia-concedida/(?P<pk>\d+)/delete/$',
-        DadosAnuenciaMaDeleteView.as_view(
-        template_name = 'core/anuenciaconcedidamataatlantica_confirm_delete.html'),
-        name='delete-anuencia_concedida'),
+    # url(r'^anuencia-concedida/(?P<pk>\d+)/delete/$',
+    #     DadosAnuenciaMaDeleteView.as_view(
+    #     template_name = 'core/anuenciaconcedidamataatlantica_confirm_delete.html'),
+    #     name='delete-anuencia_concedida'),
     
     #===== 
 
@@ -122,7 +126,7 @@ urlpatterns = patterns(
         GeomPedidoAnuenciaMaGeoView.as_view(),
         name='geo-pedido_anuencia'),
     
-    url(r'^anuencia-concedida/geo/(?P<pk>\d+)/$',
+    url(r'^anuencia-concedida/geo/(?P<processo>\d+)/$',
         GeomAnuenciaConcedidaMaGeoView.as_view(),
         name='geo-anuencia_concedida'),
 

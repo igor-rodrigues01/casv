@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+from rest_framework import serializers
 
 from .models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
 from .models import (EmbargoOEMA, AutoInfracaoOEMA)
@@ -71,9 +72,17 @@ class GeomPedidoAnuenciaMaSerializer(GeoFeatureModelSerializer):
 
 
 class GeomAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
-    
+
     class Meta:
-        model     = GeomAnuenciaConcedidaMataAtlantica
-        id_field  = False
-        fields    = []
-        geo_field = 'geom'
+        model        = GeomAnuenciaConcedidaMataAtlantica
+        id_field     = False
+        fields       = 'processo'
+        geo_field    = 'geom'
+        lookup_field = 'processo'
+
+# class IbamaDadosAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
+
+#     class Meta:
+# # DadosAnuenciaMataAtlantica.objects.filter(\
+# #             geomanuenciaconcedidamataatlantica__processo_id=\
+# #             GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'))

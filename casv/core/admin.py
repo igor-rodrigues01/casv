@@ -73,7 +73,7 @@ class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
 class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
-    list_display  = ['processo','geom','data_criacao']
+    list_display  = ['pk','processo','geom','data_criacao']
     list_filter   = ['processo']
     search_fields = ['processo']
 

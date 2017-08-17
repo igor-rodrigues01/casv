@@ -16,8 +16,9 @@
         <div class="panel-body">
             <ul class="list-group">
             {% for item in dados%}
+                <p>{{item.processo}}</p>
                 <li class="list-group-item">
-                    <strong><a href="{% url 'core:ibama-geo' item.pk %}" >{{ item.processo }} </a></strong>
+                    <strong><a href="{% url 'core:ibama-concedidos-dados' item.processo %}" >{{item.processo }} </a></strong>
                      - {{ item.data_criacao|date:"d M Y" }}
                     
 

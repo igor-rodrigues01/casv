@@ -1082,7 +1082,7 @@ class IbamaAnuenciaListView(LoginRequiredMixin,ListView):
     template_name = "core/anuenciaIbama_list.html"
 
 
-class IbamaAnuenciaConcessaoView(LoginRequiredMixin,TemplateView):
+class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
     model = DadosAnuenciaMataAtlantica
     template_name = "core/anuenciaIbama_concessao.html"
 
@@ -1226,7 +1226,19 @@ class IbamaAnuenciaConcessaoView(LoginRequiredMixin,TemplateView):
             return render(self.request,self.template_name, context)
        
         return render(self.request,self.template_name,context)
-    
+
+
+class IbamaAnuenciaConcedida(LoginRequiredMixin,TemplateView):
+    model         = GeomAnuenciaConcedidaMataAtlantica
+    template_name = 'core/anuenciaConcedidaIbama_list.html'
+
+    def get_context_data(self):
+        context = super(IbamaAnuenciaConcedida,self).get_context_data()
+        context['dados'] = DadosAnuenciaMataAtlantica.objects.filter(\
+            geomanuenciaconcedidamataatlantica__processo_id=\
+            GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'))
+
+        return context
 
 class CompensacaoDetailView(LoginRequiredMixin, DetailView):
 

@@ -69,11 +69,10 @@
         <h4 class="list-group-item-heading">Data de criação</h4>
         <p class="list-group-item-text">{{ dados_anuencia.data_criacao }}</p>
     </a>
-
-    <br/>
-    <br><br>
+    <br/><br/>
+    
 {% endblock detail %}
 
 {% block extra_js %}
-    {% include "core/map.html" with pk=dados_anuencia.processo geojson_url="core:geo-anuencia_concedida" %}
+    {% include "core/map.html" with pk=dados_anuencia.processo geojson_url="core:geo-pedido_anuencia" geojson_url_anuencia_concedida="core:geo-anuencia_concedida" %}
 {% endblock extra_js %}

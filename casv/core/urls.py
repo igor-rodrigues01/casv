@@ -50,7 +50,7 @@ urlpatterns = patterns(
         IbamaAnuenciaListView.as_view(),
         name='ibama-list'),
     
-    url(r'^ibama/concessao/(?P<pk>\d+)/$',
+    url(r'^ibama/concessao/(?P<processo>\d+)/$',
         IbamaConcederAnuenciaView.as_view(),
         name='ibama-concessao'),
 
@@ -62,7 +62,7 @@ urlpatterns = patterns(
         IbamaDadosAnuenciaConcedida.as_view(),
         name='ibama-concedidos-dados'),
 
-    url(r'^ibama/geo/(?P<processo>\d+)/$',
+    url(r'^ibama/dados-pedido/(?P<processo>\d+)/$',
         IbamaPedidoAnuenciaDetailView.as_view(),
         name='ibama-geo'),
 
@@ -89,7 +89,7 @@ urlpatterns = patterns(
     #     PedidoAnuenciaMaDetailView.as_view(),
     #     name='pedido_anuencia'),
 
-    url(r'^pedido-anuencia-usu/(?P<processo>\d+)/$',
+    url(r'^pedido-anuencia/(?P<processo>\d+)/$',
         DadosPedidoAnuenciaUsuarioMaView.as_view(
         template_name = 'core/pedidoanuenciamataatlantica_detail.html'),
         name='pedido_anuencia'),

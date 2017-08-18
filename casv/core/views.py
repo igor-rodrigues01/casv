@@ -1087,24 +1087,26 @@ class DadosPedidoAnuenciaUsuarioMaView(LoginRequiredMixin,TemplateView):
 
 
 
-class IbamaAnuenciaListView(LoginRequiredMixin,ListView):
+class IbamaAnuenciaListView(LoginRequiredMixin,TemplateView):
     model = DadosAnuenciaMataAtlantica
     template_name = "core/anuenciaIbama_list.html"
+
+    def get_context_data(self,**kwargs):
+        context = super(IbamaAnuenciaListView,self).get_context_data(**kwargs)
+        context['in_analisys'] = DadosAnuenciaMataAtlantica.objects.exclude(\
+            geomanuenciaconcedidamataatlantica__processo_id=GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'))
+        return context
 
 
 class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
     model = DadosAnuenciaMataAtlantica
     template_name = "core/anuenciaIbama_concessao.html"
 
-    def get_processo(self,pk):
-        processo = DadosAnuenciaMataAtlantica.objects.filter(pk=pk).values_list('processo')
-        return processo
-
     def get_context_data(self,**kwargs):
         context = super(IbamaConcederAnuenciaView,self).get_context_data(**kwargs)
         context['form']        = UploadFileForm()
         context['combobox']    = ComboboxStatusForm()
-        context['processo']    = self.get_processo(kwargs['pk'])[0][0]
+        context['processo']    = kwargs['processo']
         return context
 
     def get_mapping_geom(self, schema):
@@ -1126,9 +1128,6 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
             raise InvalidShapefileError(
                 _('The shapefile is not in one of the accepted schemas.')
             )
-
-    def update_status(self,pk,status):
-        DadosAnuenciaMataAtlantica.objects.filter(pk=pk).update(status=status)
 
     def handle_uploaded_file_geom(self, file, user, processo):
         '''Function to process a uploaded file, test if it is a valid zip file and
@@ -1169,7 +1168,6 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
 
                 existing_processo = \
                 GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=processo_instance).values_list('processo')
-                import pdb; pdb.set_trace()
                 if len(existing_processo) == 0:
                     dict_data['processo'] = processo_instance
                     entry                 = model.objects.create(**dict_data)
@@ -1188,11 +1186,13 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         else:
             raise InvalidShapefileError(_('The uploaded file is not a zip file.'))
 
+    def update_status(self,processo,status):
+        DadosAnuenciaMataAtlantica.objects.filter(processo=processo).update(status=status)
+
     def post(self,*args,**kwargs):
         form      = UploadFileForm(self.request.POST, self.request.FILES)
         combobox  = ComboboxStatusForm()
-        processo  = self.get_processo(kwargs['pk'])[0][0]
-        pk        = int(kwargs['pk'])
+        processo  = kwargs['processo']
         status    = self.request.POST['status']
        
         if self.request.FILES.get('upload_file') is not None:
@@ -1213,7 +1213,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                         'combobox':combobox,
                         'form': form}
                     
-                    self.update_status(pk,'Deferido')      
+                    self.update_status(processo,'Deferido')      
                         
                 except InvalidShapefileError as error:
                     context = {
@@ -1231,8 +1231,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                 'status':True,
                 'form': form}
 
-            self.update_status(pk,status)      
-
+            self.update_status(processo,status)
             return render(self.request,self.template_name, context)
        
         return render(self.request,self.template_name,context)
@@ -1321,14 +1320,13 @@ class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     serializer_class = SolturaSerializer
 
 
-class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin, DetailView):
+class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin,TemplateView):
     model = DadosAnuenciaMataAtlantica
-    context_object_name = 'dados_anuencia'
     template_name = 'core/anuenciaIbama_detail.html'
 
     def get_context_data(self,**kwargs):
         context = super(IbamaPedidoAnuenciaDetailView,self).get_context_data(**kwargs)
-        context['pk'] = kwargs['object'].pk
+        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=kwargs['processo'])[0]
         return context
 
 

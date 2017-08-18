@@ -11,11 +11,27 @@
     osm.addTo(map);
     map.setView([-12, -54], 4);
 
+    var style = {
+        "color": "#ff7800",
+        "weight": 5,
+    };
+
     $.getJSON("{% url geojson_url pk %}?format=json", function(data) {
         var geoJSON = L.geoJson(data);
         geoJSON.addTo(map);
         map.fitBounds(geoJSON);
     });
 
+    {% if geojson_url_anuencia_concedida %}
+
+        $.getJSON("{% url geojson_url_anuencia_concedida pk %}?format=json", function(data) {
+            var geoJSON = L.geoJson(data,{
+                'style':style
+            });
+            geoJSON.addTo(map);
+            map.fitBounds(geoJSON);
+        });
+        
+    {% endif %}
 
 </script>

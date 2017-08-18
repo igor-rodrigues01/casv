@@ -71,6 +71,9 @@
     </a>
 
     <br/>
-    <h1>{{dados_anuencia.processo}}</h1>
     <br><br>
 {% endblock detail %}
+
+{% block extra_js %}
+    {% include "core/map.html" with pk=dados_anuencia.processo geojson_url="core:geo-anuencia_concedida" %}
+{% endblock extra_js %}

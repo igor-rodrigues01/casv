@@ -67,17 +67,17 @@ class GeomPedidoAnuenciaMaSerializer(GeoFeatureModelSerializer):
     class Meta:
         model     = GeomPedidoAnuenciaMataAtlantica
         id_field  = False
-        fields    = []
+        fields    = ['processo']
         geo_field = 'geom'
 
 
 class GeomAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
 
     class Meta:
-        model        = GeomAnuenciaConcedidaMataAtlantica
-        id_field     = False
-        fields       = ['processo']
-        geo_field    = 'geom'
+        model     = GeomAnuenciaConcedidaMataAtlantica
+        id_field  = False
+        fields    = ['processo']
+        geo_field = 'geom'
 
 # class IbamaDadosAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
 

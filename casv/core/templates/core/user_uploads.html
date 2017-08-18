@@ -40,32 +40,10 @@
       <ul class="list-group">
         {% for item in dados_pedido_anuencia%}
           <li class="list-group-item">
-            <strong><a href="{% url 'core:pedido_anuencia' item.pk %}" >ID: {{ item.pk }}</a></strong>
+            <strong><a href="{% url 'core:pedido_anuencia' item.processo %}" >ID: {{ item.pk }}</a></strong>
            - {{ item.data_criacao|date:"d M Y" }}
             
             <a class="pull-right" href="{% url 'core:delete-pedido_anuencia' item.pk %}">
-              <span class="text-danger glyphicon glyphicon-remove-circle"></span>
-            </a>
-          </li>
-        {% empty %}
-          <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-
-    <div class="panel panel-default">
-    <div class="panel-heading">
-        <h3 class="panel-title">Anuência Concedida - Mata Atlântica</h3>
-    </div>
-    <div class="panel-body">
-      <ul class="list-group">
-        {% for item in dados_anuencia_concedida %}
-          <li class="list-group-item">
-            <strong><a href="{% url 'core:anuencia_concedida' item.pk %}" >ID: {{ item.pk }}</a></strong>
-           - {{ item.data_criacao|date:"d M Y" }}
-            
-            <a class="pull-right" href="{% url 'core:delete-anuencia_concedida' item.pk %}">
               <span class="text-danger glyphicon glyphicon-remove-circle"></span>
             </a>
           </li>

@@ -1076,6 +1076,16 @@ class DadosAnuenciaMaDetailView(LoginRequiredMixin, DetailView):
     model = DadosAnuenciaMataAtlantica
     context_object_name = 'dados_anuencia'
 
+class DadosPedidoAnuenciaUsuarioMaView(LoginRequiredMixin,TemplateView):
+    model = DadosAnuenciaMataAtlantica
+    lookup_field = 'processo'
+
+    def get_context_data(self,**kwargs):
+        context = super(DadosPedidoAnuenciaUsuarioMaView,self).get_context_data(**kwargs)
+        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo'])
+        return context
+
+
 
 class IbamaAnuenciaListView(LoginRequiredMixin,ListView):
     model = DadosAnuenciaMataAtlantica
@@ -1311,29 +1321,30 @@ class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     serializer_class = SolturaSerializer
 
 
-class IbamaAnuenciaDetailView(LoginRequiredMixin, DetailView):
+class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin, DetailView):
     model = DadosAnuenciaMataAtlantica
     context_object_name = 'dados_anuencia'
     template_name = 'core/anuenciaIbama_detail.html'
 
     def get_context_data(self,**kwargs):
-        context = super(IbamaAnuenciaDetailView,self).get_context_data(**kwargs)
+        context = super(IbamaPedidoAnuenciaDetailView,self).get_context_data(**kwargs)
         context['pk'] = kwargs['object'].pk
         return context
 
 
 class GeomPedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
-    queryset = GeomPedidoAnuenciaMataAtlantica.objects.all()
     serializer_class = GeomPedidoAnuenciaMaSerializer
+    lookup_field = 'processo'
+
+    def get_queryset(self):
+        return GeomPedidoAnuenciaMataAtlantica.objects.filter(processo=self.kwargs['processo'])
 
 class GeomAnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
     serializer_class = GeomAnuenciaConcedidaMaSerializer
     lookup_field = 'processo'
 
     def get_queryset(self):
-        queryset = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=self.kwargs['processo'])
-        return queryset
-    
+        return GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=self.kwargs['processo'])
 
 class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = CompensacaoMataAtlantica.objects.all()

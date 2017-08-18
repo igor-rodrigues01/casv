@@ -15,12 +15,12 @@ from .views import AreaSolturaDetailView, AreaSolturaDeleteView
 from .views import AsvGeoView, SolturaGeoView, CompensacaoGeoView
 from .views import EmbargoDetailView, EmbargoDeleteView
 from .views import AutoInfracaoDetailView, AutoInfracaoDeleteView
-from .views import EmbargoGeoView, AutoInfracaoGeoView,IbamaAnuenciaDetailView
+from .views import EmbargoGeoView, AutoInfracaoGeoView,IbamaPedidoAnuenciaDetailView
 from .views import IbamaAnuenciaListView,IbamaConcederAnuenciaView
 
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
-from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida
+from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida,DadosPedidoAnuenciaUsuarioMaView
 
 
 # ==============================
@@ -62,8 +62,8 @@ urlpatterns = patterns(
         IbamaDadosAnuenciaConcedida.as_view(),
         name='ibama-concedidos-dados'),
 
-    url(r'^ibama/geo/(?P<pk>\d+)/$',
-        IbamaAnuenciaDetailView.as_view(),
+    url(r'^ibama/geo/(?P<processo>\d+)/$',
+        IbamaPedidoAnuenciaDetailView.as_view(),
         name='ibama-geo'),
 
     url(r'^asv/(?P<pk>\d+)/$',
@@ -82,17 +82,6 @@ urlpatterns = patterns(
         AreaSolturaDeleteView.as_view(),
         name='delete-areasoltura'),
 
-    # url(r'^asvma/(?P<pk>\d+)/$',
-    #     AsvMaDetailView.as_view(),
-    #     name='asvma'),
-
-    # url(r'^asvma/(?P<pk>\d+)/delete/$',
-    #     AsvMaDeleteView.as_view(),
-    #     name='delete-asvma'),
-
-    # url(r'^asvma/geo/(?P<pk>\d+)/$',
-    #     AsvMaGeoView.as_view(),
-    #     name='geo-asvma'),
     
     #===================================
 
@@ -100,29 +89,19 @@ urlpatterns = patterns(
     #     PedidoAnuenciaMaDetailView.as_view(),
     #     name='pedido_anuencia'),
 
-    url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-        DadosAnuenciaMaDetailView.as_view(
+    url(r'^pedido-anuencia-usu/(?P<processo>\d+)/$',
+        DadosPedidoAnuenciaUsuarioMaView.as_view(
         template_name = 'core/pedidoanuenciamataatlantica_detail.html'),
         name='pedido_anuencia'),
+
+    
 
     url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
         DadosAnuenciaMaDeleteView.as_view(
         template_name = 'core/pedidoanuenciamataatlantica_confirm_delete.html'),
         name='delete-pedido_anuencia'),
 
-    # url(r'^anuencia-concedida/(?P<pk>\d+)/$',
-    #     DadosAnuenciaMaDetailView.as_view(
-    #     template_name = 'core/anuenciaconcedidamataatlantica_detail.html'),
-    #     name='anuencia_concedida'),
-
-    # url(r'^anuencia-concedida/(?P<pk>\d+)/delete/$',
-    #     DadosAnuenciaMaDeleteView.as_view(
-    #     template_name = 'core/anuenciaconcedidamataatlantica_confirm_delete.html'),
-    #     name='delete-anuencia_concedida'),
-    
-    #===== 
-
-    url(r'^pedido-anuencia/geo/(?P<pk>\d+)/$',
+    url(r'^pedido-anuencia/geo/(?P<processo>\d+)/$',
         GeomPedidoAnuenciaMaGeoView.as_view(),
         name='geo-pedido_anuencia'),
     

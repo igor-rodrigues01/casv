@@ -77,5 +77,5 @@
 {% endblock delete_button %}
 
 {% block extra_js %}
-    {% include "core/map.html" with pk=dados_anuencia.pk geojson_url="core:geo-pedido_anuencia" %}
+    {% include "core/map.html" with pk=dados_anuencia.processo geojson_url="core:geo-pedido_anuencia" %}
 {% endblock extra_js %}

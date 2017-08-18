@@ -1091,7 +1091,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         return processo
 
     def get_context_data(self,**kwargs):
-        context = super(IbamaAnuenciaConcessaoView,self).get_context_data(**kwargs)
+        context = super(IbamaConcederAnuenciaView,self).get_context_data(**kwargs)
         context['form']        = UploadFileForm()
         context['combobox']    = ComboboxStatusForm()
         context['processo']    = self.get_processo(kwargs['pk'])[0][0]
@@ -1326,17 +1326,14 @@ class GeomPedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = GeomPedidoAnuenciaMataAtlantica.objects.all()
     serializer_class = GeomPedidoAnuenciaMaSerializer
 
-class GeomAnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView, DetailView):
+class GeomAnuenciaConcedidaMaGeoView(LoginRequiredMixin, RetrieveAPIView):
     serializer_class = GeomAnuenciaConcedidaMaSerializer
+    lookup_field = 'processo'
 
     def get_queryset(self):
-        queryset = GeomAnuenciaConcedidaMataAtlantica.objects.all()
-        processo_instance = DadosAnuenciaMataAtlantica.objects.get(processo=self.kwargs['processo'])
-        queryset = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=processo_instance)
-        import pdb; pdb.set_trace()
+        queryset = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=self.kwargs['processo'])
         return queryset
-
-    lookup_field = 'processo'
+    
 
 class CompensacaoGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = CompensacaoMataAtlantica.objects.all()

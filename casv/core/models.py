@@ -246,7 +246,7 @@ class DadosAnuenciaMataAtlantica(models.Model):
 
 class GeomPedidoAnuenciaMataAtlantica(models.Model):
     
-    processo = models.OneToOneField(DadosAnuenciaMataAtlantica,to_field='processo',null=True,blank=True)
+    processo = models.ForeignKey(DadosAnuenciaMataAtlantica,to_field='processo',null=True,blank=True)
     geom     = models.MultiPolygonField('Geometria',srid=4674)
     usuario  = models.ForeignKey(User, related_name='geom_pedido_anuencia',null=True)
     objects  = models.GeoManager()
@@ -258,7 +258,7 @@ class GeomPedidoAnuenciaMataAtlantica(models.Model):
 
 class GeomAnuenciaConcedidaMataAtlantica(models.Model):
     
-    processo     = models.ForeignKey(DadosAnuenciaMataAtlantica,null=True,blank=True)
+    processo     = models.ForeignKey(DadosAnuenciaMataAtlantica,null=True,blank=True,to_field="processo")
     geom         = models.MultiPolygonField('Geometria',srid=4674)
     usuario      = models.ForeignKey(User, related_name='geom_anuencia_concedida',null=True)
     data_criacao = models.DateTimeField('Data de Criação',auto_now_add=True,null=True) 

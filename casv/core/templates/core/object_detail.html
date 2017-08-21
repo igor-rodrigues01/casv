@@ -21,6 +21,13 @@
     <div class="panel panel-default">
       <div class="panel-body">
          <div id="map"></div>
+         {% if anuencia_concedida %}
+         <br/>
+          <ul class="legend_map">
+            <li>Pedido de Anuência</li>
+            <li>Anuência Concedida</li>
+          </ul>
+         {% endif %}
       </div>
     </div>
   </div>

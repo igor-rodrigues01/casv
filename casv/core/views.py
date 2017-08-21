@@ -1116,6 +1116,7 @@ class DadosPedidoAnuenciaUsuarioMaView(LoginRequiredMixin,TemplateView):
     def get_context_data(self,**kwargs):
         context = super(DadosPedidoAnuenciaUsuarioMaView,self).get_context_data(**kwargs)
         context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo'])
+        context['anuencia_concedida'] = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=kwargs['processo'])
         return context
 
 
@@ -1292,6 +1293,7 @@ class IbamaDadosAnuenciaConcedida(LoginRequiredMixin,TemplateView):
     def get_context_data(self,**kwargs):
         context = super(IbamaDadosAnuenciaConcedida,self).get_context_data(**kwargs)
         context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=int(kwargs['processo']))[0]
+        context['anuencia_concedida'] = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=kwargs['processo'])
         return context
 
 

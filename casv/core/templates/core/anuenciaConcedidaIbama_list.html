@@ -11,15 +11,14 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">Autorização de Supressão de Vegetação</h3>
+            <h3 class="panel-title">Anuências Concedidas Mata Atlântica</h3>
         </div>
         <div class="panel-body">
             <ul class="list-group">
             {% for item in dados%}
                 <li class="list-group-item">
-                    <strong><a href="{% url 'core:ibama-concedidos-dados' item.processo %}" >{{item.processo }}</a></strong>
-                     - {{ item.data_criacao|date:"d M Y" }}
-                -Usuário-</li>
+                    <strong><a href="{% url 'core:ibama-concedidos-dados' item.processo %}" >{{item.processo }}</a></strong> - Modificado por <strong>{{item.cpf_modificacao_ibama}}</strong> - {{ item.data_modificacao_ibama|date:"d M Y" }}
+                </li>
 
             {% empty %}
               <div class="alert alert-warning" role="alert">{% trans 'You did not upload any files of this type yet.' %}</div>

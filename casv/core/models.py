@@ -233,6 +233,8 @@ class DadosAnuenciaMataAtlantica(models.Model):
         blank=True)
     usuario      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='dadosanuencia',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
+    data_modificacao_ibama = models.DateTimeField('Data de modificação pelo Ibama',null=True,blank=True)
+    cpf_modificacao_ibama = models.CharField('Cpf de Modificação do Ibama',max_length=13,null=True,blank=True)
     objects      = models.GeoManager()
     urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
     status      = models.CharField('Status',max_length=30)

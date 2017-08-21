@@ -80,7 +80,8 @@ class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 class DadosAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
     list_display = ['processo','usuario' ,'empreendedor', 'municipio',
-        'tipo_empreendimento',  'data_criacao','urbano_metropolitano','status','observacao']
+        'tipo_empreendimento',  'data_criacao','urbano_metropolitano','status','observacao','data_modificacao_ibama'
+,'cpf_modificacao_ibama']
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento','data_criacao']
     search_fields = ['processo', 'empreendedor', 'cpfj']
 

@@ -1220,7 +1220,10 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
             raise InvalidShapefileError(_('The uploaded file is not a zip file.'))
 
     def update_status(self,processo,status):
-        DadosAnuenciaMataAtlantica.objects.filter(processo=processo).update(status=status)
+        user = str(self.request.user.username)
+        DadosAnuenciaMataAtlantica.objects.filter(processo=processo).update(status=status,\
+            cpf_modificacao_ibama=user,data_modificacao_ibama=datetime.now())
+
 
     def post(self,*args,**kwargs):
         form      = UploadFileForm(self.request.POST, self.request.FILES)

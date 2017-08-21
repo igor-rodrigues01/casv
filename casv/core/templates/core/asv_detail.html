@@ -104,12 +104,14 @@
         <h4 class="list-group-item-heading">Data de Criação</h4>
         <p class="list-group-item-text">{{ asv.data_criacao}}</p>
     </a>
+    <br/>
+    {% block delete_button %}
+      <a class="btn btn-danger" href="{% url 'core:delete-asv' asv.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+    {% endblock delete_button %}
+    <br/><br/><br/>
 
 {% endblock detail %}
 
-{% block delete_button %}
-  <a class="btn btn-danger" href="{% url 'core:delete-asv' asv.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
-{% endblock delete_button %}
 
 {% block extra_js %}
     {% include "core/map.html" with pk=asv.pk geojson_url="core:geo-asv" %}

@@ -60,11 +60,15 @@
         <p class="list-group-item-text">{{ embargo.data_criacao }}</p>
     </a>
 
-{% endblock detail %}
+    <br/>
 
-{% block delete_button %}
-  <a class="btn btn-danger" href="{% url 'core:delete-embargo' embargo.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
-{% endblock delete_button %}
+    {% block delete_button %}
+      <a class="btn btn-danger" href="{% url 'core:delete-embargo' embargo.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+    {% endblock delete_button %}
+
+    <br/><br/><br/>
+
+{% endblock detail %}
 
 {% block extra_js %}
     {% include "core/map.html" with pk=embargo.pk geojson_url="core:geo-embargo" %}

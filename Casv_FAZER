@@ -1,0 +1,23 @@
+-- Verificar blocos trans para traduções
+-- Form hidden direto do python
+-- Retirar schemas e mapeamentos de anuencias concedida e deixar apenas a os schemas de geomAnuênciaConcedida
+-- Retirar templates de Anuências concedidas
+-- OK - Mandar mensagem de status atualizado  - OK
+-- OK - Verificar last login django
+-- OK - Enviar status de deferido ao enviar o shp - OK
+-- OK - Sobrescrever last login do servidor sobre o las login do usuário 
+-- OK - Pegar geometria do upload do cara do ibama independente de qual shp ele está enviando
+(por exemplo, ele pode enivar o shp do cliente sobrescrevendo a geometria ou enviar seu próprio shp)
+-- OK - Número do processo pode ser null - OK
+-- Retirar comentários
+-- OK - Css da validção do envio do ibama
+-- inserir modelos para downloads
+-- OK -  após autenticação ldap buscar o cpf do usuário do ibama e inserir no momento da concessão de anuência
+-- verificar títulos e erros de portugês
+-- acertar a urls
+-- OK - setar css na validacao do envio de arquivo pelo ibama - OK
+-- OK - css na legenda do mapa
+-- tratar erro no client na página http://127.0.0.1:8000/pedido-anuencia/123456/
+-- nomes em páginas details
+-- OK - mensagem de erro para o login
+

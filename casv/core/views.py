@@ -1045,11 +1045,15 @@ class LoginView(ObtainAuthToken):
                 if user.is_active:
                     login(request, user)
                     return redirect(reverse('core:index'))
-            else:
-                result = {'permited':False}
+                
+                else:
+                    msg = _('''Your account is not active. Please contact the
+                        system administrator''')
+                    return redirect(reverse('core:login'))
+    
         else:
-            result = {'error': _('Invalid username or password.')}
-            return render(request,'core/login_page.html',result) 
+            msg = _('Invalid username or password.')
+            return render(request,'core/login_page.html',{'msg':msg}) 
 
 
 

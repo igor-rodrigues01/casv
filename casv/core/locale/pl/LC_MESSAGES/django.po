@@ -3,24 +3,25 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-21 18:07-0300\n"
-"PO-Revision-Date: 2015-12-01 17:00-0200\n"
-"Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
-"Language-Team: \n"
-"Language: pt_BR\n"
+"POT-Creation-Date: 2017-08-21 18:12-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.8.6\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 
 #: core/forms.py:7
 msgid "Upload file"
-msgstr "Enviar arquivo shape"
+msgstr ""
 
 #: core/templates/core/anuenciaConcedidaIbama_list.html:24
 #: core/templates/core/anuenciaIbama_list.html:30
@@ -31,20 +32,16 @@ msgstr "Enviar arquivo shape"
 #: core/templates/core/user_uploads.html:114
 #: core/templates/core/user_uploads.html:135
 msgid "You did not upload any files of this type yet."
-msgstr "Você não enviou nenhum arquivo deste tipo ainda."
+msgstr ""
 
 #: core/templates/core/anuenciaIbama_concessao.html:11
-#, fuzzy
-#| msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
 msgid "Upload a zip file containing the shp, dbf, shx and prj. See the "
 msgstr ""
-"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
-"os "
 
 #: core/templates/core/anuenciaIbama_concessao.html:12
 #: core/templates/core/upload.html:31
 msgid "file models."
-msgstr "modelos de arquivo."
+msgstr ""
 
 #: core/templates/core/anuenciaIbama_concessao.html:28
 msgid ""
@@ -84,50 +81,50 @@ msgstr[1] ""
 #: core/templates/core/pedidoanuenciamataatlantica_confirm_delete.html:4
 #: core/templates/core/pedidoanuenciamataatlantica_detail.html:76
 msgid "Delete"
-msgstr "Apagar"
+msgstr ""
 
 #: core/templates/core/confirm_delete.html:7
 msgid "Are you sure you want to delete"
-msgstr "Você tem certeza que deseja apagar"
+msgstr ""
 
 #: core/templates/core/confirm_delete.html:9
 msgid "Yes"
-msgstr "Sim"
+msgstr ""
 
 #: core/templates/core/confirm_delete.html:10
 msgid "No"
-msgstr "Não"
+msgstr ""
 
 #: core/templates/core/file-models.html:5
 msgid "File models"
-msgstr "Modelos de arquivo"
+msgstr ""
 
 #: core/templates/core/login_form.html:9
 msgid "Username"
-msgstr "Nome de usuário"
+msgstr ""
 
 #: core/templates/core/login_form.html:11
 msgid "Password"
-msgstr "Senha"
+msgstr ""
 
 #: core/templates/core/login_form.html:14
 #: core/templates/core/login_menu.html:18
 #: core/templates/core/login_menu.html:28
 #: core/templates/core/login_page.html:5
 msgid "Login"
-msgstr "Entrar"
+msgstr ""
 
 #: core/templates/core/login_menu.html:10
 msgid "Logout"
-msgstr "Sair"
+msgstr ""
 
 #: core/templates/core/login_menu.html:26
 msgid "Close"
-msgstr "Fechar"
+msgstr ""
 
 #: core/templates/core/upload.html:5
 msgid "Upload a shape file"
-msgstr "Enviar arquivo shape"
+msgstr ""
 
 #: core/templates/core/upload.html:13
 #, python-format
@@ -140,27 +137,19 @@ msgid_plural ""
 "            You uploaded %(quantity)s items of %(type)s.\n"
 "          "
 msgstr[0] ""
-"\n"
-"            Você enviou %(quantity)s item do tipo %(type)s.\n"
-"          "
 msgstr[1] ""
-"\n"
-"            Você enviou %(quantity)s itens do tipo %(type)s.\n"
-"          "
 
 #: core/templates/core/upload.html:30
 msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
 msgstr ""
-"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
-"os "
 
 #: core/templates/core/user_uploads.html:7
 msgid "Uploads of the user"
-msgstr "Áreas enviadas pelo usuário"
+msgstr ""
 
 #: core/views.py:881 core/views.py:1166
 msgid "The shapefile is not in one of the accepted schemas."
-msgstr "O arquivo shape não está em um dos schemas aceitos."
+msgstr ""
 
 #: core/views.py:916
 msgid ""
@@ -178,72 +167,22 @@ msgstr ""
 
 #: core/views.py:969 core/views.py:1222
 msgid "There is not a .shp file inside of the zip file."
-msgstr "Não encontramos um arquivo shape no arquivo zip que você enviou."
+msgstr ""
 
 #: core/views.py:971 core/views.py:1224
 msgid "The uploaded file is not a zip file."
-msgstr "O arquivo enviado não é um arquivo zip válido."
+msgstr ""
 
 #: core/views.py:1050
-#, fuzzy
-#| msgid "Your account is not active. Please contact the system administrator"
 msgid ""
 "Your account is not active. Please contact the\n"
 "                        system administrator"
 msgstr ""
-"Sua conta não está ativa. Por favor, entre em contato com o administrador do "
-"sistema."
 
 #: core/views.py:1055
 msgid "Invalid username or password."
-msgstr "Nome de usuário ou senha inválidos."
-
-#: core/views.py:1215
-msgid "Process Nº {} has already been granted.."
 msgstr ""
 
-#~ msgid "Please log in below..."
-#~ msgstr "Por favor, faça o login abaixo..."
-
-#~ msgid "Process"
-#~ msgstr "Processar"
-
-#~ msgid "The shapefile you sent is not in one of the defined formats."
-#~ msgstr ""
-#~ "O arquivo shape que você enviou não está em um dos formatos definidos."
-
-#~ msgid "Code"
-#~ msgstr "Código"
-
-#~ msgid "Upload"
-#~ msgstr "Enviar arquivo"
-
-#~ msgid "MyUploads"
-#~ msgstr "Meus envios"
-
-#~ msgid "Administration"
-#~ msgstr "Administração"
-
-#~ msgid "Log out"
-#~ msgstr "Sair"
-
-#~ msgid "Upload done successfully!"
-#~ msgstr "Arquivo enviado com sucesso!"
-
-#~ msgid ""
-#~ "Check in your <a href=\"%(url)s\">uploads page</a> if the shape you sent "
-#~ "was successfully inserted in the database"
-#~ msgstr ""
-#~ "Verifique na sua <a href=\"%(url)s\">página de uploads</a> se o shape que "
-#~ "você enviou foi inserido corretamente no banco de dados"
-
-#~ msgid ""
-#~ "Upload a zip file containing the shp, pbf, shx and prj.<br> If necessary, "
-#~ "<a href=\"%(url)s\">download a file</a> containing the shapefile model."
-#~ msgstr ""
-#~ "Envie um arquivo zip contendo os arquivos shp, pbf, shx and prj.<br> Caso "
-#~ "necessário, <a href=\"%(url)s\">faça o download de um arquivo</a> com um "
-#~ "modelo de arquivo shape."
-
-#~ msgid "Imported %s polygons"
-#~ msgstr "%s polígonos importados"
+#: core/views.py:1215
+msgid "Process Nº {} has already been granted."
+msgstr ""

@@ -1056,7 +1056,6 @@ class LoginView(ObtainAuthToken):
             return render(request,'core/login_page.html',{'msg':msg}) 
 
 
-
 def logout_view(request):
     logout(request)
     return redirect(reverse('core:index'))
@@ -1213,7 +1212,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                     entry.save()
 
                 else:
-                    raise InvalidShapefileError('Processo Nº {} já está concedido.'.format(processo))
+                    raise InvalidShapefileError(_('Process Nº {} has already been granted.').format(processo))
 
                 rmtree(upload_path)
                 return {'type': type_str, 'quantity': number_of_features}

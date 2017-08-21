@@ -3,7 +3,7 @@ from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
 
-from .views import upload_file, login_view, logout_view, UserUploads
+from .views import upload_file, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
 # from .views import AsvMaDetailView, AsvMaDeleteView,AsvMaGeoView
 # from .views import (PedidoAnuenciaMaDeleteView,
@@ -21,6 +21,7 @@ from .views import IbamaAnuenciaListView,IbamaConcederAnuenciaView
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
 from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida,DadosPedidoAnuenciaUsuarioMaView
+from .views import LoginView
 
 
 # ==============================
@@ -38,7 +39,7 @@ urlpatterns = patterns(
         TemplateView.as_view(template_name='core/file-models.html'),
         name='file-models'),
 
-    url(r'^login/', login_view, name='login'),
+    url(r'^login/', LoginView.as_view(), name='login'),
 
     url(r'^logout/', logout_view, name='logout'),
 

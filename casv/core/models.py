@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-tes
 from django.contrib.gis.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,AbstractUser
 from django.utils import timezone
+from django.conf import settings
+
 
 class AutoInfracaoOEMA(models.Model):
 
@@ -16,7 +18,7 @@ class AutoInfracaoOEMA(models.Model):
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
     geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
-    usuario = models.ForeignKey(User, related_name='infracao')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='infracao',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
 
@@ -38,7 +40,7 @@ class EmbargoOEMA(models.Model):
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
     geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
-    usuario = models.ForeignKey(User, related_name='embargo')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='embargo',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
 
@@ -97,7 +99,7 @@ class Asv(models.Model):
         max_length=40,
         null=True,
         blank=True)
-    usuario = models.ForeignKey(User, related_name='asv')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='asv',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -176,7 +178,7 @@ class AreaSoltura(models.Model):
         null=True,
         blank=True)
     vistoria = models.DateField(null=True, blank=True)
-    usuario = models.ForeignKey(User, related_name='area_soltura')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='area_soltura',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -229,7 +231,7 @@ class DadosAnuenciaMataAtlantica(models.Model):
         """Área de Empreendimento em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario      = models.ForeignKey(User, related_name='dadosanuencia')
+    usuario      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='dadosanuencia',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects      = models.GeoManager()
     urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
@@ -248,7 +250,7 @@ class GeomPedidoAnuenciaMataAtlantica(models.Model):
     
     processo = models.ForeignKey(DadosAnuenciaMataAtlantica,to_field='processo',null=True,blank=True)
     geom     = models.MultiPolygonField('Geometria',srid=4674)
-    usuario  = models.ForeignKey(User, related_name='geom_pedido_anuencia',null=True)
+    usuario  = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='geom_pedido_anuencia',null=True)
     objects  = models.GeoManager()
     
     class Meta:
@@ -260,7 +262,7 @@ class GeomAnuenciaConcedidaMataAtlantica(models.Model):
     
     processo     = models.ForeignKey(DadosAnuenciaMataAtlantica,null=True,blank=True,to_field="processo")
     geom         = models.MultiPolygonField('Geometria',srid=4674)
-    usuario      = models.ForeignKey(User, related_name='geom_anuencia_concedida',null=True)
+    usuario      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='geom_anuencia_concedida',blank=True,null=True)
     data_criacao = models.DateTimeField('Data de Criação',auto_now_add=True,null=True) 
     objects      = models.GeoManager()
     
@@ -421,7 +423,7 @@ class AsvMataAtlantica(models.Model):
         """Área de Supressão em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario = models.ForeignKey(User, related_name='asvma')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='asvma',null=True,blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -473,7 +475,7 @@ class CompensacaoMataAtlantica(models.Model):
         'Área de Compensação (ha)',
         null=True,
         blank=True)
-    usuario             = models.ForeignKey(User, related_name='compensacao')
+    usuario             = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='compensacao',null=True,blank=True)
     data_criacao        = models.DateTimeField('Data de Criação',
         auto_now_add=True)
     geom                = models.MultiPolygonField(srid=4674)
@@ -504,3 +506,19 @@ class CompensacaoMataAtlantica(models.Model):
         verbose_name = 'Área de Compensação - Mata Atlântica'
         verbose_name_plural = 'Áreas de Compensação - Mata Atlântica'
 
+
+class LDAPUser(AbstractUser):
+    name = models.CharField(blank=True, max_length=255)
+
+    def __unicode__(self):
+        return self.username
+
+    def get_absolute_url(self):
+        return reverse('core:index', kwargs={'username': self.username})
+
+class UserPermited(models.Model):
+
+    username = models.CharField(max_length=11,unique=True)
+
+    def __str__(self):
+        return self.username

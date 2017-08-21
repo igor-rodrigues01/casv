@@ -34,6 +34,25 @@ DATABASES = {
 }
 ########## END DATABASE CONFIGURATION
 
+##### LDAP
+AUTHENTICATION_BACKENDS = (
+    'django_python3_ldap.auth.LDAPBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+AUTH_USER_MODEL = 'core.LDAPUser'
+LDAP_AUTH_URL = 'ldap://10.1.25.17:389'
+LDAP_AUTH_USE_TLS = False
+LDAP_AUTH_SEARCH_BASE = 'ou=Users,ou=ibama,o=redegoverno,c=br'
+LDAP_AUTH_USER_FIELDS = {
+    "username": "uid",
+    "name": "cn",
+    #"last_name": "sn",
+    "email": "mail",
+}
+LDAP_AUTH_USER_LOOKUP_FIELDS = ("username",)
+########## END LDAP
+
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
@@ -49,6 +68,7 @@ CACHES = {
 # See: http://django-debug-toolbar.readthedocs.org/en/latest/installation.html#explicit-setup
 INSTALLED_APPS += (
     'debug_toolbar',
+    'rest_framework.authtoken',
 )
 
 MIDDLEWARE_CLASSES += (

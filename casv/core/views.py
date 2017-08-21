@@ -29,6 +29,10 @@ from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
 from .serializers import (GeomPedidoAnuenciaMaSerializer,GeomAnuenciaConcedidaMaSerializer)
 
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from .models import UserPermited
+
 class InvalidShapefileError(Exception):
 
     def __init__(self, message):
@@ -999,25 +1003,54 @@ def upload_file(request):
     return render(request, 'core/upload.html', context)
 
 
-def login_view(request):
-    msg = _('Please log in below...')
-    if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect(reverse('core:index'))
-            else:
-                msg = _('''Your account is not active. Please contact the
-                        system administrator''')
-                return redirect(reverse('core:login'))
-        else:
-            msg = _('Invalid username or password.')
-            return render(request, 'core/login_page.html', {'msg': msg})
+# def login_view(request):
+#     msg = _('Please log in below...')
+#     if request.POST:
+#         username = request.POST['username']
+#         password = request.POST['password']
+#         user = authenticate(username=username, password=password)
+#         if user is not None:
+#             if user.is_active:
+#                 login(request, user)
+#                 return redirect(reverse('core:index'))
+#             else:
+#                 msg = _('''Your account is not active. Please contact the
+#                         system administrator''')
+#                 return redirect(reverse('core:login'))
+#         else:
+#             msg = _('Invalid username or password.')
+#             return render(request, 'core/login_page.html', {'msg': msg})
 
-    return render(request, 'core/login_page.html', {'msg': msg})
+#     return render(request, 'core/login_page.html', {'msg': msg})
+
+class LoginView(ObtainAuthToken):
+
+    def get(self,request):
+        return render(request, 'core/login_page.html', {})
+
+    def post(self,request):
+        result = None
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data['user']
+            if user:
+                permited      = bool(UserPermited.objects.filter(username=user.username))
+                token,created = Token.objects.get_or_create(user=user)
+                result = {
+                    'user':user.username,
+                    'name':user.name,
+                    'email':user.email,
+                    'token':token.key if token else ''
+                }
+                if user.is_active:
+                    login(request, user)
+                    return redirect(reverse('core:index'))
+            else:
+                result = {'permited':False}
+        else:
+            result = {'error': _('Invalid username or password.')}
+            return render(request,'core/login_page.html',result) 
+
 
 
 def logout_view(request):
@@ -1051,7 +1084,7 @@ class UserUploads(LoginRequiredMixin, DetailView):
         context = super(UserUploads, self).get_context_data(**kwargs)
         context['dados_pedido_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(\
             geompedidoanuenciamataatlantica__processo_id=\
-            DadosAnuenciaMataAtlantica.objects.values_list('processo'))
+            DadosAnuenciaMataAtlantica.objects.values_list('processo'),usuario=self.request.user)
         
         context['dados_anuencia_concedida'] = DadosAnuenciaMataAtlantica.objects.filter(\
             geomanuenciaconcedidamataatlantica__processo_id=\

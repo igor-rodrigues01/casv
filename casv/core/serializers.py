@@ -78,10 +78,3 @@ class GeomAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
         id_field  = False
         fields    = ['processo']
         geo_field = 'geom'
-
-# class IbamaDadosAnuenciaConcedidaMaSerializer(GeoFeatureModelSerializer):
-
-#     class Meta:
-# # DadosAnuenciaMataAtlantica.objects.filter(\
-# #             geomanuenciaconcedidamataatlantica__processo_id=\
-# #             GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'))

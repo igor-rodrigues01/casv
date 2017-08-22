@@ -8,6 +8,8 @@ from shutil import rmtree
 from shapely.geometry import shape
 
 from rest_framework.generics import RetrieveAPIView
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -18,20 +20,17 @@ from django.views.generic import DetailView, DeleteView,TemplateView
 from django.views.generic.list import ListView 
 from django.utils.translation import ugettext as _
 from shapely.geometry.base import BaseGeometry
+
 from .forms import UploadFileForm,ComboboxStatusForm
 from .models import Asv, AreaSoltura
-# from .models import AsvMataAtlantica
-from .models import (CompensacaoMataAtlantica,GeomPedidoAnuenciaMataAtlantica,
-GeomAnuenciaConcedidaMataAtlantica,DadosAnuenciaMataAtlantica)
+from .models import CompensacaoMataAtlantica,DadosAnuenciaMataAtlantica
+from .models import GeomAnuenciaConcedidaMataAtlantica,GeomPedidoAnuenciaMataAtlantica
 from .models import AutoInfracaoOEMA, EmbargoOEMA
+from .models import UserPermited
 from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
-from .serializers import (GeomPedidoAnuenciaMaSerializer,GeomAnuenciaConcedidaMaSerializer)
-
-from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.authtoken.models import Token
-from .models import UserPermited
+from .serializers import GeomPedidoAnuenciaMaSerializer,GeomAnuenciaConcedidaMaSerializer
 
 class InvalidShapefileError(Exception):
 
@@ -288,134 +287,6 @@ def get_mapping(schema):
         'observacao':'obs'
     }
 
-    anuencia_concedida_mata_atlantica = {
-        'properties': OrderedDict([
-            ('processo', 'int:9'),
-            ('empreended', 'str:254'),
-            ('uf', 'str:2'),
-            ('municipio', 'str:254'),
-            ('tipo_empre','str:254'),
-            ('area_total', 'float:20.15'),
-            ('urb_met', 'str:4'),
-            ('a_veg_prim', 'float:20.15'),
-            ('a_est_medi', 'float:20.15'),
-            ('a_est_avan','float:20.15'),
-            ('obs', 'str:250'),
-            ('cpf_cnpj', 'str:254')
-        ]),
-        'geometry': 'Polygon'
-    }
-
-    mapping_anuecia_concedida_mata_atlantica = {
-        'processo':'processo',
-        'uf':'uf',
-        'municipio':'municipio',
-        'empreendedor':'empreended',
-        'tipo_empreendimento':'tipo_empre',
-        'cpfj':'cpf_cnpj',
-        'area_empreendimento_total':'area_total',
-        'area_empreendimento_veg_primaria':'a_veg_prim',
-        'area_empreendimento_estagio_medio':'a_est_medi',
-        'area_empreendimento_estagio_avancado':'a_est_avan',
-        'urbano_metropolitano':'urb_met',
-        'observacao':'obs'
-    }
-
-
-    # asv_mata_atlantica = {
-    #     'properties': OrderedDict([
-    #         ('processo', 'int:10'),
-    #         ('empreended', 'str:254'),
-    #         ('uf', 'str:2'),
-    #         ('municipio', 'str:254'),
-    #         ('tipo_empre', 'str:254'),
-    #         ('cpfj', 'str:22'),
-    #         ('area_total', 'float:20.15'),
-    #         ('a_veg_prim', 'float:20.15'),
-    #         ('a_est_medi', 'float:20.15'),
-    #         ('a_est_avan', 'float:20.15')
-    #     ]),
-    #     'geometry': 'Polygon'
-    # }
-
-    # asv_mata_atlantica2 = {
-    #     'properties': OrderedDict([
-    #         ('processo', 'int:10'),
-    #         ('empreended', 'str:254'),
-    #         ('uf', 'str:2'),
-    #         ('municipio', 'str:254'),
-    #         ('tipo_empre', 'str:254'),
-    #         ('cpfj', 'str:22'),
-    #         ('area_total', 'float:20.15'),
-    #         ('a_veg_prim', 'float:20.15'),
-    #         ('a_est_medi', 'float:20.15'),
-    #         ('a_est_avan', 'float:20.15')
-    #     ]),
-    #     'geometry': 'Multipolygon'
-    # }
-
-    # asv_mata_atlantica3 = {
-    #     'properties': OrderedDict([
-    #         ('processo', 'int:9'),
-    #         ('empreended', 'str:254'),
-    #         ('uf', 'str:2'),
-    #         ('municipio', 'str:254'),
-    #         ('tipo_empre', 'str:254'),
-    #         ('cpfj', 'str:22'),
-    #         ('area_total', 'float:20'),
-    #         ('a_veg_prim', 'float:20'),
-    #         ('a_est_medi', 'float:20'),
-    #         ('a_est_avan', 'float:20')
-    #     ]),
-    #     'geometry': 'Polygon'
-    # }
-
-    # asv_mata_atlantica4 = {
-    #     'properties': OrderedDict([
-    #         ('processo', 'int:9'),
-    #         ('empreended', 'str:254'),
-    #         ('uf', 'str:2'),
-    #         ('municipio', 'str:254'),
-    #         ('tipo_empre', 'str:254'),
-    #         ('cpfj', 'str:22'),
-    #         ('area_total', 'float:20'),
-    #         ('a_veg_prim', 'float:20'),
-    #         ('a_est_medi', 'float:20'),
-    #         ('a_est_avan', 'float:20')
-    #     ]),
-    #     'geometry': 'Multipolygon'
-    # }
-
-    #add 
-    # asv_mata_atlantica5 = {
-    #     'properties': OrderedDict([
-    #         ('processo', 'int:9'), 
-    #         ('empreended', 'str:254'),
-    #         ('uf', 'str:2'),
-    #         ('municipio', 'str:254'),
-    #         ('tipo_empre', 'str:254'),
-    #         ('cpfj', 'str:22'),
-    #         ('area_total', 'float:20.15'),
-    #         ('a_veg_prim', 'float:20.15'),
-    #         ('a_est_medi', 'float:20.15'),
-    #         ('a_est_avan', 'float:20.15')
-    #     ]),
-    #     'geometry': 'Polygon'
-    # }
-
-    #old
-    # mapping_asv_mata_atlantica = {
-    #     'processo': 'processo',
-    #     'uf': 'uf',
-    #     'municipio': 'municipio',
-    #     'empreendedor': 'empreended',
-    #     'tipo_empreendimento': 'tipo_empre',
-    #     'cpfj': 'cpfj',
-    #     'area_supressao_total': 'area_total',
-    #     'area_supressao_veg_primaria': 'a_veg_prim',
-    #     'area_supressao_estagio_medio': 'a_est_medi',
-    #     'area_supressao_estagio_avancado': 'a_est_avan',
-    # }
 
     compensacao = {
         'properties': OrderedDict([
@@ -516,17 +387,6 @@ def get_mapping(schema):
         'area_compensacao_estagio_avancado':'c_est_avan',
         'observacao':'obs'
     }
-
-    #old
-    # mapping_compensacao = {
-    #     'processo': 'processo',
-    #     'uf': 'uf',
-    #     'municipio': 'municipio',
-    #     'empreendedor': 'empreended',
-    #     'tipo_empreendimento': 'tipo_empre',
-    #     'cpfj': 'cpfj',
-    #     'area_compensacao': 'area_compe',
-    # }
 
     area_soltura = {
         'geometry': 'Polygon',
@@ -849,21 +709,11 @@ def get_mapping(schema):
         schema == area_soltura5 or schema == area_soltura6:
         return [AreaSoltura, mapping_area_soltura, 'AreaSoltura']
 
-    # elif schema == asv_mata_atlantica or schema == asv_mata_atlantica2 \
-    #     or schema == asv_mata_atlantica3 or schema == asv_mata_atlantica4\
-    #     or schema == asv_mata_atlantica5:
-    #     return [AsvMataAtlantica, mapping_asv_mata_atlantica,
-    #             'AsvMataAtlantica']
-
-    #================================
     
     elif schema == pedido_anuencia_mata_atlantica:
         return [DadosAnuenciaMataAtlantica,GeomPedidoAnuenciaMataAtlantica,
         mapping_ped_anuencia_mata_atlantica,'GeomPedidoAnuenciaMataAtlantica']
 
-    elif schema == anuencia_concedida_mata_atlantica:
-        return [DadosAnuenciaMataAtlantica,GeomAnuenciaConcedidaMataAtlantica,
-        mapping_anuecia_concedida_mata_atlantica,'GeomAnuenciaConcedidaMataAtlantica']
 
     elif schema == compensacao or schema == compensacao2 or\
         schema == compensacao3 or schema == compensacao4 or \
@@ -939,8 +789,8 @@ def handle_uploaded_file(file, user):
                     try:
                         if len(list_result_mapping) == 4:
                             multipolygon = shape(feature['geometry'])
-                            entry.geom   = multipolygon.wkt                           
-                            # entry.geom = multipolygon.wkt
+                            entry.geom   = multipolygon.wkt
+
                     except TypeError:
                         raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
                 
@@ -1002,26 +852,6 @@ def upload_file(request):
 
     return render(request, 'core/upload.html', context)
 
-
-# def login_view(request):
-#     msg = _('Please log in below...')
-#     if request.POST:
-#         username = request.POST['username']
-#         password = request.POST['password']
-#         user = authenticate(username=username, password=password)
-#         if user is not None:
-#             if user.is_active:
-#                 login(request, user)
-#                 return redirect(reverse('core:index'))
-#             else:
-#                 msg = _('''Your account is not active. Please contact the
-#                         system administrator''')
-#                 return redirect(reverse('core:login'))
-#         else:
-#             msg = _('Invalid username or password.')
-#             return render(request, 'core/login_page.html', {'msg': msg})
-
-#     return render(request, 'core/login_page.html', {'msg': msg})
 
 class LoginView(ObtainAuthToken):
 
@@ -1146,26 +976,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         context['processo']    = kwargs['processo']
         return context
 
-    def get_mapping_geom(self, schema):
-        geom_anuencia_concedida_mata_atlantica = {
-            'geometry': 'Polygon',
-            'properties': OrderedDict()
-        }
-        
-        mapping_geom_anuencia_concedida_mata_atlantica = {
-            'processo':'processo'
-        }
-
-        if schema == geom_anuencia_concedida_mata_atlantica:
-            return [GeomAnuenciaConcedidaMataAtlantica,
-            mapping_geom_anuencia_concedida_mata_atlantica,
-            'GeomAnuenciaConcedidaMataAtlantica']
-
-        else:
-            raise InvalidShapefileError(
-                _('The shapefile is not in one of the accepted schemas.')
-            )
-
+    
     def handle_uploaded_file_geom(self, file, user, processo):
         '''Function to process a uploaded file, test if it is a valid zip file and
         if it has a .shp file within, convert the shp file to geojson and import

@@ -5,11 +5,6 @@ from django.contrib.auth.decorators import login_required
 
 from .views import upload_file, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
-# from .views import AsvMaDetailView, AsvMaDeleteView,AsvMaGeoView
-# from .views import (PedidoAnuenciaMaDeleteView,
-#     PedidoAnuenciaMaDetailView,PedidoAnuenciaMaGeoView)
-# from .views import (AnuenciaConcedidaMaDeleteView,
-#     AnuenciaConcedidaMaDetailView,AnuenciaConcedidaMaGeoView)
 from .views import CompensacaoDetailView, CompensacaoDeleteView
 from .views import AreaSolturaDetailView, AreaSolturaDeleteView
 from .views import AsvGeoView, SolturaGeoView, CompensacaoGeoView
@@ -20,11 +15,8 @@ from .views import IbamaAnuenciaListView,IbamaConcederAnuenciaView
 
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
-from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida,DadosPedidoAnuenciaUsuarioMaView
-from .views import LoginView
-
-
-# ==============================
+from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida
+from .views import LoginView,DadosPedidoAnuenciaUsuarioMaView
 
 
 urlpatterns = patterns(
@@ -83,19 +75,10 @@ urlpatterns = patterns(
         AreaSolturaDeleteView.as_view(),
         name='delete-areasoltura'),
 
-    
-    #===================================
-
-    # url(r'^pedido-anuencia/(?P<pk>\d+)/$',
-    #     PedidoAnuenciaMaDetailView.as_view(),
-    #     name='pedido_anuencia'),
-
     url(r'^pedido-anuencia/(?P<processo>\d+)/$',
         DadosPedidoAnuenciaUsuarioMaView.as_view(
         template_name = 'core/pedidoanuenciamataatlantica_detail.html'),
         name='pedido_anuencia'),
-
-    
 
     url(r'^pedido-anuencia/(?P<pk>\d+)/delete/$',
         DadosAnuenciaMaDeleteView.as_view(

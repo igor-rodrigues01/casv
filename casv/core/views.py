@@ -806,7 +806,7 @@ def handle_uploaded_file(file, user):
                         entry_geom.save()
                     
                     else:
-                        raise InvalidShapefileError(_('{} - Processo Existente.'\
+                        raise InvalidShapefileError(_('Processo Nº {} - Já Existe.'\
                         .format(feature['properties'].get('processo'))))
 
                 else:
@@ -953,7 +953,6 @@ class DadosPedidoAnuenciaUsuarioMaView(LoginRequiredMixin,TemplateView):
         return context
 
 
-
 class IbamaAnuenciaListView(LoginRequiredMixin,TemplateView):
     model = DadosAnuenciaMataAtlantica
     template_name = "core/anuenciaIbama_list.html"
@@ -975,8 +974,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         context['combobox']    = ComboboxStatusForm()
         context['processo']    = kwargs['processo']
         return context
-
-    
+  
     def handle_uploaded_file_geom(self, file, user, processo):
         '''Function to process a uploaded file, test if it is a valid zip file and
         if it has a .shp file within, convert the shp file to geojson and import
@@ -1023,7 +1021,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                     entry.save()
 
                 else:
-                    raise InvalidShapefileError(_('Process Nº {} has already been granted.').format(processo))
+                    raise InvalidShapefileError(_('Processo Nº {} Ja está Concedido.').format(processo))
 
                 rmtree(upload_path)
                 return {'type': type_str, 'quantity': number_of_features}
@@ -1038,7 +1036,6 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         user = str(self.request.user.username)
         DadosAnuenciaMataAtlantica.objects.filter(processo=processo).update(status=status,\
             cpf_modificacao_ibama=user,data_modificacao_ibama=datetime.now())
-
 
     def post(self,*args,**kwargs):
         form      = UploadFileForm(self.request.POST, self.request.FILES)

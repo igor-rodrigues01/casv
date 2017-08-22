@@ -13,7 +13,7 @@
 -- OK - nomes ao apagar meus envios do usuário
 -- OK - mensagem de erro para o login
 
--- Verificar blocos trans para traduções
+-- OK - Verificar blocos trans para traduções
 -- OK - Retirar schemas e mapeamentos de anuencias concedida e deixar apenas a os schemas de geomAnuênciaConcedida
 -- OK - Retirar templates de Anuências concedidas
 -- OK - inserir modelos para downloads
@@ -22,3 +22,8 @@
 -- OK - acertar a urls
 -- OK - tratar erro no client na página http://127.0.0.1:8000/pedido-anuencia/123456/
 -- se o usuário apagar apaga do ibama também
+
+TDD -- HandleUploadedFileTest
+       LoginLogoutTest
+       UserUploadedFile
+       TestDeleteViews

@@ -139,8 +139,10 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: core/templates/core/upload.html:30
-msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
+msgid "Upload a zip file containing the shp, dbf, shx and prj. See the "
 msgstr ""
+"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
+"os "
 
 #: core/templates/core/user_uploads.html:7
 msgid "Uploads of the user"

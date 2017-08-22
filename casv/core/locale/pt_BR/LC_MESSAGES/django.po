@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-21 18:07-0300\n"
+"POT-Creation-Date: 2017-08-22 13:46-0300\n"
 "PO-Revision-Date: 2015-12-01 17:00-0200\n"
 "Last-Translator: Wille Marcel <wille@wille.blog.br>\n"
 "Language-Team: \n"
@@ -34,55 +34,58 @@ msgid "You did not upload any files of this type yet."
 msgstr "Você não enviou nenhum arquivo deste tipo ainda."
 
 #: core/templates/core/anuenciaIbama_concessao.html:11
-#, fuzzy
-#| msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
-msgid "Upload a zip file containing the shp, dbf, shx and prj. See the "
-msgstr ""
-"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
-"os "
-
-#: core/templates/core/anuenciaIbama_concessao.html:12
 #: core/templates/core/upload.html:31
 msgid "file models."
 msgstr "modelos de arquivo."
 
-#: core/templates/core/anuenciaIbama_concessao.html:28
+#: core/templates/core/anuenciaIbama_concessao.html:27
 msgid ""
 "\n"
-"                        Status update with success.\n"
+"                        Status atualizado com sucesso.\n"
 "                    "
 msgstr ""
 
-#: core/templates/core/anuenciaIbama_concessao.html:39
-#, python-format
+#: core/templates/core/anuenciaIbama_concessao.html:38
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "            You uploaded %(quantity)s item of %(type)s.\n"
+#| "          "
+#| msgid_plural ""
+#| "\n"
+#| "            You uploaded %(quantity)s items of %(type)s.\n"
+#| "          "
 msgid ""
 "\n"
 "                        You uploaded %(quantity)s item of %(type)s.\n"
-"                        The status of proccess has been defined how "
-"<strong>Deferred</strong>.\n"
-"                    "
+"                      "
 msgid_plural ""
 "\n"
 "                        You uploaded %(quantity)s items of %(type)s.\n"
-"                        The status of proccess has been defined how "
-"<strong>Deferred</strong>\n"
-"                    "
+"                      "
 msgstr[0] ""
+"\n"
+"            Você enviou %(quantity)s item do tipo %(type)s.\n"
+"          "
 msgstr[1] ""
+"\n"
+"            Você enviou %(quantity)s itens do tipo %(type)s.\n"
+"          "
 
-#: core/templates/core/anuenciaIbama_detail.html:83
 #: core/templates/core/areasoltura_confirm_delete.html:4
 #: core/templates/core/areasoltura_detail.html:150
 #: core/templates/core/asv_confirm_delete.html:4
 #: core/templates/core/asv_detail.html:109
 #: core/templates/core/asvmataatlantica_confirm_delete.html:4
 #: core/templates/core/asvmataatlantica_detail.html:71
+#: core/templates/core/autoinfracaooema_confirm_delete.html:5
 #: core/templates/core/autoinfracaooema_detail.html:64
 #: core/templates/core/compensacaomataatlantica_confirm_delete.html:4
 #: core/templates/core/compensacaomataatlantica_detail.html:86
+#: core/templates/core/embargooema_confirm_delete.html:5
 #: core/templates/core/embargooema_detail.html:66
 #: core/templates/core/pedidoanuenciamataatlantica_confirm_delete.html:4
-#: core/templates/core/pedidoanuenciamataatlantica_detail.html:76
+#: core/templates/core/pedidoanuenciamataatlantica_detail.html:75
 msgid "Delete"
 msgstr "Apagar"
 
@@ -148,43 +151,37 @@ msgstr[1] ""
 "            Você enviou %(quantity)s itens do tipo %(type)s.\n"
 "          "
 
-#: core/templates/core/upload.html:30
-msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
-msgstr ""
-"Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. Veja "
-"os "
-
 #: core/templates/core/user_uploads.html:7
 msgid "Uploads of the user"
 msgstr "Áreas enviadas pelo usuário"
 
-#: core/views.py:881 core/views.py:1166
+#: core/views.py:731
 msgid "The shapefile is not in one of the accepted schemas."
 msgstr "O arquivo shape não está em um dos schemas aceitos."
 
-#: core/views.py:916
+#: core/views.py:766
 msgid ""
 "O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que "
 "compõe o schema do arquivo."
 msgstr ""
 
-#: core/views.py:945 core/views.py:1204
+#: core/views.py:795 core/views.py:1015
 msgid "O arquivo contém geometria inválida."
 msgstr ""
 
-#: core/views.py:959
-msgid "{} - Processo Existente."
+#: core/views.py:809
+msgid "Processo Nº {} - Já Existe."
 msgstr ""
 
-#: core/views.py:969 core/views.py:1222
+#: core/views.py:819 core/views.py:1033
 msgid "There is not a .shp file inside of the zip file."
 msgstr "Não encontramos um arquivo shape no arquivo zip que você enviou."
 
-#: core/views.py:971 core/views.py:1224
+#: core/views.py:821 core/views.py:1035
 msgid "The uploaded file is not a zip file."
 msgstr "O arquivo enviado não é um arquivo zip válido."
 
-#: core/views.py:1050
+#: core/views.py:880
 #, fuzzy
 #| msgid "Your account is not active. Please contact the system administrator"
 msgid ""
@@ -194,13 +191,25 @@ msgstr ""
 "Sua conta não está ativa. Por favor, entre em contato com o administrador do "
 "sistema."
 
-#: core/views.py:1055
+#: core/views.py:885
 msgid "Invalid username or password."
 msgstr "Nome de usuário ou senha inválidos."
 
-#: core/views.py:1215
-msgid "Process Nº {} has already been granted.."
+#: core/views.py:1026
+msgid "Processo Nº {} Ja está Concedido."
 msgstr ""
+
+#, fuzzy
+#~| msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
+#~ msgid "Upload a zip file containing the shp, dbf, shx and prj. See the "
+#~ msgstr ""
+#~ "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. "
+#~ "Veja os "
+
+#~ msgid "Upload a zip file containing the shp, pbf, shx and prj. See the "
+#~ msgstr ""
+#~ "Faça upload de um arquivo zip contendo os arquivos shp, pbf, shx e prj. "
+#~ "Veja os "
 
 #~ msgid "Please log in below..."
 #~ msgstr "Por favor, faça o login abaixo..."

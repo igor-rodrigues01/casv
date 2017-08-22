@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
-from datetime import date
+from datetime import date,datetime
 
 from django.test import TestCase
-from django.contrib.gis.geos import Polygon
+from django.contrib.gis.geos import Polygon,MultiPolygon
 from django.contrib.auth.models import User
 
-from ..models import Asv, AreaSoltura, AsvMataAtlantica, AutoInfracaoOEMA
-from ..models import EmbargoOEMA, CompensacaoMataAtlantica
+from ..models import Asv, AreaSoltura, AutoInfracaoOEMA
+from ..models import EmbargoOEMA, CompensacaoMataAtlantica, LDAPUser
+from ..models import DadosAnuenciaMataAtlantica,GeomPedidoAnuenciaMataAtlantica
+from ..models import GeomAnuenciaConcedidaMataAtlantica
 
 
 class TestAsv(TestCase):
     def setUp(self):
-        user = User.objects.create_user('user', 'i@t.com', 'password')
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.asv = Asv.objects.create(
             codigo=1, n_autex=1837813, uf='BA', fito='teste', nom_prop='Maria',
             cpfj_prop='123.323.678/0001-23', detentor='João',
@@ -20,7 +22,7 @@ class TestAsv(TestCase):
             tora_m=23.32, torete_m=3435.23, mourao_m=3456.43,
             data_autex='2014-9-1', valido_ate='2015-1-1',
             municipio='Itacaré', usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
         )
 
     def test_asv_creation(self):
@@ -34,7 +36,7 @@ class TestAsv(TestCase):
 class TestAreaSoltura(TestCase):
 
     def setUp(self):
-        user = User.objects.create_user('user', 'i@t.com', 'password')
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.area_soltura = AreaSoltura.objects.create(
             processo=1,
             nome='Fazenda Teste',
@@ -60,7 +62,7 @@ class TestAreaSoltura(TestCase):
             distancia=87.9,
             vistoria=date(2015, 1, 1),
             usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
         )
 
     def test_area_soltura_creation(self):
@@ -71,7 +73,7 @@ class TestAreaSoltura(TestCase):
 class TestEmbargoOEMA(TestCase):
 
     def setUp(self):
-        user = User.objects.create_user('user', 'i@t.com', 'password')
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.embargo = EmbargoOEMA.objects.create(
             proc='Teste',
             num_ai='0000000001',
@@ -84,7 +86,7 @@ class TestEmbargoOEMA(TestCase):
             cpfj='123.323.678/0001-23',
             municipio='',
             usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
         )
 
     def test_embargo_creation(self):
@@ -95,7 +97,7 @@ class TestEmbargoOEMA(TestCase):
 class TestAutoInfracaoOEMA(TestCase):
 
     def setUp(self):
-        user=user = User.objects.create_user('user', 'i@t.com', 'password')
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.autoinfracao = AutoInfracaoOEMA.objects.create(
             proc='Teste',
             num_ai='0000000001',
@@ -108,7 +110,7 @@ class TestAutoInfracaoOEMA(TestCase):
             cpfj='123.323.678/0001-23',
             municipio='',
             usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
         )
 
     def test_auto_infracao_creation(self):
@@ -116,35 +118,10 @@ class TestAutoInfracaoOEMA(TestCase):
         self.assertIsInstance(self.autoinfracao, AutoInfracaoOEMA)
 
 
-
-class TestAsvMataAtlantica(TestCase):
-
-    def setUp(self):
-        user = User.objects.create_user('user', 'i@t.com', 'password')
-        self.asv_mata_atlantica = AsvMataAtlantica.objects.create(
-            processo=1,
-            uf='BA',
-            municipio='Itacaré',
-            empreendedor='Teste',
-            tipo_empreendimento='Fazenda',
-            cpfj='123.323.678/0001-23',
-            area_supressao_total=15.4,
-            area_supressao_veg_primaria=1.4,
-            area_supressao_estagio_medio=7.4,
-            area_supressao_estagio_avancado=6.8,
-            usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
-        )
-
-    def test_asv_mata_atlantica_creation(self):
-        self.assertEqual(AsvMataAtlantica.objects.all().count(), 1)
-        self.assertIsInstance(self.asv_mata_atlantica, AsvMataAtlantica)
-
-
 class TestCompensacaoMataAtlantica(TestCase):
 
     def setUp(self):
-        user = User.objects.create_user('user', 'i@t.com', 'password')
+        ser = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.compensacao = CompensacaoMataAtlantica.objects.create(
             processo=1,
             uf='BA',
@@ -154,9 +131,72 @@ class TestCompensacaoMataAtlantica(TestCase):
             cpfj='123.323.678/0001-23',
             area_compensacao=15.4,
             usuario=user,
-            geom=Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0))))
         )
 
         def test_asv_mata_atlantica_creation(self):
             self.assertEqual(CompensacaoMataAtlantica.objects.all().count(), 1)
             self.assertIsInstance(self.compensacao, CompensacaoMataAtlantica)
+
+
+class TestDadosAnuenciaMataAtlantica(TestCase):
+    
+    def setUp(self):
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
+        self.dados = DadosAnuenciaMataAtlantica.objects.create(
+            processo=2,
+            uf='df',
+            municipio='teste',
+            empreendedor='Emp test',
+            tipo_empreendimento='Fazenda',
+            cpfj='423423',
+            area_empreendimento_total=3423,
+            area_empreendimento_veg_primaria=432423,
+            area_empreendimento_estagio_medio=234234,
+            area_empreendimento_estagio_avancado=23423,
+            usuario=user,
+            data_criacao=datetime.now(),
+            data_modificacao_ibama=datetime.now(),
+            cpf_modificacao_ibama='213213213',
+            urbano_metropolitano='sim',
+            status='EM análise',
+            observacao='teste teste teste'
+
+        )
+
+    def test_dados_anuencia_mata_atlantica(self):
+        self.assertEqual(DadosAnuenciaMataAtlantica.objects.all().count(), 1)
+        self.assertIsInstance(self.dados, DadosAnuenciaMataAtlantica)
+
+
+class TestGeomPedidoAnuenciaMataAtlantica(TestCase):
+    
+    def setUp(self):
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
+        self.model_geom = GeomPedidoAnuenciaMataAtlantica.objects.create(
+            processo=DadosAnuenciaMataAtlantica.objects.create(processo=1),
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
+            usuario=user
+        )
+
+    def test_geom_pedido_anuencia_mata_atlantica(self):
+        self.assertEqual(GeomPedidoAnuenciaMataAtlantica.objects.all().count(), 1)
+        self.assertIsInstance(self.model_geom, GeomPedidoAnuenciaMataAtlantica)
+
+
+class TestGeomAnuenciaConcedidaMataAtlantica(TestCase):
+    
+    def setUp(self):
+        user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
+        self.model_geom = GeomAnuenciaConcedidaMataAtlantica.objects.create(
+            processo=DadosAnuenciaMataAtlantica.objects.create(processo=1),
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
+            usuario=user,
+            data_criacao=datetime.now(),
+        )
+
+    def test_geom_anuencia_concedida_mata_atlantica(self):
+        self.assertEqual(GeomAnuenciaConcedidaMataAtlantica.objects.all().count(), 1)
+        self.assertIsInstance(self.model_geom, GeomAnuenciaConcedidaMataAtlantica)
+        
+

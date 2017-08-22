@@ -3,12 +3,11 @@
 {% load i18n %}
     
     {% block page_title %}
-        <h1>Em Análise</h1>
+        <h1>Upload</h1>
     {% endblock page_title %}
 
 {% block content %}
-    <p>
-    {% blocktrans %}Upload a zip file containing the shp, dbf, shx and prj. See the {%endblocktrans %}
+    <p>Faça upload de um arquivo zip contendo os arquivos shp, dbf, shx e prj. Veja os
       <a href="{% static 'shapes/Anuencia_Concedida.zip'%}">{% trans 'file models.' %}</a>
           
     </p>
@@ -26,7 +25,7 @@
             {% if status %}
                 <div class="alert alert-success" role="alert">
                     {% blocktrans %}
-                        Status update with success.
+                        Status atualizado com sucesso.
                     {% endblocktrans %}
                 </div>
             {% endif %}
@@ -35,15 +34,14 @@
                 {% if success %}
 
 
-                <div class="alert alert-success" role="alert">
-                    {% blocktrans count quantity=quantity %}
-                        You uploaded {{ quantity }} item of {{ type }}.
-                        The status of proccess has been defined how <strong>Deferred</strong>.
-                    {% plural %}
-                        You uploaded {{ quantity }} items of {{ type }}.
-                        The status of proccess has been defined how <strong>Deferred</strong>
-                    {% endblocktrans %}
-                </div>
+                    <div class="alert alert-success" role="alert">
+                      {% blocktrans count quantity=quantity %}
+                        Você enviou {{ quantity }} item de {{ type }}.
+                      {% plural %}
+                        Você enviou {{ quantity }} itens de {{ type }}.
+                      {% endblocktrans %}
+                        O <strong>status</strong> do processo foi definido como <strong>Deferido</strong>.
+                    </div>
               
                 {% else %}
                     

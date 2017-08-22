@@ -7,7 +7,8 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 
 from ..models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantica
-from ..models import EmbargoOEMA, AutoInfracaoOEMA
+from ..models import DadosAnuenciaMataAtlantica
+from ..models import EmbargoOEMA, AutoInfracaoOEMA,LDAPUser
 from ..views import handle_uploaded_file, InvalidShapefileError
 
 
@@ -25,21 +26,21 @@ class LoginTest(TestCase):
 
 class UploadTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user = LDAPUser.objects.create_user('11178422666', '111784')
 
     def test_unlogged_response(self):
         response = self.client.get(reverse('core:upload'))
         self.assertRedirects(response, reverse('core:login') + '?next=/upload/')
 
     def test_logged_response(self):
-        self.client.login(username=self.user.username, password='password')
+        self.client.login(username=self.user.username, password=self.user.password)
         response = self.client.get(reverse('core:upload'))
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
 
 class HandleUploadedFileTest(TestCase):
     def setUp(self):
-        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user = LDAPUser.objects.create_user('11178422666', '111784')
         self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
             self.user
@@ -135,8 +136,9 @@ class HandleUploadedFileTest(TestCase):
 
 
 class LoginLogoutTest(TestCase):
+    
     def setUp(self):
-        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user = LDAPUser.objects.create_user('11178422666', '111784')
 
     def test_login_response(self):
         response = self.client.get(reverse('core:login'))
@@ -147,18 +149,20 @@ class LoginLogoutTest(TestCase):
         self.assertRedirects(response, reverse('core:index'))
 
     def test_loging_logout_user(self):
+
         self.client.post(
             reverse('core:login'),
-            {'username': self.user.username, 'password': 'password'})
+            {'username': self.user.username, 'password': self.user.password})
         self.assertIn('_auth_user_id', self.client.session)
-
         self.client.get(reverse('core:logout'))
         self.assertNotIn('_auth_user_id', self.client.session)
 
 
 class UserUploadsTest(TestCase):
+    
     def setUp(self):
-        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user = LDAPUser.objects.create_user('11178422666', '111784')
+
 
     def test_user_uploads_unlogged_response(self):
         url = reverse('core:user-uploads')
@@ -166,18 +170,19 @@ class UserUploadsTest(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_user_uploads_response(self):
+      
         self.client.post(
             reverse('core:login'),
-            {'username': self.user.username, 'password': 'password'})
+            {'username':self.user.username, 'password': self.user.password})
         url = reverse('core:user-uploads')
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
 
 class UserUploadedFile(TestCase):
 
     def setUp(self):
-        self.user = User.objects.create_user('user', 'i@t.com', 'password')
+        self.user = LDAPUser.objects.create_user('11178422666', '111784')
         self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
             self.user)
@@ -446,3 +451,27 @@ class TestDeleteViews(TestCase):
         self.assertEqual(response.status_code, 200)
         response = self.client.post(url)
         self.assertEqual(AutoInfracaoOEMA.objects.count(), 0)
+
+
+class TestIbamaViews(TestCase):
+    
+    def test_ibama_conceder_anuencia_view(self):
+        # pk = DadosAnuenciaMataAtlantica.objects.all().first().pk
+        pk  = 1
+        url = reverse('core:ibama-concessao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_ibama_anuencia_concedida(self):
+        response = self.client.get(reverse('core:ibama-concedidos'))
+        self.assertEqual(response.status_code,302)
+
+    def test_ibama_dados_anuencia_concedida(self):
+        # pk = DadosAnuenciaMataAtlantica.objects.all().first().pk
+        pk = 1
+        url = reverse('core:ibama-concessao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,302)

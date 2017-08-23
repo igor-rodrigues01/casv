@@ -23,7 +23,14 @@
 -- OK - tratar erro no client na página http://127.0.0.1:8000/pedido-anuencia/123456/
 -- se o usuário apagar apaga do ibama também
 
-TDD -- HandleUploadedFileTest
-       LoginLogoutTest
-       UserUploadedFile
-       TestDeleteViews
+TDD -- OK - HandleUploadedFileTest
+       OK - LoginLogoutTest
+       OK - TestDeleteViews
+	Testes ibama com login
+
+	UserUploadedFile
+	  test_user_uploaded_pedido_anuencia_response
+       
+	
+
+-- retirar cpf dos tests

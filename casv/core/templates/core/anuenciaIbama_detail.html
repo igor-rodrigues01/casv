@@ -74,8 +74,9 @@
     <a class="btn btn-success" href="{% url 'core:ibama-concessao' dados_anuencia.processo %}">
         Conceder
     </a>
-    <br/><br/>
-    <br/><br/>
+    <a class="btn btn-danger" href="{% url 'core:ibama-delete' dados_anuencia.processo %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>
+    
+    <br/><br/><br/>
     
 {% endblock detail %}
 

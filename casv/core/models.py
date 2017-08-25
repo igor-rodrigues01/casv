@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-tes
 from django.contrib.gis.db import models
-from django.contrib.auth.models import User,AbstractUser
+from django.contrib.auth.models import User, AbstractUser
 from django.utils import timezone
 from django.conf import settings
 
@@ -10,7 +10,8 @@ class AutoInfracaoOEMA(models.Model):
     proc = models.CharField(max_length=30, null=True, blank=True)
     num_ai = models.CharField(max_length=20, null=True, blank=True)
     num_tei = models.CharField(max_length=20, null=True, blank=True)
-    area_ha = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    area_ha = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True)
     desc = models.CharField(max_length=2500, null=True, blank=True)
     legislacao = models.CharField(max_length=100, null=True, blank=True)
     status = models.CharField(max_length=100, null=True, blank=True)
@@ -18,7 +19,8 @@ class AutoInfracaoOEMA(models.Model):
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
     geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='infracao',null=True,blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='infracao', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
 
@@ -32,7 +34,8 @@ class EmbargoOEMA(models.Model):
     proc = models.CharField(max_length=30, null=True, blank=True)
     num_ai = models.CharField(max_length=20, null=True, blank=True)
     num_tei = models.CharField(max_length=20, null=True, blank=True)
-    area_ha = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    area_ha = models.DecimalField(
+        max_digits=8, decimal_places=2, null=True, blank=True)
     desc = models.CharField(max_length=2500, null=True, blank=True)
     legislacao = models.CharField(max_length=100, null=True, blank=True)
     status = models.CharField(max_length=100, null=True, blank=True)
@@ -40,7 +43,8 @@ class EmbargoOEMA(models.Model):
     cpfj = models.CharField(max_length=20, null=True, blank=True)
     municipio = models.CharField(max_length=250, null=True, blank=True)
     geom = models.MultiPolygonField(srid=4674, null=True, blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='embargo',null=True,blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='embargo', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     objects = models.GeoManager()
 
@@ -75,21 +79,16 @@ class Asv(models.Model):
         null=True,
         blank=True)
     cpfj_dete = models.CharField(
-        'CPF ou CNPJ do Detentor',
-        max_length=22,
-        null=True,
-        blank=True)
+        'CPF ou CNPJ do Detentor', max_length=22, null=True, blank=True)
     rt = models.CharField(max_length=60, null=True, blank=True)
     cpfj_rt = models.CharField(max_length=22, null=True, blank=True)
-    area_ha = models.FloatField('Área da Propriedade (ha)', null=True, blank=True)
+    area_ha = models.FloatField(
+        'Área da Propriedade (ha)', null=True, blank=True)
     lenha_st = models.FloatField(null=True, blank=True)
     tora_m = models.FloatField(null=True, blank=True)
     torete_m = models.FloatField(null=True, blank=True)
     mourao_m = models.FloatField(null=True, blank=True)
-    data_autex = models.DateField(
-        'Data de Autorização de Extração',
-        null=True,
-        blank=True)
+    data_autex = models.DateField('Data de Autorização de Extração', null=True, blank=True)
     valido_ate = models.DateField(
         'Data de Validade da Autorização',
         null=True,
@@ -99,7 +98,8 @@ class Asv(models.Model):
         max_length=40,
         null=True,
         blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='asv',null=True,blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='asv', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -178,7 +178,8 @@ class AreaSoltura(models.Model):
         null=True,
         blank=True)
     vistoria = models.DateField(null=True, blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='area_soltura',null=True,blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='area_soltura', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -192,8 +193,8 @@ class AreaSoltura(models.Model):
 
 
 class DadosAnuenciaMataAtlantica(models.Model):
-    
-    processo = models.IntegerField(null=True, blank=True,unique=True)
+
+    processo = models.IntegerField(null=True, blank=True, unique=True)
     uf = models.CharField(
         'Unidade da Federação',
         max_length=2,
@@ -225,20 +226,23 @@ class DadosAnuenciaMataAtlantica(models.Model):
         blank=True)
     area_empreendimento_estagio_medio = models.FloatField(
         """Área de Empreendimento em Estágio Médio (ha)""",
-        null=True,
-        blank=True)
+        null=True, blank=True)
     area_empreendimento_estagio_avancado = models.FloatField(
         """Área de Empreendimento em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='dadosanuencia',null=True,blank=True)
+    ativo = models.BooleanField('Dados Ativos',default=True)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                related_name='dadosanuencia', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
-    data_modificacao_ibama = models.DateTimeField('Data de modificação pelo Ibama',null=True,blank=True)
-    cpf_modificacao_ibama = models.CharField('Cpf de Modificação do Ibama',max_length=13,null=True,blank=True)
-    objects      = models.GeoManager()
-    urbano_metropolitano = models.CharField('Local Urbarno',max_length=5)
-    status      = models.CharField('Status',max_length=30)
-    observacao = models.TextField('Observação',null=True,blank=True)
+    data_modificacao_ibama = models.DateTimeField(
+        'Data de modificação pelo Ibama', null=True, blank=True)
+    cpf_modificacao_ibama = models.CharField(
+        'Cpf de Modificação do Ibama', max_length=13, null=True, blank=True)
+    objects = models.GeoManager()
+    urbano_metropolitano = models.CharField('Local Urbarno', max_length=5)
+    status = models.CharField('Status', max_length=30)
+    observacao = models.TextField('Observação', null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.processo
@@ -249,25 +253,30 @@ class DadosAnuenciaMataAtlantica(models.Model):
 
 
 class GeomPedidoAnuenciaMataAtlantica(models.Model):
-    
-    processo = models.ForeignKey(DadosAnuenciaMataAtlantica,to_field='processo',null=True,blank=True)
-    geom     = models.MultiPolygonField('Geometria',srid=4674)
-    usuario  = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='geom_pedido_anuencia',null=True)
-    objects  = models.GeoManager()
-    
+
+    processo = models.ForeignKey(
+        DadosAnuenciaMataAtlantica, to_field='processo', null=True, blank=True)
+    geom = models.MultiPolygonField('Geometria', srid=4674)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='geom_pedido_anuencia', null=True)
+    objects = models.GeoManager()
+
     class Meta:
         verbose_name = 'Geometria do Pedido de Anuência - Mata Atlântica'
         verbose_name_plural = 'Geometrias dos Pedidos de Anuência - Mata Atlântica'
 
 
 class GeomAnuenciaConcedidaMataAtlantica(models.Model):
-    
-    processo     = models.ForeignKey(DadosAnuenciaMataAtlantica,null=True,blank=True,to_field="processo")
-    geom         = models.MultiPolygonField('Geometria',srid=4674)
-    usuario      = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='geom_anuencia_concedida',blank=True,null=True)
-    data_criacao = models.DateTimeField('Data de Criação',auto_now_add=True,null=True) 
-    objects      = models.GeoManager()
-    
+
+    processo = models.ForeignKey(
+        DadosAnuenciaMataAtlantica, null=True, blank=True, to_field="processo")
+    geom = models.MultiPolygonField('Geometria', srid=4674)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='geom_anuencia_concedida', blank=True, null=True)
+    data_criacao = models.DateTimeField(
+        'Data de Criação', auto_now_add=True, null=True)
+    objects = models.GeoManager()
+
     class Meta:
         verbose_name = 'Geometria de Anuência Concedida - Mata Atlântica'
         verbose_name_plural = 'Geometrias das Anuências Concedidas'
@@ -313,7 +322,8 @@ class AsvMataAtlantica(models.Model):
         """Área de Supressão em Estágio Avançado (ha)""",
         null=True,
         blank=True)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='asvma',null=True,blank=True)
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='asvma', null=True, blank=True)
     data_criacao = models.DateTimeField('Data de Criação', auto_now_add=True)
     geom = models.MultiPolygonField(srid=4674)
     objects = models.GeoManager()
@@ -326,7 +336,6 @@ class AsvMataAtlantica(models.Model):
         verbose_name_plural = """Autorizações de Supressão de Vegetação -
             Mata Atlântica"""
 
-
     def __str__(self):
         return '%s' % self.processo
 
@@ -338,25 +347,25 @@ class AsvMataAtlantica(models.Model):
 
 class CompensacaoMataAtlantica(models.Model):
 
-    processo            = models.IntegerField(null=True, blank=True)
-    uf                  = models.CharField(
+    processo = models.IntegerField(null=True, blank=True)
+    uf = models.CharField(
         'Unidade da Federação',
         max_length=2,
         null=True,
         blank=True)
-    municipio           = models.CharField(
+    municipio = models.CharField(
         'Município',
         max_length=255,
         null=True,
         blank=True)
-    empreendedor        = models.CharField(max_length=255, null=True,
-        blank=True)
+    empreendedor = models.CharField(max_length=255, null=True,
+                                    blank=True)
     tipo_empreendimento = models.CharField(
         'Tipo de Empreendimento',
         max_length=255,
         null=True,
         blank=True)
-    cpfj                = models.CharField(
+    cpfj = models.CharField(
         'CPF ou CNPJ do Empreendedor',
         max_length=22,
         null=True,
@@ -365,29 +374,30 @@ class CompensacaoMataAtlantica(models.Model):
         'Área de Compensação (ha)',
         null=True,
         blank=True)
-    usuario             = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='compensacao',null=True,blank=True)
-    data_criacao        = models.DateTimeField('Data de Criação',
-        auto_now_add=True)
-    geom                = models.MultiPolygonField(srid=4674)
-    objects             = models.GeoManager()
-    tipo_compensacao    = models.CharField(max_length=12,null=True,blank=True)
-    area_compensacao_veg_primaria     = models.FloatField(
+    usuario = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='compensacao', null=True, blank=True)
+    data_criacao = models.DateTimeField('Data de Criação',
+                                        auto_now_add=True)
+    geom = models.MultiPolygonField(srid=4674)
+    objects = models.GeoManager()
+    tipo_compensacao = models.CharField(max_length=12, null=True, blank=True)
+    area_compensacao_veg_primaria = models.FloatField(
         """Área de Compensação de Vegetação Primária (ha)""",
         null=True,
         blank=True)
-    area_compensacao_estagio_inicial  = models.FloatField(
+    area_compensacao_estagio_inicial = models.FloatField(
         """Área de Compensação em Estágio Inicial (ha)""",
         null=True,
         blank=True)
-    area_compensacao_estagio_medio    = models.FloatField(
+    area_compensacao_estagio_medio = models.FloatField(
         """Área de Compensação em Estágio Médio (ha)""",
         null=True,
         blank=True)
     area_compensacao_estagio_avancado = models.FloatField(
         """Área de Compensação em Estágio Avançado (ha)""",
         null=True,
-        blank=True) 
-    observacao = models.TextField('Observação',null=True,blank=True)
+        blank=True)
+    observacao = models.TextField('Observação', null=True, blank=True)
 
     def __str__(self):
         return '%s' % self.processo
@@ -406,9 +416,10 @@ class LDAPUser(AbstractUser):
     def get_absolute_url(self):
         return reverse('core:index', kwargs={'username': self.username})
 
+
 class UserPermited(models.Model):
 
-    username = models.CharField(max_length=11,unique=True)
+    username = models.CharField(max_length=11, unique=True)
 
     def __str__(self):
         return self.username

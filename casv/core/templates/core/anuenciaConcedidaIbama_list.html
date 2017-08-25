@@ -17,7 +17,7 @@
             <ul class="list-group">
             {% for item in dados%}
                 <li class="list-group-item">
-                    <strong><a href="{% url 'core:ibama-concedidos-dados' item.processo %}" >{{item.processo }}</a></strong> - Modificado por <strong>{{item.cpf_modificacao_ibama}}</strong> - {{ item.data_modificacao_ibama|date:"d M Y" }}
+                    <strong><a href="{% url 'core:ibama-concedidos-dados' item.processo %}" >{{item.processo }}</a></strong> - Modificado por <strong>{{item.cpf_modificacao_ibama}}</strong> - {{ item.data_modificacao_ibama|date:"d M Y" }} - {% if item.ativo %}Ativo{% else %} Inativo {% endif %}
                 </li>
 
             {% empty %}

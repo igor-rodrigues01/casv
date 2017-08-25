@@ -70,6 +70,13 @@
         <p class="list-group-item-text">{{ dados_anuencia.data_criacao }}</p>
     </a>
     
+    {% if dados_anuencia.status %}
+        <a href="#" class="list-group-item">
+            <h4 class="list-group-item-heading">Status</h4>
+            <p class="list-group-item-text">{{ dados_anuencia.status }}</p>
+        </a>
+    {% endif %}
+    
     <br/>    
     {% block delete_button %}
       <a class="btn btn-danger" href="{% url 'core:delete-pedido_anuencia' dados_anuencia.pk %}"><span class="glyphicon glyphicon-remove"></span> {% trans 'Delete' %}</a>

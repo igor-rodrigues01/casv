@@ -16,7 +16,7 @@ from .views import IbamaAnuenciaListView,IbamaConcederAnuenciaView
 from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
 from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida
-from .views import LoginView,DadosPedidoAnuenciaUsuarioMaView
+from .views import LoginView,DadosPedidoAnuenciaUsuarioMaView,IbamaDadosAnuenciaMaDeleteView
 
 
 urlpatterns = patterns(
@@ -58,6 +58,10 @@ urlpatterns = patterns(
     url(r'^ibama/dados-pedido/(?P<processo>\d+)/$',
         IbamaPedidoAnuenciaDetailView.as_view(),
         name='ibama-geo'),
+
+    url(r'^ibama/(?P<processo>\d+)/delete$',
+        IbamaDadosAnuenciaMaDeleteView.as_view(),
+        name='ibama-delete'),
 
     url(r'^asv/(?P<pk>\d+)/$',
         AsvDetailView.as_view(),

@@ -7,8 +7,8 @@
 
 {% block content%}
 <p>{% trans 'Are you sure you want to delete' %} <strong>{{ processo }}</strong>?</p>
-	<form action="{% url 'core:delete-pedido_anuencia' pk %}" method="post">{% csrf_token %}
+	<form action="{% url 'core:ibama-delete' processo %}" method="post">{% csrf_token %}
 	  <button class="btn btn-success" type="submit">{% trans 'Yes' %}</button>
-	  <a class="btn btn-danger" href="{% url 'core:user-uploads' %}">{% trans 'No' %}</a>
+	  <a class="btn btn-danger" href="{% url 'core:ibama-list' %}">{% trans 'No' %}</a>
 	</form>
 {% endblock %}

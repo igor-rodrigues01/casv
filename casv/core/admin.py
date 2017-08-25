@@ -4,6 +4,7 @@ from .models import (Asv, AreaSoltura, AsvMataAtlantica,CompensacaoMataAtlantica
 GeomPedidoAnuenciaMataAtlantica,GeomAnuenciaConcedidaMataAtlantica,
 DadosAnuenciaMataAtlantica)
 from .models import EmbargoOEMA, AutoInfracaoOEMA
+from .models import LDAPUser,UserPermited
 
 
 class AutoInfracaoAdmin(admin.OSMGeoAdmin):
@@ -50,20 +51,6 @@ class CompensacaoMataAtlanticaAdmin(admin.OSMGeoAdmin):
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
     search_fields = ['processo', 'empreendedor', 'cpfj']
 
-# class PedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
-    
-#     list_display = ['processo', 'empreendedor', 'municipio',
-#         'tipo_empreendimento',  'data_criacao','urbano_metropolitano','observacao']
-#     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
-#     search_fields = ['processo', 'empreendedor', 'cpfj']
-
-
-# class AnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
-    
-#     list_display = ['processo', 'empreendedor', 'municipio',
-#         'tipo_empreendimento',  'data_criacao']
-#     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento']
-#     search_fields = ['processo', 'empreendedor', 'cpf_cnpj']
 
 class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
     
@@ -71,19 +58,32 @@ class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
     list_filter   = ['processo']
     search_fields = ['processo']
 
+
 class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
     list_display  = ['pk','processo','geom','data_criacao']
     list_filter   = ['processo']
     search_fields = ['processo']
 
+
 class DadosAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
     list_display = ['processo','usuario' ,'empreendedor', 'municipio',
-        'tipo_empreendimento',  'data_criacao','urbano_metropolitano','status','observacao','data_modificacao_ibama'
-,'cpf_modificacao_ibama']
+        'tipo_empreendimento',  'data_criacao','urbano_metropolitano',
+        'status','observacao','ativo','data_modificacao_ibama',
+        'cpf_modificacao_ibama']
     list_filter = ['uf', 'data_criacao', 'tipo_empreendimento','data_criacao']
     search_fields = ['processo', 'empreendedor', 'cpfj']
+
+
+class LDAPUserAdmin(admin.OSMGeoAdmin):
+    list_display  = ['name']
+    search_fields = ['name']
+
+
+class UserPermitedAdmin(admin.OSMGeoAdmin):
+    list_display  = ['username']
+    search_fields = ['username']
 
 admin.site.register(Asv, AsvAdmin)
 admin.site.register(EmbargoOEMA, EmbargoAdmin)
@@ -96,3 +96,5 @@ admin.site.register(GeomPedidoAnuenciaMataAtlantica,
 admin.site.register(GeomAnuenciaConcedidaMataAtlantica,
     GeomAnuenciaConcedidaMataAtlanticaAdmin)
 admin.site.register(DadosAnuenciaMataAtlantica,DadosAnuenciaMataAtlanticaAdmin)
+admin.site.register(LDAPUser,LDAPUserAdmin)
+admin.site.register(UserPermited,UserPermitedAdmin)

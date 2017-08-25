@@ -853,6 +853,38 @@ def upload_file(request):
     return render(request, 'core/upload.html', context)
 
 
+# class LoginView(ObtainAuthToken):
+
+#     def get(self,request):
+#         return render(request, 'core/login_page.html', {})
+
+#     def post(self,request):
+#         result = None
+#         serializer = self.serializer_class(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.validated_data['user']
+#             if user:
+#                 permited = bool(UserPermited.objects.filter(username=user.username))
+
+#                 if permited:
+#                     token,created = Token.objects.get_or_create(user=user)
+#                     user.is_staff = True
+#                     user.save()
+
+#                 if user.is_active:
+#                     login(request, user)
+#                     return redirect(reverse('core:index'))
+
+#                 else:
+#                     msg = _('''Your account is not active. Please contact the
+#                         system administrator''')
+#                     return redirect(reverse('core:login'))
+    
+#         else:
+#             msg = _('Invalid username or password.')
+#             return render(request,'core/login_page.html',{'msg':msg}) 
+
+
 class LoginView(ObtainAuthToken):
 
     def get(self,request):
@@ -864,18 +896,18 @@ class LoginView(ObtainAuthToken):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             if user:
-                permited      = bool(UserPermited.objects.filter(username=user.username))
-                token,created = Token.objects.get_or_create(user=user)
-                result = {
-                    'user':user.username,
-                    'name':user.name,
-                    'email':user.email,
-                    'token':token.key if token else ''
-                }
+
+                permited = bool(UserPermited.objects.filter(username=user.username))
+                
+                if permited:
+                    token,created = Token.objects.get_or_create(user=user)
+                    user.is_staff = True
+                    user.save()
+
                 if user.is_active:
                     login(request, user)
                     return redirect(reverse('core:index'))
-                
+
                 else:
                     msg = _('''Your account is not active. Please contact the
                         system administrator''')
@@ -915,10 +947,10 @@ class UserUploads(LoginRequiredMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(UserUploads, self).get_context_data(**kwargs)
-        context['dados_pedido_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(\
+        context['dados_pedido_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(ativo=True,\
             geompedidoanuenciamataatlantica__processo_id=\
             DadosAnuenciaMataAtlantica.objects.values_list('processo'),usuario=self.request.user)
-        
+
         context['dados_anuencia_concedida'] = DadosAnuenciaMataAtlantica.objects.filter(\
             geomanuenciaconcedidamataatlantica__processo_id=\
             DadosAnuenciaMataAtlantica.objects.values_list('processo'))
@@ -1128,9 +1160,44 @@ class AsvDeleteView(CommonDeleteView):
     model = Asv
 
 
-class DadosAnuenciaMaDeleteView(CommonDeleteView):
+class DadosAnuenciaMaDeleteView(TemplateView):
+    model = DadosAnuenciaMataAtlantica
+    
+    def post(self,request,*args,**kwargs):
+        DadosAnuenciaMataAtlantica.objects.filter(pk=kwargs['pk']).update(ativo=False)
+        context = {}
+        context['dados_pedido_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(ativo=True,\
+            geompedidoanuenciamataatlantica__processo_id=\
+            DadosAnuenciaMataAtlantica.objects.values_list('processo'),usuario=self.request.user)
+
+        context['dados_anuencia_concedida'] = DadosAnuenciaMataAtlantica.objects.filter(\
+            geomanuenciaconcedidamataatlantica__processo_id=\
+            DadosAnuenciaMataAtlantica.objects.values_list('processo'))
+      
+        return render(request,'core/user_uploads.html',context)
+
+    def get_context_data(self,**kwargs):
+        context = super(DadosAnuenciaMaDeleteView,self).get_context_data()
+        context['processo'] = DadosAnuenciaMataAtlantica.objects.get(pk=kwargs['pk']).processo
+        context['pk'] = DadosAnuenciaMataAtlantica.objects.get(pk=kwargs['pk']).pk
+        return context
+
+class IbamaDadosAnuenciaMaDeleteView(TemplateView):
+    lookup_field = 'processo'
+    template_name = 'core/anuenciaIbama_confirm_delete.html'
     model = DadosAnuenciaMataAtlantica
 
+    def post(self,request,*args,**kwargs):
+        DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).delete()
+        context = {}
+        context['in_analisys'] = DadosAnuenciaMataAtlantica.objects.exclude(\
+            geomanuenciaconcedidamataatlantica__processo_id=GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'))
+        return render(request,'core/anuenciaIbama_list.html',context)
+
+    def get_context_data(self,**kwargs):
+        context = super(IbamaDadosAnuenciaMaDeleteView,self).get_context_data()
+        context['processo'] = DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).processo
+        return context
 
 class AreaSolturaDeleteView(CommonDeleteView):
     model = AreaSoltura

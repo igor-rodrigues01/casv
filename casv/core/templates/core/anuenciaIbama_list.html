@@ -19,7 +19,7 @@
             {% for item in in_analisys%}
                 <li class="list-group-item">
                     <strong><a href="{% url 'core:ibama-geo' item.processo %}" >{{ item.processo }} </a></strong>
-                     - {{ item.data_criacao|date:"d M Y" }}
+                     - {{ item.data_criacao|date:"d M Y" }} - {% if item.ativo %}Ativo{% else %} Inativo {% endif %}
                     
 
                     <a class="pull-right" href="{% url 'core:ibama-concessao' item.processo %}">

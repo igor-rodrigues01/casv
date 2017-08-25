@@ -122,7 +122,7 @@ class TestCompensacaoMataAtlantica(TestCase):
 
     def setUp(self):
         ser = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
-        self.compensacao = CompensacaoMataAtlantica.objects.create(
+        self.compensacao, created = CompensacaoMataAtlantica.objects.get_or_create(
             processo=1,
             uf='BA',
             municipio='Itacaré',
@@ -135,7 +135,8 @@ class TestCompensacaoMataAtlantica(TestCase):
         )
 
         def test_asv_mata_atlantica_creation(self):
-            self.assertEqual(CompensacaoMataAtlantica.objects.all().count(), 1)
+            self.assertEqual(CompensacaoMataAtlantica.objects.count(), 1)
+            self.assertEqual(self.compensacao.user, ser)
             self.assertIsInstance(self.compensacao, CompensacaoMataAtlantica)
 
 
@@ -161,7 +162,6 @@ class TestDadosAnuenciaMataAtlantica(TestCase):
             urbano_metropolitano='sim',
             status='EM análise',
             observacao='teste teste teste'
-
         )
 
     def test_dados_anuencia_mata_atlantica(self):

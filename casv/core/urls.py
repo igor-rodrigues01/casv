@@ -2,6 +2,7 @@
 from django.conf.urls import patterns, url
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .views import upload_file, logout_view, UserUploads
 from .views import AsvDetailView, AsvDeleteView
@@ -40,27 +41,33 @@ urlpatterns = patterns(
         name='user-uploads'),
 
     url(r'^ibama/$',
-        IbamaAnuenciaListView.as_view(),
+        staff_member_required(IbamaAnuenciaListView.as_view(),
+        login_url='/login/'),
         name='ibama-list'),
     
     url(r'^ibama/concessao/(?P<processo>\d+)/$',
-        IbamaConcederAnuenciaView.as_view(),
+        staff_member_required(IbamaConcederAnuenciaView.as_view(),
+        login_url='/login/'),
         name='ibama-concessao'),
 
     url(r'^ibama/concedidos/$',
-        IbamaAnuenciaConcedida.as_view(),
+        staff_member_required(IbamaAnuenciaConcedida.as_view(),
+        login_url='/login/'),
         name='ibama-concedidos'),
 
     url(r'^ibama/concedidos/(?P<processo>\d+)/$',
-        IbamaDadosAnuenciaConcedida.as_view(),
+        staff_member_required(IbamaDadosAnuenciaConcedida.as_view(),
+        login_url='/login/'),
         name='ibama-concedidos-dados'),
 
     url(r'^ibama/dados-pedido/(?P<processo>\d+)/$',
-        IbamaPedidoAnuenciaDetailView.as_view(),
+        staff_member_required(IbamaPedidoAnuenciaDetailView.as_view(),
+        login_url='/login/'),
         name='ibama-geo'),
 
     url(r'^ibama/(?P<processo>\d+)/delete$',
-        IbamaDadosAnuenciaMaDeleteView.as_view(),
+        staff_member_required(IbamaDadosAnuenciaMaDeleteView.as_view(),
+        login_url='/login/'),
         name='ibama-delete'),
 
     url(r'^asv/(?P<pk>\d+)/$',

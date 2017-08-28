@@ -33,7 +33,10 @@
 
     <form enctype="multipart/form-data" action="{% url 'core:upload' %}" method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input class="btn btn-primary" type="submit" value="Enviar" />
+    
+        <input class="btn btn-primary" type="submit" id="enviar" value="Enviar" />
     </form>
-
 {% endblock content %}
+{% block extra_js %}
+    {% include 'core/validate.html' %}
+{% endblock extra_js %}

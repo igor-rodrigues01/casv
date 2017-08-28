@@ -825,64 +825,45 @@ def upload_file(request):
     '''View that renders and processes the upload files form.'''
 
     if request.method == 'POST':
+    
         form = UploadFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            try:
-                upload_return = handle_uploaded_file(
-                    request.FILES['upload_file'],
-                    request.user)
-                context = {
-                    'uploaded': True,
-                    'success': True,
-                    'quantity': upload_return.get('quantity'),
-                    'type': upload_return.get('type'),
-                    'form': form}
-                    
-            except InvalidShapefileError as error:
-                context = {
-                    'uploaded': True,
-                    'success': False,
-                    'form': form,
-                    'message': error.message}
+        
+        if len(request.FILES) is not 0:
+            if form.is_valid():
+                try:
+                    upload_return = handle_uploaded_file(
+                        request.FILES['upload_file'],
+                        request.user)
+                    context = {
+                        'uploaded': True,
+                        'success': True,
+                        'quantity': upload_return.get('quantity'),
+                        'type': upload_return.get('type'),
+                        'form': form}
+                        
+                except InvalidShapefileError as error:
+                    context = {
+                        'uploaded': True,
+                        'success': False,
+                        'form': form,
+                        'message': error.message}
+            else:
+                context = {'form': UploadFileForm()}
+                return render(request, 'core/upload.html', context)
         else:
-            context = {'form': UploadFileForm()}
+            context = {
+                'uploaded': True,
+                'success': False,
+                'form': UploadFileForm(),
+                'message': "Selecione o arquivo para o envio."
+                }
             return render(request, 'core/upload.html', context)
+
+
     else:
         context = {'form': UploadFileForm()}
 
     return render(request, 'core/upload.html', context)
-
-
-# class LoginView(ObtainAuthToken):
-
-#     def get(self,request):
-#         return render(request, 'core/login_page.html', {})
-
-#     def post(self,request):
-#         result = None
-#         serializer = self.serializer_class(data=request.data)
-#         if serializer.is_valid():
-#             user = serializer.validated_data['user']
-#             if user:
-#                 permited = bool(UserPermited.objects.filter(username=user.username))
-
-#                 if permited:
-#                     token,created = Token.objects.get_or_create(user=user)
-#                     user.is_staff = True
-#                     user.save()
-
-#                 if user.is_active:
-#                     login(request, user)
-#                     return redirect(reverse('core:index'))
-
-#                 else:
-#                     msg = _('''Your account is not active. Please contact the
-#                         system administrator''')
-#                     return redirect(reverse('core:login'))
-    
-#         else:
-#             msg = _('Invalid username or password.')
-#             return render(request,'core/login_page.html',{'msg':msg}) 
 
 
 class LoginView(ObtainAuthToken):
@@ -896,9 +877,8 @@ class LoginView(ObtainAuthToken):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             if user:
-
                 permited = bool(UserPermited.objects.filter(username=user.username))
-                
+            
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
                     user.is_staff = True
@@ -916,7 +896,6 @@ class LoginView(ObtainAuthToken):
         else:
             msg = _('Invalid username or password.')
             return render(request,'core/login_page.html',{'msg':msg}) 
-
 
 def logout_view(request):
     logout(request)
@@ -1129,6 +1108,7 @@ class IbamaAnuenciaConcedida(LoginRequiredMixin,TemplateView):
             )
         return context
 
+
 class IbamaDadosAnuenciaConcedida(LoginRequiredMixin,TemplateView):
     model         = DadosAnuenciaMataAtlantica
     template_name = 'core/anuenciaConcedidaIbama_detail.html'
@@ -1182,6 +1162,17 @@ class DadosAnuenciaMaDeleteView(TemplateView):
         context['pk'] = DadosAnuenciaMataAtlantica.objects.get(pk=kwargs['pk']).pk
         return context
 
+
+class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin,TemplateView):
+    model = DadosAnuenciaMataAtlantica
+    template_name = 'core/anuenciaIbama_detail.html'
+
+    def get_context_data(self,**kwargs):
+        context = super(IbamaPedidoAnuenciaDetailView,self).get_context_data(**kwargs)
+        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=kwargs['processo'])[0]
+        return context
+
+
 class IbamaDadosAnuenciaMaDeleteView(TemplateView):
     lookup_field = 'processo'
     template_name = 'core/anuenciaIbama_confirm_delete.html'
@@ -1198,6 +1189,7 @@ class IbamaDadosAnuenciaMaDeleteView(TemplateView):
         context = super(IbamaDadosAnuenciaMaDeleteView,self).get_context_data()
         context['processo'] = DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).processo
         return context
+
 
 class AreaSolturaDeleteView(CommonDeleteView):
     model = AreaSoltura
@@ -1234,16 +1226,6 @@ class AsvGeoView(LoginRequiredMixin, RetrieveAPIView):
 class SolturaGeoView(LoginRequiredMixin, RetrieveAPIView):
     queryset = AreaSoltura.objects.all()
     serializer_class = SolturaSerializer
-
-
-class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin,TemplateView):
-    model = DadosAnuenciaMataAtlantica
-    template_name = 'core/anuenciaIbama_detail.html'
-
-    def get_context_data(self,**kwargs):
-        context = super(IbamaPedidoAnuenciaDetailView,self).get_context_data(**kwargs)
-        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=kwargs['processo'])[0]
-        return context
 
 
 class GeomPedidoAnuenciaMaGeoView(LoginRequiredMixin, RetrieveAPIView):

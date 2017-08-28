@@ -22,7 +22,7 @@
                      - {{ item.data_criacao|date:"d M Y" }} - {% if item.ativo %}Ativo{% else %} Inativo {% endif %}
                     
 
-                    <a class="pull-right" href="{% url 'core:ibama-concessao' item.processo %}">
+                    <a class="pull-right" title="Conceder Anuência" href="{% url 'core:ibama-concessao' item.processo %}">
                       <span class="text-success glyphicon glyphicon-check"></span>
                     </a>
                 </li>

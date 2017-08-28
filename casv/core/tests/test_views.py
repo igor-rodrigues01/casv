@@ -29,7 +29,7 @@ class LoginTest(TestCase):
 
 class UploadTest(TestCase):
     def setUp(self):
-        self.user = LDAPUser.objects.create_user('11178422666', '111784')
+        self.user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
 
     def test_unlogged_response(self):
         response = self.client.get(reverse('core:upload'))
@@ -43,7 +43,7 @@ class UploadTest(TestCase):
 
 class HandleUploadedFileTest(TestCase):
     def setUp(self):
-        self.user = LDAPUser.objects.create_user('11178422666', '111784')
+        self.user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
         self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
             self.user
@@ -139,8 +139,8 @@ class HandleUploadedFileTest(TestCase):
 class LoginLogoutTest(TestCase):
     
     def setUp(self):
-        self.ldap_username = '11178422666'
-        self.ldap_password = '111784'
+        self.ldap_username = 'ldap_username'
+        self.ldap_password = 'ldap_password'
 
     def test_login_response(self):
         response = self.client.get(reverse('core:login'))
@@ -163,7 +163,7 @@ class LoginLogoutTest(TestCase):
 class UserUploadsTest(TestCase):
     
     def setUp(self):
-        self.user = LDAPUser.objects.create_user('11178422666', '111784')
+        self.user = LDAPUser.objects.create_user('ldap_username', 'ldap_password')
 
     def test_user_uploads_unlogged_response(self):
         url = reverse('core:user-uploads')
@@ -184,8 +184,8 @@ class UserUploadedFile(TestCase):
 
     def setUp(self):
         self.user = LDAPUser.objects.create_user('admin', 'password')
-        self.ldap_username = '11178422666'
-        self.ldap_password = '111784'
+        self.ldap_username = 'ldap_username'
+        self.ldap_password = 'ldap_password'
 
         self.asv_return = handle_uploaded_file(
             abspath('core/fixtures/Asv.zip'),
@@ -331,8 +331,8 @@ class TestDeleteViews(TestCase):
 
     def setUp(self):
         # self.user2 = User.objects.create_user('user2', 'i@t.com', 'password')
-        self.ldap_username = '11178422666'
-        self.ldap_password = '111784'
+        self.ldap_username = 'ldap_username'
+        self.ldap_password = 'ldap_password'
         self.user = LDAPUser.objects.create_user(self.ldap_username,self.ldap_password)
         
         self.asv_return = handle_uploaded_file(
@@ -443,22 +443,20 @@ class TestDeleteViews(TestCase):
 
 
 class TestIbamaViews(TestCase):
-    user = LDAPUser(name='admin')
     
     def setUp(self):
-        self.user.save()
-        user_permited = UserPermited(username=self.user)
-        user_permited.save()
+        LDAPUser.objects.create_user('ldap_username', 'ldap_password')
 
         try:
-            self.user = 'admin'
-            self.password = 'qwer1234'
+            self.user = 'ldap_username'
+            self.password = 'ldap_password'
             print("\nTrying with ldap")
         except:
 
-            self.user = '11178422666'
-            self.password = '111784'
+            self.user = 'admin'
+            self.password = 'qwer1234'
             print("\nTrying with model backend")
+
         self.dados = DadosAnuenciaMataAtlantica.objects.create(
             processo=2,
             uf='df',
@@ -480,25 +478,32 @@ class TestIbamaViews(TestCase):
         )
     
     def test_ibama_conceder_anuencia_view(self):
-        
-        data = self.client.post(
+        self.client.post(
             reverse('core:login'),
             {'username': self.user,
              'password': self.password})
-        
-        import pdb; pdb.set_trace()
-        
-        self.assertEqual(data.status_code, 200)
 
         pk  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        
         url = reverse('core:ibama-concessao', args=[pk])
         response = self.client.get(url)
-
         self.assertEqual(response.status_code, 200)
 
         url = reverse('core:ibama-geo', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_ibama_conceder_anuencia_view_unlogged(self):
+        pk  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        
+        url = reverse('core:ibama-concessao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 302)
+
 
     def test_ibama_anuencia_concedida(self):
         self.client.post(
@@ -506,14 +511,68 @@ class TestIbamaViews(TestCase):
             {'username': self.user, 'password': self.password})
 
         response = self.client.get(reverse('core:ibama-concedidos'))
+        self.assertEqual(response.status_code,200)
+
+    def test_ibama_anuencia_concedida_unlogged(self):
+        response = self.client.get(reverse('core:ibama-concedidos'))
         self.assertEqual(response.status_code,302)
 
     def test_ibama_dados_anuencia_concedida(self):
         self.client.post(reverse('core:login'),
             {'username': self.user, 'password': self.password})
-        # pk = DadosAnuenciaMataAtlantica.objects.all().first().pk
-        # pk = 1
+       
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].pk
+        url = reverse('core:ibama-concessao', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+
+    def test_ibama_dados_anuencia_concedida_unlogged(self):
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].pk
         url = reverse('core:ibama-concessao', args=[pk])
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)
  
+    def test_ibama_anuencia_list_view(self):
+        self.client.post(
+            reverse('core:login'),
+            {'username': self.user,
+             'password': self.password})
+
+        url = reverse('core:ibama-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+
+    def test_ibama_anuencia_list_view_unlogged_reponse(self):
+        url = reverse('core:ibama-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,302)
+
+    def test_ibama_pedido_anuencia_detail_view(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user, 'password': self.password})
+       
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+
+    def test_ibama_pedido_anuencia_detail_view_unlogged_response(self):  
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,302)
+
+    def test_ibama_dados_anuencia_ma_delete_view(self):
+        self.client.post(reverse('core:login'),
+            {'username': self.user, 'password': self.password})
+       
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+
+    def test_ibama_dados_anuencia_ma_delete_view_unlogged_response(self):
+        pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        url = reverse('core:ibama-geo', args=[pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,302)

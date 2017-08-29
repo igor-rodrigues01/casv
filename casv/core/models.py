@@ -260,6 +260,7 @@ class GeomPedidoAnuenciaMataAtlantica(models.Model):
     usuario = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='geom_pedido_anuencia', null=True)
     objects = models.GeoManager()
+    area_ha = models.FloatField('Área (ha)',null=True,blank=True)
 
     class Meta:
         verbose_name = 'Geometria do Pedido de Anuência - Mata Atlântica'
@@ -276,6 +277,7 @@ class GeomAnuenciaConcedidaMataAtlantica(models.Model):
     data_criacao = models.DateTimeField(
         'Data de Criação', auto_now_add=True, null=True)
     objects = models.GeoManager()
+    area_ha = models.FloatField('Área (ha)',null=True,blank=True)
 
     class Meta:
         verbose_name = 'Geometria de Anuência Concedida - Mata Atlântica'

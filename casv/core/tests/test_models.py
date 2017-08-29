@@ -176,7 +176,8 @@ class TestGeomPedidoAnuenciaMataAtlantica(TestCase):
         self.model_geom = GeomPedidoAnuenciaMataAtlantica.objects.create(
             processo=DadosAnuenciaMataAtlantica.objects.create(processo=1),
             geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
-            usuario=user
+            usuario=user,
+            area_ha=1234.56
         )
 
     def test_geom_pedido_anuencia_mata_atlantica(self):
@@ -192,6 +193,7 @@ class TestGeomAnuenciaConcedidaMataAtlantica(TestCase):
             processo=DadosAnuenciaMataAtlantica.objects.create(processo=1),
             geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
             usuario=user,
+            area_ha=1234.56,
             data_criacao=datetime.now(),
         )
 

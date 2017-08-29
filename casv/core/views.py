@@ -878,7 +878,7 @@ class LoginView(ObtainAuthToken):
             user = serializer.validated_data['user']
             if user:
                 permited = bool(UserPermited.objects.filter(username=user.username))
-            
+
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
                     user.is_staff = True
@@ -896,6 +896,7 @@ class LoginView(ObtainAuthToken):
         else:
             msg = _('Invalid username or password.')
             return render(request,'core/login_page.html',{'msg':msg}) 
+
 
 def logout_view(request):
     logout(request)
@@ -960,7 +961,14 @@ class DadosPedidoAnuenciaUsuarioMaView(LoginRequiredMixin,TemplateView):
     def get_context_data(self,**kwargs):
         context = super(DadosPedidoAnuenciaUsuarioMaView,self).get_context_data(**kwargs)
         context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo'])
+        context['pedido_anuencia_area_ha'] = GeomPedidoAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).area_ha
         context['anuencia_concedida'] = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=kwargs['processo'])
+        context['is_concedida'] = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=kwargs['processo']).exists()
+        
+        if context['is_concedida']:
+           context['anuencia_concedida_area_ha'] = GeomAnuenciaConcedidaMataAtlantica.\
+           objects.get(processo=kwargs['processo']).area_ha
+        
         return context
 
 
@@ -1004,7 +1012,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                 mkdir(upload_path)
                 shp_zip.extractall(upload_path)
                 
-                dict_data          = {}      
+                dict_data          = {} 
                 shp_file           = fiona.open(path=path.join(upload_path, shp[0]))
                 model              = GeomAnuenciaConcedidaMataAtlantica
                 type_str           = 'GeomAnuenciaConcedidaMataAtlantica'          
@@ -1058,11 +1066,7 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
             
             if form.is_valid():
                 try:
-                    upload_return = self.handle_uploaded_file_geom(
-                        self.request.FILES['upload_file'],
-                        self.request.user,
-                        processo
-                        )
+                    upload_return = self.handle_uploaded_file_geom(self.request.FILES['upload_file'],self.request.user,processo)
                                         
                     context = {
                         'uploaded': True,
@@ -1115,8 +1119,20 @@ class IbamaDadosAnuenciaConcedida(LoginRequiredMixin,TemplateView):
     
     def get_context_data(self,**kwargs):
         context = super(IbamaDadosAnuenciaConcedida,self).get_context_data(**kwargs)
-        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=int(kwargs['processo']))[0]
-        context['anuencia_concedida'] = GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=kwargs['processo'])
+        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.\
+        filter(processo=int(kwargs['processo']))[0]
+        context['anuencia_concedida'] = GeomAnuenciaConcedidaMataAtlantica.\
+        objects.filter(processo=kwargs['processo'])
+        context['pedido_anuencia_area_ha'] = GeomPedidoAnuenciaMataAtlantica.\
+        objects.get(processo=kwargs['processo']).area_ha
+        context['is_concedida'] = GeomAnuenciaConcedidaMataAtlantica.\
+        objects.filter(processo=kwargs['processo']).exists()
+        
+        if context['is_concedida']:
+           context['anuencia_concedida_area_ha'] = GeomAnuenciaConcedidaMataAtlantica.\
+           objects.get(processo=kwargs['processo']).area_ha
+        
+
         return context
 
 
@@ -1169,7 +1185,10 @@ class IbamaPedidoAnuenciaDetailView(LoginRequiredMixin,TemplateView):
 
     def get_context_data(self,**kwargs):
         context = super(IbamaPedidoAnuenciaDetailView,self).get_context_data(**kwargs)
-        context['dados_anuencia'] = DadosAnuenciaMataAtlantica.objects.filter(processo=kwargs['processo'])[0]
+        context['dados_anuencia'] = \
+        DadosAnuenciaMataAtlantica.objects.filter(processo=kwargs['processo'])[0]
+        context['pedido_anuencia_area_ha'] = \
+        GeomPedidoAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).area_ha        
         return context
 
 

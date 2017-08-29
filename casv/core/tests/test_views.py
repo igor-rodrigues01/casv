@@ -476,6 +476,21 @@ class TestIbamaViews(TestCase):
             status='EM análise',
             observacao='teste teste teste'
         )
+
+        self.model_geom = GeomPedidoAnuenciaMataAtlantica.objects.create(
+            processo=DadosAnuenciaMataAtlantica.objects.all()[0],
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
+            usuario=LDAPUser.objects.all()[0],
+            area_ha=1234.56
+        )
+
+        self.model_geom = GeomAnuenciaConcedidaMataAtlantica.objects.create(
+            processo=DadosAnuenciaMataAtlantica.objects.create(processo=1),
+            geom=MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))),
+            usuario=LDAPUser.objects.all()[0],
+            area_ha=1234.56,
+            data_criacao=datetime.now(),
+        )
     
     def test_ibama_conceder_anuencia_view(self):
         self.client.post(
@@ -484,12 +499,23 @@ class TestIbamaViews(TestCase):
              'password': self.password})
 
         pk  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
-        
+        self.assertTrue(isinstance(pk,int))
+
         url = reverse('core:ibama-concessao', args=[pk])
+        self.assertTrue(isinstance(url,str))
+        
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
+        self.assertTrue(response.content)
+
+        self.assertTemplateUsed(response,'core/anuenciaIbama_concessao.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
+
         url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(url,str))
+        
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
@@ -497,10 +523,14 @@ class TestIbamaViews(TestCase):
         pk  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
         
         url = reverse('core:ibama-concessao', args=[pk])
+        self.assertTrue(isinstance(url,str))
+        
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
         url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(url,str))
+        
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
 
@@ -512,6 +542,12 @@ class TestIbamaViews(TestCase):
 
         response = self.client.get(reverse('core:ibama-concedidos'))
         self.assertEqual(response.status_code,200)
+        
+        self.assertTrue(response.content)
+        
+        self.assertTemplateUsed(response,'core/anuenciaConcedidaIbama_list.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
 
     def test_ibama_anuencia_concedida_unlogged(self):
         response = self.client.get(reverse('core:ibama-concedidos'))
@@ -522,13 +558,27 @@ class TestIbamaViews(TestCase):
             {'username': self.user, 'password': self.password})
        
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].pk
+        self.assertTrue(isinstance(pk,int))
+
         url = reverse('core:ibama-concessao', args=[pk])
+        self.assertTrue(isinstance(url,str))
+        
         response = self.client.get(url)
         self.assertEqual(response.status_code,200)
 
+        self.assertTrue(response.content)
+        
+        self.assertTemplateUsed(response,'core/anuenciaIbama_concessao.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
+
     def test_ibama_dados_anuencia_concedida_unlogged(self):
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].pk
+        self.assertTrue(isinstance(pk,int))
+
         url = reverse('core:ibama-concessao', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)
  
@@ -539,11 +589,21 @@ class TestIbamaViews(TestCase):
              'password': self.password})
 
         url = reverse('core:ibama-list')
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,200)
 
+        self.assertTrue(response.content)
+        
+        self.assertTemplateUsed(response,'core/anuenciaIbama_list.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
+
     def test_ibama_anuencia_list_view_unlogged_reponse(self):
         url = reverse('core:ibama-list')
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)
 
@@ -552,13 +612,27 @@ class TestIbamaViews(TestCase):
             {'username': self.user, 'password': self.password})
        
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        self.assertTrue(isinstance(pk,int))
+
         url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,200)
 
+        self.assertTrue(response.content)
+        
+        self.assertTemplateUsed(response,'core/anuenciaIbama_detail.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
+
     def test_ibama_pedido_anuencia_detail_view_unlogged_response(self):  
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        self.assertTrue(isinstance(pk,int))
+
         url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)
 
@@ -567,12 +641,26 @@ class TestIbamaViews(TestCase):
             {'username': self.user, 'password': self.password})
        
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
-        url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(pk,int))
+
+        url = reverse('core:ibama-delete', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,200)
 
+        self.assertTrue(response.content)
+        
+        self.assertTemplateUsed(response,'core/anuenciaIbama_confirm_delete.html')
+
+        self.assertIn('_auth_user_id', self.client.session)
+
     def test_ibama_dados_anuencia_ma_delete_view_unlogged_response(self):
         pk = DadosAnuenciaMataAtlantica.objects.all()[0].processo
-        url = reverse('core:ibama-geo', args=[pk])
+        self.assertTrue(isinstance(pk,int))
+
+        url = reverse('core:ibama-delete', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)

@@ -54,14 +54,14 @@ class CompensacaoMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
 class GeomPedidoAnuenciaMataAtlanticaAdmin(admin.OSMGeoAdmin):
     
-    list_display  = ['pk','processo','geom']
+    list_display  = ['processo','geom','area_ha']
     list_filter   = ['processo']
     search_fields = ['processo']
 
 
 class GeomAnuenciaConcedidaMataAtlanticaAdmin(admin.OSMGeoAdmin):
 
-    list_display  = ['pk','processo','geom','data_criacao']
+    list_display  = ['processo','geom','area_ha','data_criacao']
     list_filter   = ['processo']
     search_fields = ['processo']
 

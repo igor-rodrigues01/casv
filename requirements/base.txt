@@ -8,3 +8,4 @@ fiona==1.6.2
 djangorestframework==3.2.4
 djangorestframework-gis==0.9.5
 shapely==1.5.17
+pyshp==1.2.12

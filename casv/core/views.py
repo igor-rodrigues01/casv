@@ -1,10 +1,11 @@
+import shapefile
 import zipfile
 import fiona
 
 from datetime import datetime
 from collections import OrderedDict
-from os import path, mkdir
-from shutil import rmtree
+from os import path, mkdir,remove
+from shutil import rmtree,make_archive
 from shapely.geometry import shape
 
 from rest_framework.generics import RetrieveAPIView
@@ -19,6 +20,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, DeleteView,TemplateView
 from django.views.generic.list import ListView 
 from django.utils.translation import ugettext as _
+from django.http import HttpResponse
+from django.conf import settings
 from shapely.geometry.base import BaseGeometry
 
 from .forms import UploadFileForm,ComboboxStatusForm
@@ -31,6 +34,7 @@ from .serializers import CompensacaoSerializer, AsvMaSerializer
 from .serializers import AsvSerializer, SolturaSerializer
 from .serializers import EmbargoSerializer, AutoInfracaoSerializer
 from .serializers import GeomPedidoAnuenciaMaSerializer,GeomAnuenciaConcedidaMaSerializer
+
 
 class InvalidShapefileError(Exception):
 
@@ -766,7 +770,6 @@ def handle_uploaded_file(file, user):
                     _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
                 )
             number_of_features = len(shp_file)
-          
             for i in range(number_of_features):
                 feature = shp_file.next()
                 dict_data = dict( \
@@ -774,7 +777,6 @@ def handle_uploaded_file(file, user):
                     mapping.keys(),[feature['properties'].get(v) for v in mapping.values()]
                 ))
                 entry = model_data(**dict_data)
-                
                 if feature['geometry']['type'] == 'Polygon':
 
                     if len(list_result_mapping) == 4:
@@ -878,7 +880,8 @@ class LoginView(ObtainAuthToken):
             user = serializer.validated_data['user']
             if user:
                 permited = bool(UserPermited.objects.filter(username=user.username))
-
+                user.is_staff = True
+                user.save()
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
                     user.is_staff = True
@@ -993,6 +996,23 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
         context['combobox']    = ComboboxStatusForm()
         context['processo']    = kwargs['processo']
         return context
+
+    def get_mapping_ibama(self,schema):
+
+        pedido_anuencia_mata_atlantica = {
+            'properties': OrderedDict([
+            ('user', 'str:50'),
+            ]),
+            'geometry': 'Polygon'
+        }
+
+        if schema == pedido_anuencia_mata_atlantica:
+            return True
+
+        else:
+            raise InvalidShapefileError(
+                _('The shapefile is not in one of the accepted schemas.')
+            )
   
     def handle_uploaded_file_geom(self, file, user, processo):
         '''Function to process a uploaded file, test if it is a valid zip file and
@@ -1012,38 +1032,46 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                 mkdir(upload_path)
                 shp_zip.extractall(upload_path)
                 
-                dict_data          = {} 
                 shp_file           = fiona.open(path=path.join(upload_path, shp[0]))
-                model              = GeomAnuenciaConcedidaMataAtlantica
-                type_str           = 'GeomAnuenciaConcedidaMataAtlantica'          
-                feature            = shp_file.next()
-                processo_instance  = DadosAnuenciaMataAtlantica.objects.filter(processo=processo)[0]
-                number_of_features = len(shp_file)
-                
-                if feature['geometry']['type'] == 'Polygon':
-                    dict_data['geom'] = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
-                
-                else:
-                    try:
-                        multipolygon      = shape(feature['geometry'])
-                        dict_data['geom'] = multipolygon.wkt                           
+
+                try:
+                    self.get_mapping_ibama(shp_file.schema)
+                    dict_data          = {} 
+                    model              = GeomAnuenciaConcedidaMataAtlantica
+                    type_str           = 'GeomAnuenciaConcedidaMataAtlantica'
+                    feature            = shp_file.next()
+                    processo_instance  = DadosAnuenciaMataAtlantica.objects.filter(processo=processo)[0]
+                    number_of_features = len(shp_file)
+
+                    if feature['geometry']['type'] == 'Polygon':
+                        dict_data['geom'] = MultiPolygon(Polygon(feature['geometry']['coordinates'][0]))
                     
-                    except TypeError:
-                        raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
+                    else:
+                        try:
+                            multipolygon      = shape(feature['geometry'])
+                            dict_data['geom'] = multipolygon.wkt                           
+                        
+                        except TypeError:
+                            raise InvalidShapefileError(_('O arquivo contém geometria inválida.'))
 
-                existing_processo = \
-                GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=processo_instance).values_list('processo')
-                if len(existing_processo) == 0:
-                    dict_data['processo'] = processo_instance
-                    entry                 = model.objects.create(**dict_data)
-                    entry.usuario         = user
-                    entry.save()
+                    existing_processo = \
+                    GeomAnuenciaConcedidaMataAtlantica.objects.filter(processo=processo_instance).values_list('processo')
+                    if len(existing_processo) == 0:
+                        dict_data['processo'] = processo_instance
+                        entry                 = model.objects.create(**dict_data)
+                        entry.usuario         = user
+                        entry.save()
 
-                else:
-                    raise InvalidShapefileError(_('Processo Nº {} Ja está Concedido.').format(processo))
+                    else:
+                        raise InvalidShapefileError(_('Processo Nº {} Ja está Concedido.').format(processo))
 
-                rmtree(upload_path)
-                return {'type': type_str, 'quantity': number_of_features}
+                    rmtree(upload_path)
+                    return {'type': type_str, 'quantity': number_of_features}
+
+                except IndexError as error:
+                    raise InvalidShapefileError(
+                        _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
+                    )
             
             else:
                 raise InvalidShapefileError(
@@ -1074,7 +1102,8 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                         'quantity': upload_return.get('quantity'),
                         'type': upload_return.get('type'),
                         'combobox':combobox,
-                        'form': form}
+                        'form': form,
+                        'processo':processo}
                     
                     self.update_status(processo,'Deferido')      
                         
@@ -1084,15 +1113,17 @@ class IbamaConcederAnuenciaView(LoginRequiredMixin,TemplateView):
                         'success': False,
                         'form': form,
                         'combobox':combobox,
-                        'message': error.message}
+                        'message': error.message,
+                        'processo':processo}
             
             else:
-                context = {'form': UploadFileForm(),'combobox':combobox}
+                context = {'form': UploadFileForm(),'combobox':combobox,'processo':processo}
         else:
             context = {
                 'combobox':combobox,
                 'status':True,
-                'form': form}
+                'form': form,
+                'processo':processo}
 
             self.update_status(processo,status)
             return render(self.request,self.template_name, context)
@@ -1111,6 +1142,42 @@ class IbamaAnuenciaConcedida(LoginRequiredMixin,TemplateView):
             GeomAnuenciaConcedidaMataAtlantica.objects.values_list('processo'),
             )
         return context
+
+class IbamaDownloadShpUser(TemplateView):
+
+    def get(self,request,*args,**kwargs):
+        geom = GeomPedidoAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).geom
+        coordinates = geom.coords
+        shp = shapefile.Writer(shapefile.POLYGON)
+        
+        item_coord = []
+        list_coord = []
+        
+        for cor in coordinates[0][0]:
+            for c in cor:
+                item_coord.append(c)
+         
+            list_coord.append(item_coord)
+            item_coord = []
+
+        shp.poly(parts=[list_coord])
+        shp.field('user','1')
+        shp.record('First','Polygon')
+        shp.save(path.join(settings.MEDIA_ROOT,'shp-user/polygon'))
+        make_archive(path.join(settings.MEDIA_ROOT,'Pedido_anuencia')\
+            ,'zip',path.join(settings.MEDIA_ROOT,'shp-user'))
+               
+        with open(path.join(settings.MEDIA_ROOT,'Pedido_anuencia.zip'),'rb') as zip_file:
+            filedata = zip_file.read()
+
+        rmtree(path.join(settings.MEDIA_ROOT,'shp-user'))
+        remove(path.join(settings.MEDIA_ROOT,'Pedido_anuencia.zip'))
+
+        username = str(DadosAnuenciaMataAtlantica.objects.get(processo=kwargs['processo']).usuario)
+
+        resp = HttpResponse(filedata,content_type="application/force-download")
+        resp['Content-Disposition'] = 'attachment; filename={}-{}'.format('PedidoDe',username)
+        return resp
 
 
 class IbamaDadosAnuenciaConcedida(LoginRequiredMixin,TemplateView):

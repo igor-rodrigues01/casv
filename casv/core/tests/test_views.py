@@ -12,7 +12,7 @@ from ..models import Asv, AreaSoltura, AsvMataAtlantica, CompensacaoMataAtlantic
 from ..models import DadosAnuenciaMataAtlantica,GeomPedidoAnuenciaMataAtlantica,GeomAnuenciaConcedidaMataAtlantica
 from ..models import GeomAnuenciaConcedidaMataAtlantica
 from ..models import EmbargoOEMA, AutoInfracaoOEMA,LDAPUser,UserPermited
-from ..views import handle_uploaded_file, InvalidShapefileError
+from ..views import handle_uploaded_file, InvalidShapefileError,IbamaConcederAnuenciaView
 
 
 class IndexTest(TestCase):
@@ -57,7 +57,6 @@ class HandleUploadedFileTest(TestCase):
             abspath('core/fixtures/Pedido_Anuencia.zip'),
             self.user
         )
-        
         self.compensacao_return = handle_uploaded_file(
             abspath('core/fixtures/CompensacaoMataAtlantica.zip'),
             self.user
@@ -445,11 +444,11 @@ class TestDeleteViews(TestCase):
 class TestIbamaViews(TestCase):
     
     def setUp(self):
-        LDAPUser.objects.create_user('ldap_username', 'ldap_password')
+        self.ldap_user = LDAPUser.objects.create_user('11178422666', '111784')
 
         try:
-            self.user = 'ldap_username'
-            self.password = 'ldap_password'
+            self.user = '11178422666'
+            self.password = '111784'
             print("\nTrying with ldap")
         except:
 
@@ -490,6 +489,15 @@ class TestIbamaViews(TestCase):
             usuario=LDAPUser.objects.all()[0],
             area_ha=1234.56,
             data_criacao=datetime.now(),
+        )
+
+        ibama_concessao = IbamaConcederAnuenciaView()
+        processo  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+
+        self.anuencia_concedida_return = ibama_concessao.handle_uploaded_file_geom(
+            abspath('core/fixtures/PedidoDe-admin.zip'),
+            self.ldap_user,
+            processo
         )
     
     def test_ibama_conceder_anuencia_view(self):
@@ -533,7 +541,6 @@ class TestIbamaViews(TestCase):
         
         response = self.client.get(url)
         self.assertEqual(response.status_code, 302)
-
 
     def test_ibama_anuencia_concedida(self):
         self.client.post(
@@ -664,3 +671,31 @@ class TestIbamaViews(TestCase):
 
         response = self.client.get(url)
         self.assertEqual(response.status_code,302)
+
+    def test_ibama_download_shp_user(self):
+        self.client.post(
+            reverse('core:login'),
+            {'username': self.user,
+             'password': self.password})
+
+        pk  = DadosAnuenciaMataAtlantica.objects.all()[0].processo
+        self.assertTrue(isinstance(pk,int))
+
+        url = reverse('core:shp-user', args=[pk])
+        self.assertTrue(isinstance(url,str))
+
+        self.assertIn('_auth_user_id', self.client.session)
+
+        response = self.client.get(url,args=[pk])
+        self.assertEqual(response.status_code,200)
+
+    def test_import_anuencia_concedida(self):
+        self.client.post(
+            reverse('core:login'),
+            {'username': self.user,
+             'password': self.password})
+
+        self.assertEqual(GeomAnuenciaConcedidaMataAtlantica.objects.all().count(), 2)
+        anuencia_concedida = GeomAnuenciaConcedidaMataAtlantica.objects.all()[0]
+        self.assertEqual(str(anuencia_concedida.usuario),'11178422666')
+        self.assertTrue(isinstance(anuencia_concedida.data_criacao,datetime))

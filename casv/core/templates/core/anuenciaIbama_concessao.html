@@ -7,10 +7,10 @@
     {% endblock page_title %}
 
 {% block content %}
-    <p>Faça upload de um arquivo zip contendo os arquivos shp, dbf, shx e prj. Veja os
-      <a href="{% static 'shapes/Anuencia_Concedida.zip'%}">{% trans 'file models.' %}</a>
-          
+    <p>Faça upload de um arquivo zip contendo os arquivos shp, dbf, shx e prj. Baixe o 
+    <strong><a href="{% url 'core:shp-user' processo %}">Shp Do Usuário</a></strong>
     </p>
+          
 
     <div class="panel panel-default">
         <div class="panel-heading">

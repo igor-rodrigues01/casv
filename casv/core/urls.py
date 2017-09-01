@@ -18,11 +18,14 @@ from .views import DadosAnuenciaMaDetailView,DadosAnuenciaMaDeleteView
 from .views import GeomPedidoAnuenciaMaGeoView,GeomAnuenciaConcedidaMaGeoView
 from .views import IbamaAnuenciaConcedida,IbamaDadosAnuenciaConcedida
 from .views import LoginView,DadosPedidoAnuenciaUsuarioMaView,IbamaDadosAnuenciaMaDeleteView
+from .views import IbamaDownloadShpUser
 
 
 urlpatterns = patterns(
     '',
     url(r'^$', TemplateView.as_view(template_name='base.html'), name='index'),
+    
+    url(r'^download/shp_user/(?P<processo>\d+)/$',staff_member_required(IbamaDownloadShpUser.as_view()),name='shp-user'),
 
     url(r'^upload/',
         login_required(upload_file, login_url='/login/'),

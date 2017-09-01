@@ -880,8 +880,7 @@ class LoginView(ObtainAuthToken):
             user = serializer.validated_data['user']
             if user:
                 permited = bool(UserPermited.objects.filter(username=user.username))
-                user.is_staff = True
-                user.save()
+                
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
 

@@ -884,8 +884,6 @@ class LoginView(ObtainAuthToken):
                 user.save()
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
-                    user.is_staff = True
-                    user.save()
 
                 if user.is_active:
                     login(request, user)

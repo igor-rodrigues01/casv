@@ -444,11 +444,11 @@ class TestDeleteViews(TestCase):
 class TestIbamaViews(TestCase):
     
     def setUp(self):
-        self.ldap_user = LDAPUser.objects.create_user('11178422666', '111784')
+        self.ldap_user = LDAPUser.objects.create_user('ldap_password', 'ldap_password')
 
         try:
-            self.user = '11178422666'
-            self.password = '111784'
+            self.user = 'ldap_password'
+            self.password = 'ldap_password'
             print("\nTrying with ldap")
         except:
 
@@ -697,5 +697,5 @@ class TestIbamaViews(TestCase):
 
         self.assertEqual(GeomAnuenciaConcedidaMataAtlantica.objects.all().count(), 2)
         anuencia_concedida = GeomAnuenciaConcedidaMataAtlantica.objects.all()[0]
-        self.assertEqual(str(anuencia_concedida.usuario),'11178422666')
+        self.assertEqual(str(anuencia_concedida.usuario),'ldap_password')
         self.assertTrue(isinstance(anuencia_concedida.data_criacao,datetime))

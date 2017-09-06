@@ -265,7 +265,6 @@ def get_mapping(schema):
             ('municipio', 'str:254'),
             ('tipo_empre','str:254'),
             ('cpfj', 'str:22'),
-            ('area_total', 'float:20.15'),
             ('urb_met', 'str:3'),
             ('a_veg_prim', 'float:20.15'),
             ('a_est_medi', 'float:20.15'),
@@ -283,7 +282,6 @@ def get_mapping(schema):
         'empreendedor':'empreended',
         'tipo_empreendimento':'tipo_empre',
         'cpfj':'cpfj',
-        'area_empreendimento_total':'area_total',
         'area_empreendimento_veg_primaria':'a_veg_prim',
         'area_empreendimento_estagio_medio':'a_est_medi',
         'area_empreendimento_estagio_avancado':'a_est_avan',
@@ -745,7 +743,7 @@ def handle_uploaded_file(file, user):
     upload_path = path.join(
         upload_folder,
         user.username + datetime.now().strftime('%f'))
-
+ 
     if zipfile.is_zipfile(file):
         shp_zip = zipfile.ZipFile(file)
         shp = [filename for filename in shp_zip.namelist() if filename[-3:].lower() == 'shp']
@@ -769,7 +767,9 @@ def handle_uploaded_file(file, user):
                 raise InvalidShapefileError(
                     _('O arquivo shape não é valido, pode ocorrer devido  algum erro nos campos que compõe o schema do arquivo.')
                 )
+            
             number_of_features = len(shp_file)
+
             for i in range(number_of_features):
                 feature = shp_file.next()
                 dict_data = dict( \
@@ -883,6 +883,8 @@ class LoginView(ObtainAuthToken):
                 
                 if permited:
                     token,created = Token.objects.get_or_create(user=user)
+                    user.is_staff = True
+                    user.save()
 
                 if user.is_active:
                     login(request, user)

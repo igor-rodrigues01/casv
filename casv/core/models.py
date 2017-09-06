@@ -216,10 +216,10 @@ class DadosAnuenciaMataAtlantica(models.Model):
         max_length=22,
         null=True,
         blank=True)
-    area_empreendimento_total = models.FloatField(
-        'Área Total de Empreendimento (ha)',
-        null=True,
-        blank=True)
+    # area_empreendimento_total = models.FloatField(
+    #     'Área Total de Empreendimento (ha)',
+    #     null=True,
+    #     blank=True)
     area_empreendimento_veg_primaria = models.FloatField(
         """Área Empreendida em Vegetação Primária (ha)""",
         null=True,
